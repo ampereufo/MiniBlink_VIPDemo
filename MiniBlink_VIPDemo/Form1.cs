@@ -29,7 +29,7 @@ namespace MiniBlink_VIPDemo
 
         void webView_OnTitleChange(object sender, MBVIP_WebView.TitleChangeEventArgs e)
         {
-            Text = e.Title;
+            Text = e.Title; 
         }
     }
 }
