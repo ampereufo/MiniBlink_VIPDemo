@@ -4,9 +4,10 @@ using System.Runtime.InteropServices;
 
 /// <summary>
 /// 挫盟主只写代码不写文档，这个是根据mb.h头文件整理的，有错误找他，别找我
-/// 封装以2019-10-28的mb.h文件为准，后续修改尽量同步
+/// 封装以2019-10-28的mb.h文件为基准，后续修改尽量同步
 /// 参考kyozy大神，https://gitee.com/kyozy/miniblinknet
 /// 合作联系QQ：17136608，违法黑产勿扰，我还年轻！
+/// 项目地址：https://github.com/ampereufo/MiniBlink_VIPDemo
 /// </summary>
 namespace MBVIP
 {
@@ -15,7 +16,7 @@ namespace MBVIP
     /// <summary>
     /// 鼠标标志位
     /// </summary>
-    internal enum mbMouseFlags
+    public enum mbMouseFlags
     {
         MB_LBUTTON = 0x01,
         MB_RBUTTON = 0x02,
@@ -27,7 +28,7 @@ namespace MBVIP
     /// <summary>
     /// 按键标志位
     /// </summary>
-    internal enum mbKeyFlags
+    public enum mbKeyFlags
     {
         MB_EXTENDED = 0x0100,
         MB_REPEAT = 0x4000
@@ -36,7 +37,7 @@ namespace MBVIP
     /// <summary>
     /// 鼠标消息
     /// </summary>
-    internal enum mbMouseMsg
+    public enum mbMouseMsg
     {
         MB_MSG_MOUSEMOVE = 0x0200,
         MB_MSG_LBUTTONDOWN = 0x0201,
@@ -54,7 +55,7 @@ namespace MBVIP
     /// <summary>
     /// 代理类型
     /// </summary>
-    internal enum mbProxyType
+    public enum mbProxyType
     {
         MB_PROXY_NONE,
         MB_PROXY_HTTP,
@@ -67,7 +68,7 @@ namespace MBVIP
     /// <summary>
     /// 子网掩码设置项
     /// </summary>
-    internal enum mbSettingMask
+    public enum mbSettingMask
     {
         MB_SETTING_PROXY = 1,
         MB_ENABLE_NODEJS = 1 << 3,
@@ -79,7 +80,7 @@ namespace MBVIP
     /// <summary>
     /// cookie命令
     /// </summary>
-    internal enum mbCookieCommand
+    public enum mbCookieCommand
     {
         mbCookieCommandClearAllCookies,
         mbCookieCommandClearSessionCookies,
@@ -90,7 +91,7 @@ namespace MBVIP
     /// <summary>
     /// 导航类型
     /// </summary>
-    internal enum mbNavigationType
+    public enum mbNavigationType
     {
         MB_NAVIGATION_TYPE_LINKCLICK,
         MB_NAVIGATION_TYPE_FORMSUBMITTE,
@@ -103,7 +104,7 @@ namespace MBVIP
     /// <summary>
     /// 光标类型
     /// </summary>
-    internal enum mbCursorInfoType
+    public enum mbCursorInfoType
     {
         kMbCursorInfoPointer,
         kMbCursorInfoCross,
@@ -154,7 +155,7 @@ namespace MBVIP
     /// <summary>
     /// 页面拖拽操作
     /// </summary>
-    internal enum mbWebDragOperation
+    public enum mbWebDragOperation
     {
         mbWebDragOperationNone = 0,
         mbWebDragOperationCopy = 1,
@@ -169,7 +170,7 @@ namespace MBVIP
     /// <summary>
     /// 资源类型
     /// </summary>
-    internal enum mbResourceType
+    public enum mbResourceType
     {
         MB_RESOURCE_TYPE_MAIN_FRAME = 0,       // top level page
         MB_RESOURCE_TYPE_SUB_FRAME = 1,        // frame or iframe
@@ -193,7 +194,7 @@ namespace MBVIP
     /// <summary>
     /// 网络请求类型
     /// </summary>
-    internal enum mbRequestType
+    public enum mbRequestType
     {
         kMbRequestTypeInvalidation,
         kMbRequestTypeGet,
@@ -204,7 +205,7 @@ namespace MBVIP
     /// <summary>
     /// 鼠标右键弹出菜单操作（复制粘贴等）的id
     /// </summary>
-    internal enum mbMenuItemId
+    public enum mbMenuItemId
     {
         kMbMenuSelectedAllId = 1 << 1,
         kMbMenuSelectedTextId = 1 << 2,
@@ -222,7 +223,7 @@ namespace MBVIP
     /// <summary>
     /// JS值类型
     /// </summary>
-    internal enum mbJsType
+    public enum mbJsType
     {
         kMbJsTypeNumber = 0,
         kMbJsTypeString = 1,
@@ -237,7 +238,7 @@ namespace MBVIP
     /// <summary>
     /// 加载结果
     /// </summary>
-    internal enum mbLoadingResult
+    public enum mbLoadingResult
     {
         MB_LOADING_SUCCEEDED,
         MB_LOADING_FAILED,
@@ -247,7 +248,7 @@ namespace MBVIP
     /// <summary>
     /// 命令行
     /// </summary>
-    internal enum mbConsoleLevel
+    public enum mbConsoleLevel
     {
         mbLevelLog = 1,
         mbLevelWarning = 2,
@@ -261,7 +262,7 @@ namespace MBVIP
     /// <summary>
     /// 异步请求状态
     /// </summary>
-    internal enum MbAsynRequestState
+    public enum MbAsynRequestState
     {
         kMbAsynRequestStateOk = 0,
         kMbAsynRequestStateFail = 1
@@ -270,7 +271,7 @@ namespace MBVIP
     /// <summary>
     /// 下载操作
     /// </summary>
-    internal enum mbDownloadOpt
+    public enum mbDownloadOpt
     {
         kMbDownloadOptCancel = 0,
         kMbDownloadOptCacheData = 1
@@ -279,7 +280,7 @@ namespace MBVIP
     /// <summary>
     /// 网页元素类型
     /// </summary>
-    internal enum mbHttBodyElementType
+    public enum mbHttBodyElementType
     {
         mbHttBodyElementTypeData = 0,
         mbHttBodyElementTypeFile = 1
@@ -288,7 +289,7 @@ namespace MBVIP
     /// <summary>
     /// 窗口类型
     /// </summary>
-    internal enum mbWindowType
+    public enum mbWindowType
     {
         MB_WINDOW_TYPE_POPUP,
         MB_WINDOW_TYPE_TRANSPARENT,
@@ -298,7 +299,7 @@ namespace MBVIP
     /// <summary>
     /// 打印状态
     /// </summary>
-    internal enum mbPrintintStep
+    public enum mbPrintintStep
     {
         kPrintintStepStart,
         kPrintintStepPreview,
@@ -309,7 +310,7 @@ namespace MBVIP
     /// <summary>
     /// 储存类型
     /// </summary>
-    internal enum mbStorageType
+    public enum mbStorageType
     {
         // String data with an associated MIME type. Depending on the MIME type, there may be
         // optional metadata attributes as well.
@@ -328,7 +329,7 @@ namespace MBVIP
     #region 结构体
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbRect
+    public struct mbRect
     {
         public int x;
         public int y;
@@ -337,21 +338,21 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbPoint
+    public struct mbPoint
     {
         public int x;
         public int y;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbSize
+    public struct mbSize
     {
         public int w;
         public int h;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbProxy
+    public struct mbProxy
     {
         public mbProxyType type;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)]
@@ -364,7 +365,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbSettings
+    public struct mbSettings
     {
         public mbProxy proxy;
         public mbSettingMask mask;
@@ -374,14 +375,14 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbViewSettings
+    public struct mbViewSettings
     {
         public int size;
         public uint bgColor;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbWindowFeatures
+    public struct mbWindowFeatures
     {
         public int x;
         public int y;
@@ -397,7 +398,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbPrintSettings
+    public struct mbPrintSettings
     {
         public int structSize;
         public int dpi;
@@ -412,7 +413,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbMemBuf
+    public struct mbMemBuf
     {
         public int size;
         public IntPtr data;
@@ -420,7 +421,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct Item
+    public struct Item
     {
         public mbStorageType storageType;
 
@@ -456,7 +457,7 @@ namespace MBVIP
     };
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbWebDragData
+    public struct mbWebDragData
     {
         [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr itemList;
@@ -467,7 +468,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbSlist
+    public struct mbSlist
     {
         public IntPtr data;
         [MarshalAs(UnmanagedType.LPStruct)]
@@ -475,7 +476,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbWebsocketHookCallbacks
+    public struct mbWebsocketHookCallbacks
     {
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public onWillConnect WillConnect;
@@ -490,7 +491,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbUrlRequestCallbacks
+    public struct mbUrlRequestCallbacks
     {
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public mbOnUrlRequestWillRedirectCallback willRedirectCallback;
@@ -505,7 +506,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbNetJobDataBind
+    public struct mbNetJobDataBind
     {
         public IntPtr param;
         [MarshalAs(UnmanagedType.FunctionPtr)]
@@ -515,7 +516,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbDownloadBind
+    public struct mbDownloadBind
     {
         public IntPtr param;
         [MarshalAs(UnmanagedType.FunctionPtr)]
@@ -527,7 +528,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbPdfDatas
+    public struct mbPdfDatas
     {
         public int count;
         public IntPtr sizes;
@@ -535,7 +536,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbScreenshotSettings
+    public struct mbScreenshotSettings
     {
         public int structSize;
         public int width;
@@ -543,7 +544,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbPostBodyElement
+    public struct mbPostBodyElement
     {
         public int size;
         public mbHttBodyElementType type;
@@ -556,7 +557,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbPostBodyElements
+    public struct mbPostBodyElements
     {
         public int size;
         [MarshalAs(UnmanagedType.LPStruct)]
@@ -567,14 +568,14 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbDraggableRegion
+    public struct mbDraggableRegion
     {
         public RECT bounds;
         public int draggable;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct mbPrintintSettings
+    public struct mbPrintintSettings
     {
         public int dpi;
         public int width;
@@ -588,193 +589,190 @@ namespace MBVIP
     #region 委托（函数指针）
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate IntPtr OnWindowProcEventHandler(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+    public delegate IntPtr OnWindowProcEventHandler(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate IntPtr WndProcCallback(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    public delegate IntPtr WndProcCallback(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbPaintUpdatedCallback(IntPtr webView, IntPtr param, IntPtr hdc, int x, int y, int cx, int cy);
+    public delegate void mbPaintUpdatedCallback(IntPtr webView, IntPtr param, IntPtr hdc, int x, int y, int cx, int cy);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbPaintBitUpdatedCallback(IntPtr webView, IntPtr param, IntPtr buffer, IntPtr r, int width, int height);
+    public delegate void mbPaintBitUpdatedCallback(IntPtr webView, IntPtr param, IntPtr buffer, IntPtr r, int width, int height);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnBlinkThreadInitCallback(IntPtr param);
+    public delegate void mbOnBlinkThreadInitCallback(IntPtr param);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate int mbCookieVisitor(IntPtr param, string name, string value, string domain, string path, int secure, int httpOnly, IntPtr expires);
+    public delegate int mbCookieVisitor(IntPtr param, string name, string value, string domain, string path, int secure, int httpOnly, IntPtr expires);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate IntPtr onWillConnect(IntPtr webView, IntPtr param, IntPtr channel, string url, IntPtr needHook);
+    public delegate IntPtr onWillConnect(IntPtr webView, IntPtr param, IntPtr channel, string url, IntPtr needHook);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate int onConnected(IntPtr webView, IntPtr param, IntPtr channel);
+    public delegate int onConnected(IntPtr webView, IntPtr param, IntPtr channel);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate IntPtr onReceive(IntPtr webView, IntPtr param, IntPtr channel, int opCode, string buf, ulong len, IntPtr isContinue);
+    public delegate IntPtr onReceive(IntPtr webView, IntPtr param, IntPtr channel, int opCode, string buf, ulong len, IntPtr isContinue);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate IntPtr onSend(IntPtr webView, IntPtr param, IntPtr channel, int opCode, string buf, ulong len, IntPtr isContinue);
+    public delegate IntPtr onSend(IntPtr webView, IntPtr param, IntPtr channel, int opCode, string buf, ulong len, IntPtr isContinue);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void onError(IntPtr webView, IntPtr param, IntPtr channel);
+    public delegate void onError(IntPtr webView, IntPtr param, IntPtr channel);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnGetPdfPageDataCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
+    public delegate void mbOnGetPdfPageDataCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbRunJsCallback(IntPtr webView, IntPtr param, IntPtr es, long v);
+    public delegate void mbRunJsCallback(IntPtr webView, IntPtr param, IntPtr es, long v);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbJsQueryCallback(IntPtr webView, IntPtr param, IntPtr es, long queryId, int customMsg, string request);
+    public delegate void mbJsQueryCallback(IntPtr webView, IntPtr param, IntPtr es, long queryId, int customMsg, string request);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbTitleChangedCallback(IntPtr webView, IntPtr param, IntPtr title);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+    public delegate void mbTitleChangedCallback(IntPtr webView, IntPtr param, IntPtr title);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbMouseOverUrlChangedCallback(IntPtr webView, IntPtr param, string url);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbURLChangedCallback(IntPtr webView, IntPtr param, string url, int canGoBack, int canGoForward);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbURLChangedCallback2(IntPtr webView, IntPtr param, IntPtr frameId, string url);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbAlertBoxCallback(IntPtr webView, IntPtr param, string msg);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate int mbConfirmBoxCallback(IntPtr webView, IntPtr param, string msg);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate IntPtr mbPromptBoxCallback(IntPtr webView, IntPtr param, string msg, string defaultResult);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate int mbNavigationCallback(IntPtr webView, IntPtr param, mbNavigationType navigationType, string url);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate IntPtr mbCreateViewCallback(IntPtr webView, IntPtr param, mbNavigationType navigationType, string url, IntPtr windowFeatures);
+    public delegate void mbMouseOverUrlChangedCallback(IntPtr webView, IntPtr param, IntPtr url);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbDocumentReadyCallback(IntPtr webView, IntPtr param, IntPtr frameId);
+    public delegate void mbUrlChangedCallback(IntPtr webView, IntPtr param, IntPtr url, int canGoBack, int canGoForward);
+    
+    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    public delegate void mbUrlChangedCallback2(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url);
+    
+    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    public delegate void mbAlertBoxCallback(IntPtr webView, IntPtr param, IntPtr msg);
+    
+    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    public delegate int mbConfirmBoxCallback(IntPtr webView, IntPtr param, IntPtr msg);
+    
+    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    public delegate IntPtr mbPromptBoxCallback(IntPtr webView, IntPtr param, IntPtr msg, IntPtr defaultResult);
+    
+    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    public delegate int mbNavigationCallback(IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url);
+    
+    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    public delegate IntPtr mbCreateViewCallback(IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url, IntPtr windowFeatures);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate int mbCloseCallback(IntPtr webView, IntPtr param, IntPtr unuse);
+    public delegate void mbDocumentReadyCallback(IntPtr webView, IntPtr param, IntPtr frameId);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate int mbDestroyCallback(IntPtr webView, IntPtr param, IntPtr unuse);
+    public delegate int mbCloseCallback(IntPtr webView, IntPtr param, IntPtr unuse);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnShowDevtoolsCallback(IntPtr webView, IntPtr param);
+    public delegate int mbDestroyCallback(IntPtr webView, IntPtr param, IntPtr unuse);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbDidCreateScriptContextCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int extensionGroup, int worldId);
+    public delegate void mbOnShowDevtoolsCallback(IntPtr webView, IntPtr param);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate int mbGetPluginListCallback(int refresh, IntPtr pluginListBuilder, IntPtr param);
+    public delegate void mbDidCreateScriptContextCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int extensionGroup, int worldId);
+    
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate int mbGetPluginListCallback(int refresh, IntPtr pluginListBuilder, IntPtr param);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbLoadingFinishCallback(IntPtr webView, IntPtr param, IntPtr frameId, string url, mbLoadingResult result, string failedReason);
+    public delegate void mbLoadingFinishCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, mbLoadingResult result, IntPtr failedReason);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate int mbDownloadCallback(IntPtr webView, IntPtr param, IntPtr frameId, string url, IntPtr downloadJob);
+    public delegate int mbDownloadCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, IntPtr downloadJob);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbConsoleCallback(IntPtr webView, IntPtr param, mbConsoleLevel level, string message, string sourceName, uint sourceLine, string stackTrace);
+    public delegate void mbConsoleCallback(IntPtr webView, IntPtr param, mbConsoleLevel level, string message, string sourceName, uint sourceLine, string stackTrace);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnCallUiThread(IntPtr webView, IntPtr paramOnInThread);
+    public delegate void mbOnCallUiThread(IntPtr webView, IntPtr paramOnInThread);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbCallUiThread(IntPtr webView, mbOnCallUiThread func, IntPtr param);
+    public delegate void mbCallUiThread(IntPtr webView, mbOnCallUiThread func, IntPtr param);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate int mbLoadUrlBeginCallback(IntPtr webView, IntPtr param, string url, IntPtr job);
+    public delegate int mbLoadUrlBeginCallback(IntPtr webView, IntPtr param, IntPtr url, IntPtr job);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbLoadUrlEndCallback(IntPtr webView, IntPtr param, string url, IntPtr job, IntPtr buf, int len);
+    public delegate void mbLoadUrlEndCallback(IntPtr webView, IntPtr param, IntPtr url, IntPtr job, IntPtr buf, int len);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbWillReleaseScriptContextCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int worldId);
+    public delegate void mbWillReleaseScriptContextCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int worldId);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate int mbNetResponseCallback(IntPtr webView, IntPtr param, string url, IntPtr job);
+    public delegate int mbNetResponseCallback(IntPtr webView, IntPtr param, string url, IntPtr job);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbNetGetFaviconCallback(IntPtr webView, IntPtr param, string url, IntPtr buf);
+    public delegate void mbNetGetFaviconCallback(IntPtr webView, IntPtr param, string url, IntPtr buf);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbCanGoBackForwardCallback(IntPtr webView, IntPtr param, MbAsynRequestState state, int b);
+    public delegate void mbCanGoBackForwardCallback(IntPtr webView, IntPtr param, MbAsynRequestState state, int b);
         
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)] 
-    internal delegate void mbGetCookieCallback(IntPtr webView, IntPtr param, MbAsynRequestState state, string cookie);
+    public delegate void mbGetCookieCallback(IntPtr webView, IntPtr param, MbAsynRequestState state, string cookie);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbGetSourceCallback(IntPtr webView, IntPtr param, string mhtml);
+    public delegate void mbGetSourceCallback(IntPtr webView, IntPtr param, string mhtml);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbGetContentAsMarkupCallback(IntPtr webView, IntPtr param, string content, ulong size);
+    public delegate void mbGetContentAsMarkupCallback(IntPtr webView, IntPtr param, string content, ulong size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnUrlRequestWillRedirectCallback(IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse);
+    public delegate void mbOnUrlRequestWillRedirectCallback(IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnUrlRequestDidReceiveResponseCallback(IntPtr webView, IntPtr param, IntPtr request, IntPtr response);
+    public delegate void mbOnUrlRequestDidReceiveResponseCallback(IntPtr webView, IntPtr param, IntPtr request, IntPtr response);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbOnUrlRequestDidReceiveDataCallback(IntPtr webView, IntPtr param, IntPtr request, string data, int dataLength);
+    public delegate void mbOnUrlRequestDidReceiveDataCallback(IntPtr webView, IntPtr param, IntPtr request, string data, int dataLength);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbOnUrlRequestDidFailCallback(IntPtr webView, IntPtr param, IntPtr request, string error);
+    public delegate void mbOnUrlRequestDidFailCallback(IntPtr webView, IntPtr param, IntPtr request, string error);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnUrlRequestDidFinishLoadingCallback(IntPtr webView, IntPtr param, IntPtr request, double finishTime);
+    public delegate void mbOnUrlRequestDidFinishLoadingCallback(IntPtr webView, IntPtr param, IntPtr request, double finishTime);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbNetJobDataRecvCallback(IntPtr ptr, IntPtr job, string data, int length);
+    public delegate void mbNetJobDataRecvCallback(IntPtr ptr, IntPtr job, string data, int length);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbNetJobDataFinishCallback(IntPtr ptr, IntPtr job, mbLoadingResult result);
+    public delegate void mbNetJobDataFinishCallback(IntPtr ptr, IntPtr job, mbLoadingResult result);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-    internal delegate void mbPopupDialogSaveNameCallback(IntPtr ptr, string filePath);
+    public delegate void mbPopupDialogSaveNameCallback(IntPtr ptr, string filePath);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate mbDownloadOpt mbDownloadInBlinkThreadCallback(IntPtr webView, IntPtr param, ulong expectedContentLength, string url, string mime, string disposition, IntPtr job, IntPtr dataBind);
+    public delegate mbDownloadOpt mbDownloadInBlinkThreadCallback(IntPtr webView, IntPtr param, ulong expectedContentLength, string url, string mime, string disposition, IntPtr job, IntPtr dataBind);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbPrintPdfDataCallback(IntPtr webview, IntPtr param, IntPtr datas);
+    public delegate void mbPrintPdfDataCallback(IntPtr webview, IntPtr param, IntPtr datas);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbPrintBitmapCallback(IntPtr webview, IntPtr param, string data, ulong size);
+    public delegate void mbPrintBitmapCallback(IntPtr webview, IntPtr param, string data, ulong size);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate void mbOnScreenshot(IntPtr webView, IntPtr param, string data, ulong size);
+    public delegate void mbOnScreenshot(IntPtr webView, IntPtr param, string data, ulong size);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate int mbWindowClosingCallback(IntPtr webview, IntPtr param);
+    public delegate int mbWindowClosingCallback(IntPtr webview, IntPtr param);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbWindowDestroyCallback(IntPtr webview, IntPtr param);
+    public delegate void mbWindowDestroyCallback(IntPtr webview, IntPtr param);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbDraggableRegionsChangedCallback(IntPtr webview, IntPtr param, IntPtr rects, int rectCount);
+    public delegate void mbDraggableRegionsChangedCallback(IntPtr webview, IntPtr param, IntPtr rects, int rectCount);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate int mbPrintingCallback(IntPtr webview, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount);
+    public delegate int mbPrintingCallback(IntPtr webview, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    internal delegate IntPtr mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, string data, ulong size);
-    
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void FN_mbInit(IntPtr settings);
+    public delegate IntPtr mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, string data, ulong size);
 
     #endregion
 
     #region 封装mb.dll导出的C接口
 
-    internal class MBVIP_API
+    public class MBVIP_API
     {
         /// <summary>
         /// 初始化，因为VIP版本是多线程渲染，所以要传入一个mbSettings结构体
@@ -891,7 +889,7 @@ namespace MBVIP
         public static extern long mbGetStringLen(IntPtr str); 
 
         /// <summary>
-        /// 
+        /// 视参数不同获取相关的字符串，标题，url等
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -1511,7 +1509,7 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbOnURLChanged", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbOnURLChanged(IntPtr webView, mbURLChangedCallback callback, IntPtr param);
+        public static extern void mbOnURLChanged(IntPtr webView, mbUrlChangedCallback callback, IntPtr param);
 
         /// <summary>
         /// 

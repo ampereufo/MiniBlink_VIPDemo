@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace MBVIP
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct RECT
+    public struct RECT
     {
         public int Left;
         public int Top;
@@ -23,7 +23,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct SIZE
+    public struct SIZE
     {
         public int cx;
         public int cy;
@@ -35,7 +35,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct PAINTSTRUCT
+    public struct PAINTSTRUCT
     {
         public int hdc;
         public int fErase;
@@ -47,14 +47,14 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct POINT
+    public struct POINT
     {
         public int x;
         public int y;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct COMPOSITIONFORM
+    public struct COMPOSITIONFORM
     {
         public int dwStyle;
         public POINT ptCurrentPos;
@@ -62,7 +62,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct BITMAP
+    public struct BITMAP
     {
         public int bmType;
         public int bmWidth;
@@ -74,7 +74,7 @@ namespace MBVIP
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 4)]
-    internal struct BLENDFUNCTION
+    public struct BLENDFUNCTION
     {
         [FieldOffset(0)]
         public byte BlendOp;
@@ -86,7 +86,7 @@ namespace MBVIP
         public byte AlphaFormat;
     }
 
-    internal enum WinConst : int
+    public enum WinConst : int
     {
         GWL_EXSTYLE = -20,
         GWL_WNDPROC = -4,
@@ -136,7 +136,7 @@ namespace MBVIP
     }
 
 
-    internal class MBVIP_Common
+    public class MBVIP_Common
     {
         [DllImport("user32.dll", EntryPoint = "GetWindowLongW")]
         public static extern int GetWindowLong(IntPtr hwnd, int nIndex);
@@ -235,7 +235,7 @@ namespace MBVIP
         public static extern int InvalidateRect(IntPtr hwnd, ref RECT lpRect, bool bErase);
 
         [DllImport("kernel32.dll", EntryPoint = "lstrlenA")]
-        private static extern int lstrlen(IntPtr lpString);
+        public static extern int lstrlen(IntPtr lpString);
 
 
 

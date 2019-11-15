@@ -19,10 +19,24 @@ namespace MBVIP
         private mbPaintUpdatedCallback m_mbPaintUpdatedCallback;
         private WndProcCallback m_mbWndProcCallback;
         private mbTitleChangedCallback m_mbTitleChangedCallback;
+        private mbUrlChangedCallback m_mbUrlChangedCallback;
+        private mbDocumentReadyCallback m_mbDocumentReadyCallback;
+        private mbLoadingFinishCallback m_mbLoadingFinishCallback;
+        private mbDownloadCallback m_mbDownloadCallback;
+        private mbCreateViewCallback m_mbCreateViewCallback;
+        private mbLoadUrlBeginCallback m_mbLoadUrlBeginCallback;
+        private mbLoadUrlEndCallback m_mbLoadUrlEndCallback;
 
 
-        public event EventHandler<WindowProcEventArgs> m_OnWindowProc;
-        private EventHandler<TitleChangeEventArgs> m_titleChangeHandler = null;
+        private event EventHandler<WindowProcEventArgs> m_OnWindowProc;
+        private event EventHandler<TitleChangeEventArgs> m_TitleChangeHandler = null;
+        private event EventHandler<UrlChangeEventArgs> m_UrlChangeHandler = null;
+        private event EventHandler<DocumentReadyEventArgs> m_DocumentReadyHandler = null;
+        private event EventHandler<LoadingFinishEventArgs> m_LoadingFinishHandler = null;
+        private event EventHandler<DownloadEventArgs> m_DownloadHandler = null;
+        private event EventHandler<CreateViewEventArgs> m_CreateViewHandler = null;
+        private event EventHandler<LoadUrlBeginEventArgs> m_LoadUrlBeginHandler = null;
+        private event EventHandler<LoadUrlEndEventArgs> m_LoadUrlEndHandler = null;
 
 
         #region --------------------------- 各种事件参数 ---------------------------
@@ -44,7 +58,6 @@ namespace MBVIP
                 get { return m_webView; }
             }
         }
-
 
         /// <summary>
         /// 窗口过程事件参数
@@ -102,9 +115,8 @@ namespace MBVIP
             }
         }
 
-
         /// <summary>
-        /// 标题修改事件参数
+        /// OnTitleChange事件参数
         /// </summary>
         public class TitleChangeEventArgs : MiniblinkEventArgs
         {
@@ -117,20 +129,258 @@ namespace MBVIP
 
             public string Title
             {
-                get 
+                get { return Marshal.PtrToStringUni(m_title); }
+            }
+        }
+
+        /// <summary>
+        /// OnUrlChange事件参数
+        /// </summary>
+        public class UrlChangeEventArgs : MiniblinkEventArgs
+        {
+            private IntPtr m_url;
+
+            public UrlChangeEventArgs(IntPtr webView, IntPtr url) : base(webView)
+            {
+                m_url = url;
+            }
+
+            public string URL
+            {
+                get { return Marshal.PtrToStringUni(m_url); }
+            }
+        }
+
+        /// <summary>
+        /// OnDocumentReady事件参数
+        /// </summary>
+        public class DocumentReadyEventArgs : MiniblinkEventArgs
+        {
+            public DocumentReadyEventArgs(IntPtr webView, IntPtr frame) : base(webView)
+            {
+                Frame = frame;
+            }
+
+            public IntPtr Frame { get; }
+        }
+
+        /// <summary>
+        /// OnLoadingFinish事件参数
+        /// </summary>
+        public class LoadingFinishEventArgs : MiniblinkEventArgs
+        {
+            private IntPtr m_url;
+            private IntPtr m_failedReason;
+
+            public LoadingFinishEventArgs(IntPtr webView, IntPtr url, IntPtr frameId, mbLoadingResult result, IntPtr failedReason) : base(webView)
+            {
+                m_url = url;
+                LoadingResult = result;
+                m_failedReason = failedReason;
+                FrameId = frameId;
+            }
+
+            public mbLoadingResult LoadingResult { get; }
+            public IntPtr FrameId { get; }
+
+            public string URL
+            {
+                get
                 {
                     string strRet = null;
 
-                    if (m_title != IntPtr.Zero)
+                    if (m_url != IntPtr.Zero)
                     {
-                        IntPtr pTitle = MBVIP_API.mbGetString(m_title);
-                        if (pTitle != IntPtr.Zero)
-                        {
-                            strRet = Marshal.PtrToStringUni(pTitle);
-                        }
+                        strRet = Marshal.PtrToStringUni(MBVIP_API.mbGetString(m_url));
                     }
 
                     return strRet;
+                }
+            }
+
+            public string FailedReason
+            {
+                get
+                {
+                    string strRet = null;
+
+                    if (m_failedReason != IntPtr.Zero)
+                    {
+                        strRet = Marshal.PtrToStringUni(MBVIP_API.mbGetString(m_failedReason));
+                    }
+
+                    return strRet;
+                }
+            }
+        }
+
+        /// <summary>
+        /// OnDownload事件参数
+        /// </summary>
+        public class DownloadEventArgs : MiniblinkEventArgs
+        {
+            private IntPtr m_url;
+
+            public DownloadEventArgs(IntPtr webView, IntPtr url) : base(webView)
+            {
+                m_url = url;
+            }
+
+            /// <summary>
+            /// 设置是否取消，true表示取消
+            /// </summary>
+            public bool Cancel { get; set; }
+
+            public string URL
+            {
+                get
+                {
+                    string strRet = null;
+
+                    if (m_url != IntPtr.Zero)
+                    {
+                        strRet = MBVIP_Common.PtrToStringUTF8(m_url);
+                    }
+
+                    return strRet;
+                }
+            }
+        }
+
+        /// <summary>
+        /// OnCreateView事件参数
+        /// </summary>
+        public class CreateViewEventArgs : MiniblinkEventArgs
+        {
+            private IntPtr m_url;
+            private IntPtr m_windowFeatures;
+
+            public CreateViewEventArgs(IntPtr webView, mbNavigationType navigationType, IntPtr url, IntPtr windowFeatures) : base(webView)
+            {
+                NavigationType = navigationType;
+                m_url = url;
+                m_windowFeatures = windowFeatures;
+                SetNewWebViewHandle = webView;
+            }
+
+            public mbNavigationType NavigationType { get; }
+
+            public IntPtr SetNewWebViewHandle { get; set; }
+
+            public string URL
+            {
+                get
+                {
+                    string strRet = null;
+
+                    if (m_url != IntPtr.Zero)
+                    {
+                        strRet = Marshal.PtrToStringUni(MBVIP_API.mbGetString(m_url));
+                    }
+
+                    return strRet;
+                }
+            }
+
+            public mbWindowFeatures WindowFeatures
+            {
+                get
+                {
+                    if (m_windowFeatures != IntPtr.Zero)
+                    {
+                        return (mbWindowFeatures)Marshal.PtrToStructure(m_windowFeatures, typeof(mbWindowFeatures));
+                    }
+                    else
+                    {
+                        return new mbWindowFeatures();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// OnLoadUrlBegin事件参数
+        /// </summary>
+        public class LoadUrlBeginEventArgs : MiniblinkEventArgs
+        {
+            private IntPtr m_url;
+
+            public LoadUrlBeginEventArgs(IntPtr webView, IntPtr url, IntPtr job) : base(webView)
+            {
+                m_url = url;
+                Job = job;
+            }
+
+            public IntPtr Job { get; }
+
+            /// <summary>
+            /// 是否取消载入，true 表示取消
+            /// </summary>
+            public bool Cancel { get; set; }
+
+            public string URL
+            {
+                get
+                {
+                    string strRet = null;
+
+                    if (m_url != IntPtr.Zero)
+                    {
+                        strRet = MBVIP_Common.PtrToStringUTF8(m_url);
+                    }
+
+                    return strRet;
+                }
+            }
+        }
+
+        /// <summary>
+        /// OnLoadUrlEnd事件参数
+        /// </summary>
+        public class LoadUrlEndEventArgs : MiniblinkEventArgs
+        {
+            private IntPtr m_url;
+            private IntPtr m_buf;
+            private int m_len;
+
+            public LoadUrlEndEventArgs(IntPtr webView, IntPtr url, IntPtr job, IntPtr buf, int len) : base(webView)
+            {
+                m_url = url;
+                Job = job;
+                m_buf = buf;
+                m_len = len;
+            }
+
+            public IntPtr Job { get; }
+
+            public string URL
+            {
+                get
+                {
+                    string strRet = null;
+
+                    if (m_url != IntPtr.Zero)
+                    {
+                        strRet = MBVIP_Common.PtrToStringUTF8(m_url);
+                    }
+
+                    return strRet;
+                }
+            }
+
+            public byte[] Data
+            {
+                get
+                {
+                    byte[] data = null;
+
+                    if (m_buf != IntPtr.Zero)
+                    {
+                        data = new byte[m_len];
+                        Marshal.Copy(m_buf, data, 0, m_len);
+                    }
+
+                    return data;
                 }
             }
         }
@@ -149,7 +399,7 @@ namespace MBVIP
         /// <param name="y"></param>
         /// <param name="cx"></param>
         /// <param name="cy"></param>
-        protected void mbOnPaintUpdated(IntPtr webView, IntPtr hWnd, IntPtr hdc, int x, int y, int cx, int cy)
+        private void mbOnPaintUpdated(IntPtr webView, IntPtr hWnd, IntPtr hdc, int x, int y, int cx, int cy)
         {
             if ((int)WinConst.WS_EX_LAYERED == ((int)WinConst.WS_EX_LAYERED & MBVIP_Common.GetWindowLong(m_hWnd, (int)WinConst.GWL_EXSTYLE)))
             {
@@ -208,7 +458,7 @@ namespace MBVIP
         /// <param name="wParam"></param>
         /// <param name="lParam"></param>
         /// <returns></returns>
-        protected IntPtr OnWndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        private IntPtr OnWndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             int iRet = 0;
             if (m_OnWindowProc != null)
@@ -531,34 +781,176 @@ namespace MBVIP
             return MBVIP_Common.CallWindowProc(m_OldProc, hWnd, msg, wParam, lParam);
         }
 
-        protected void mbOnTitleChange(IntPtr WebView, IntPtr param, IntPtr title)
-        {
-            m_titleChangeHandler?.Invoke(this, new TitleChangeEventArgs(WebView, title));
-        }
-
         #endregion
 
-        #region --------------------------- 自定义事件封装 ---------------------------
+        #region --------------------------- 自定义事件 ---------------------------
 
         public event EventHandler<TitleChangeEventArgs> OnTitleChange
         {
             add
             {
-                if (m_titleChangeHandler == null)
+                if (m_TitleChangeHandler == null)
                 {
                     MBVIP_API.mbOnTitleChanged(m_WebView, m_mbTitleChangedCallback, IntPtr.Zero);
                 }
 
-                m_titleChangeHandler += value;
+                m_TitleChangeHandler += value;
             }
 
             remove
             {
-                m_titleChangeHandler -= value;
+                m_TitleChangeHandler -= value;
 
-                if (m_titleChangeHandler == null)
+                if (m_TitleChangeHandler == null)
                 {
                     MBVIP_API.mbOnTitleChanged(m_WebView, null, IntPtr.Zero);
+                }
+            }
+        }
+
+        public event EventHandler<UrlChangeEventArgs> OnUrlChange
+        {
+            add
+            {
+                if (m_UrlChangeHandler == null)
+                {
+                    MBVIP_API.mbOnURLChanged(m_WebView, m_mbUrlChangedCallback, IntPtr.Zero);
+                }
+                m_UrlChangeHandler += value;
+            }
+
+            remove
+            {
+                m_UrlChangeHandler -= value;
+                if (m_UrlChangeHandler == null)
+                {
+                    MBVIP_API.mbOnURLChanged(m_WebView, null, IntPtr.Zero);
+                }
+            }
+        }
+
+        public event EventHandler<DocumentReadyEventArgs> OnDocumentReady
+        {
+            add
+            {
+                if (m_DocumentReadyHandler == null)
+                {
+                    MBVIP_API.mbOnDocumentReady(m_WebView, m_mbDocumentReadyCallback, IntPtr.Zero);
+                }
+                m_DocumentReadyHandler += value;
+            }
+
+            remove
+            {
+                m_DocumentReadyHandler -= value;
+                if (m_DocumentReadyHandler == null)
+                {
+                    MBVIP_API.mbOnDocumentReady(m_WebView, null, IntPtr.Zero);
+                }
+            }
+        }
+
+        public event EventHandler<LoadingFinishEventArgs> OnLoadingFinish
+        {
+            add
+            {
+                if (m_LoadingFinishHandler == null)
+                {
+                    MBVIP_API.mbOnLoadingFinish(m_WebView, m_mbLoadingFinishCallback, IntPtr.Zero);
+                }
+                m_LoadingFinishHandler += value;
+            }
+
+            remove
+            {
+                m_LoadingFinishHandler -= value;
+                if (m_LoadingFinishHandler == null)
+                {
+                    MBVIP_API.mbOnLoadingFinish(m_WebView, null, IntPtr.Zero);
+                }
+            }
+        }
+
+        public event EventHandler<DownloadEventArgs> OnDownload
+        {
+            add
+            {
+                if (m_DownloadHandler == null)
+                {
+                    MBVIP_API.mbOnDownload(m_WebView, m_mbDownloadCallback, IntPtr.Zero);
+                }
+                m_DownloadHandler += value;
+            }
+
+            remove
+            {
+                m_DownloadHandler -= value;
+                if (m_DownloadHandler == null)
+                {
+                    MBVIP_API.mbOnDownload(m_WebView, null, IntPtr.Zero);
+                }
+            }
+        }
+
+        public event EventHandler<CreateViewEventArgs> OnCreateView
+        {
+            add
+            {
+                if (m_CreateViewHandler == null)
+                {
+                    MBVIP_API.mbOnCreateView(m_WebView, m_mbCreateViewCallback, IntPtr.Zero);
+                }
+                m_CreateViewHandler += value;
+            }
+
+            remove
+            {
+                m_CreateViewHandler -= value;
+                if (m_CreateViewHandler == null)
+                {
+                    MBVIP_API.mbOnCreateView(m_WebView, null, IntPtr.Zero);
+                }
+            }
+        }
+
+        public event EventHandler<LoadUrlBeginEventArgs> OnLoadUrlBegin
+        {
+            add
+            {
+                if (m_LoadUrlBeginHandler == null)
+                {
+                    MBVIP_API.mbOnLoadUrlBegin(m_WebView, m_mbLoadUrlBeginCallback, IntPtr.Zero);
+                }
+                m_LoadUrlBeginHandler += value;
+            }
+
+            remove
+            {
+                m_LoadUrlBeginHandler -= value;
+                if (m_LoadUrlBeginHandler == null)
+                {
+                    MBVIP_API.mbOnLoadUrlBegin(m_WebView, null, IntPtr.Zero);
+                }
+            }
+        }
+
+        public event EventHandler<LoadUrlEndEventArgs> OnLoadUrlEnd
+        {
+            add
+            {
+                if (m_LoadUrlEndHandler == null)
+                {
+                    MBVIP_API.mbOnLoadUrlEnd(m_WebView, m_mbLoadUrlEndCallback, IntPtr.Zero);
+                }
+                m_LoadUrlEndHandler += value;
+            }
+
+            remove
+            {
+                m_LoadUrlEndHandler -= value;
+                if (m_LoadUrlEndHandler == null)
+                {
+                    MBVIP_API.mbOnLoadUrlEnd(m_WebView, null, IntPtr.Zero);
                 }
             }
         }
@@ -572,7 +964,76 @@ namespace MBVIP
         {
             m_mbPaintUpdatedCallback = new mbPaintUpdatedCallback(mbOnPaintUpdated);
             m_mbWndProcCallback = new WndProcCallback(OnWndProc);
-            m_mbTitleChangedCallback = new mbTitleChangedCallback(mbOnTitleChange);
+            m_mbTitleChangedCallback = new mbTitleChangedCallback((IntPtr WebView, IntPtr param, IntPtr title) =>
+            {
+                m_TitleChangeHandler?.Invoke(this, new TitleChangeEventArgs(WebView, title));
+            });
+
+            m_mbUrlChangedCallback = new mbUrlChangedCallback((IntPtr webView, IntPtr param, IntPtr url, int canGoBack, int canGoForward) =>
+            {
+                m_UrlChangeHandler?.Invoke(this, new UrlChangeEventArgs(webView, url));
+            });
+
+            m_mbDocumentReadyCallback = new mbDocumentReadyCallback((IntPtr webView, IntPtr param, IntPtr frame) =>
+            {
+                m_DocumentReadyHandler?.Invoke(this, new DocumentReadyEventArgs(webView, frame));
+            });
+
+            m_mbLoadingFinishCallback = new mbLoadingFinishCallback((IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, mbLoadingResult result, IntPtr failedReason) =>
+            {
+                m_LoadingFinishHandler?.Invoke(this, new LoadingFinishEventArgs(webView, frameId, url, result, failedReason));
+            });
+
+            m_mbDownloadCallback = new mbDownloadCallback((IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, IntPtr downloadJob) =>
+            {
+                int iRet = 1;
+                if (m_DownloadHandler != null)
+                {
+                    DownloadEventArgs e = new DownloadEventArgs(webView, url);
+                    m_DownloadHandler(this, e);
+
+                    iRet = (byte)(e.Cancel ? 0 : 1);
+                }
+
+                return iRet;
+            });
+
+            m_mbCreateViewCallback = new mbCreateViewCallback((IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url, IntPtr windowFeatures) =>
+            {
+                IntPtr ptrRet = IntPtr.Zero;
+                if (m_CreateViewHandler != null)
+                {
+                    CreateViewEventArgs e = new CreateViewEventArgs(webView, navigationType, url, windowFeatures);
+                    m_CreateViewHandler(this, e);
+
+                    ptrRet = e.SetNewWebViewHandle;
+                }
+
+                return ptrRet;
+            });
+
+            m_mbLoadUrlBeginCallback = new mbLoadUrlBeginCallback((IntPtr webView, IntPtr param, IntPtr url, IntPtr job) =>
+            {
+                int iRet = 0;
+                if (m_LoadUrlBeginHandler != null)
+                {
+                    LoadUrlBeginEventArgs e = new LoadUrlBeginEventArgs(webView, url, job);
+                    m_LoadUrlBeginHandler(this, e);
+
+                    iRet = (byte)(e.Cancel ? 1 : 0);
+                }
+
+                return iRet;
+            });
+
+            m_mbLoadUrlEndCallback = new mbLoadUrlEndCallback((IntPtr webView, IntPtr param, IntPtr url, IntPtr job, IntPtr buf, int len) =>
+            {
+                if (m_LoadUrlEndHandler != null)
+                {
+                    LoadUrlEndEventArgs e = new LoadUrlEndEventArgs(webView, url, job, buf, len);
+                    m_LoadUrlEndHandler(this, e);
+                }
+            });
         }
 
         #region --------------------------- 各种方法封装 ---------------------------
