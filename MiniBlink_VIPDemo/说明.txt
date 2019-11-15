@@ -1,0 +1,11 @@
+﻿编译运行步骤：
+
+1、首先编译MiniBlink_VIPDLL，把生成的dll导入到MiniBlink_VIPDemo的引用中，建议引用时直接引用生成dll的原始目录，调试时会自动跳转到dll源码，方便
+
+2、编译MiniBlink_VIPDemo，在生成exe的同目录下放上node.dll和mb.dll
+
+3、运行即可，如果没成功，换个姿势重试下
+
+4、合作联系QQ：17136608，违法黑产勿扰，我还年轻！
+
+5、开源项目，遵守Apache License 2.0协议，使用者需要在项目发布文件中显式申明出处 http://miniblink.net/ 和 https://github.com/ampereufo/MiniBlink_VIPDemo
