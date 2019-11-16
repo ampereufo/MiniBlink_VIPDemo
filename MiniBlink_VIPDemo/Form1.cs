@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MBVIP;
+using System.Runtime.InteropServices;
 
 namespace MiniBlink_VIPDemo
 {
@@ -30,12 +31,12 @@ namespace MiniBlink_VIPDemo
 
         void webView_OnTitleChange(object sender, MBVIP_WebView.TitleChangeEventArgs e)
         {
-            //Text = e.Title;
+            Text = Common.UTF8PtrtoString(e.Title);
         }
 
         void webView_OnUrlChange(object sender, MBVIP_WebView.UrlChangeEventArgs e)
         {
-            Text = e.URL;
+            //Text = e.URL;
         }
     }
 }

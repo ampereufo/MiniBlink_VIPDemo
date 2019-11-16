@@ -603,19 +603,19 @@ namespace MBVIP
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbOnBlinkThreadInitCallback(IntPtr param);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbCookieVisitor(IntPtr param, string name, string value, string domain, string path, int secure, int httpOnly, IntPtr expires);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate IntPtr onWillConnect(IntPtr webView, IntPtr param, IntPtr channel, string url, IntPtr needHook);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int onConnected(IntPtr webView, IntPtr param, IntPtr channel);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate IntPtr onReceive(IntPtr webView, IntPtr param, IntPtr channel, int opCode, string buf, ulong len, IntPtr isContinue);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate IntPtr onSend(IntPtr webView, IntPtr param, IntPtr channel, int opCode, string buf, ulong len, IntPtr isContinue);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -627,34 +627,34 @@ namespace MBVIP
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbRunJsCallback(IntPtr webView, IntPtr param, IntPtr es, long v);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbJsQueryCallback(IntPtr webView, IntPtr param, IntPtr es, long queryId, int customMsg, string request);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbTitleChangedCallback(IntPtr webView, IntPtr param, IntPtr title);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    public delegate void mbMouseOverUrlChangedCallback(IntPtr webView, IntPtr param, IntPtr url);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void mbMouseOverUrlChangedCallback(IntPtr webView, IntPtr param, string url);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate void mbUrlChangedCallback(IntPtr webView, IntPtr param, IntPtr url, int canGoBack, int canGoForward);
+    public delegate void mbUrlChangedCallback(IntPtr webView, IntPtr param, string url, int canGoBack, int canGoForward);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-    public delegate void mbUrlChangedCallback2(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void mbUrlChangedCallback2(IntPtr webView, IntPtr param, IntPtr frameId, string url);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbAlertBoxCallback(IntPtr webView, IntPtr param, IntPtr msg);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbConfirmBoxCallback(IntPtr webView, IntPtr param, IntPtr msg);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate IntPtr mbPromptBoxCallback(IntPtr webView, IntPtr param, IntPtr msg, IntPtr defaultResult);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbNavigationCallback(IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate IntPtr mbCreateViewCallback(IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url, IntPtr windowFeatures);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -675,13 +675,13 @@ namespace MBVIP
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbGetPluginListCallback(int refresh, IntPtr pluginListBuilder, IntPtr param);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbLoadingFinishCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, mbLoadingResult result, IntPtr failedReason);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbDownloadCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, IntPtr downloadJob);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbConsoleCallback(IntPtr webView, IntPtr param, mbConsoleLevel level, string message, string sourceName, uint sourceLine, string stackTrace);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -690,31 +690,31 @@ namespace MBVIP
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbCallUiThread(IntPtr webView, mbOnCallUiThread func, IntPtr param);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbLoadUrlBeginCallback(IntPtr webView, IntPtr param, IntPtr url, IntPtr job);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbLoadUrlEndCallback(IntPtr webView, IntPtr param, IntPtr url, IntPtr job, IntPtr buf, int len);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbWillReleaseScriptContextCallback(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int worldId);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbNetResponseCallback(IntPtr webView, IntPtr param, string url, IntPtr job);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbNetGetFaviconCallback(IntPtr webView, IntPtr param, string url, IntPtr buf);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbCanGoBackForwardCallback(IntPtr webView, IntPtr param, MbAsynRequestState state, int b);
         
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)] 
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)] 
     public delegate void mbGetCookieCallback(IntPtr webView, IntPtr param, MbAsynRequestState state, string cookie);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbGetSourceCallback(IntPtr webView, IntPtr param, string mhtml);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbGetContentAsMarkupCallback(IntPtr webView, IntPtr param, string content, ulong size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -723,34 +723,34 @@ namespace MBVIP
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbOnUrlRequestDidReceiveResponseCallback(IntPtr webView, IntPtr param, IntPtr request, IntPtr response);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbOnUrlRequestDidReceiveDataCallback(IntPtr webView, IntPtr param, IntPtr request, string data, int dataLength);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbOnUrlRequestDidFailCallback(IntPtr webView, IntPtr param, IntPtr request, string error);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbOnUrlRequestDidFinishLoadingCallback(IntPtr webView, IntPtr param, IntPtr request, double finishTime);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbNetJobDataRecvCallback(IntPtr ptr, IntPtr job, string data, int length);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbNetJobDataFinishCallback(IntPtr ptr, IntPtr job, mbLoadingResult result);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbPopupDialogSaveNameCallback(IntPtr ptr, string filePath);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate mbDownloadOpt mbDownloadInBlinkThreadCallback(IntPtr webView, IntPtr param, ulong expectedContentLength, string url, string mime, string disposition, IntPtr job, IntPtr dataBind);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbPrintPdfDataCallback(IntPtr webview, IntPtr param, IntPtr datas);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbPrintBitmapCallback(IntPtr webview, IntPtr param, string data, ulong size);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void mbOnScreenshot(IntPtr webView, IntPtr param, string data, ulong size);
     
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -765,7 +765,7 @@ namespace MBVIP
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate int mbPrintingCallback(IntPtr webview, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount);
     
-    [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate IntPtr mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, string data, ulong size);
 
     #endregion
@@ -784,21 +784,21 @@ namespace MBVIP
         /// 设置mb.dll路径，默认是exe的同目录，不修改的话不用调用此接口
         /// </summary>
         /// <param name="dllMbPath"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetMbDllPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbSetMbDllPath", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetMbDllPath(string dllMbPath);
 
         /// <summary>
         /// 设置node.dll路径，默认是exe的同目录，不修改的话不用调用此接口
         /// </summary>
         /// <param name="dllNodePath"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetMbMainDllPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbSetMbMainDllPath", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetMbMainDllPath(string dllNodePath);
 
         /// <summary>
         /// 设置key路径，默认是exe的同目录，不修改的话不用调用此接口（盟主没有，我先替他写上）
         /// </summary>
         /// <param name="keyPath"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetKeyPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbSetKeyPath", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetKeyPath(string keyPath);
 
         /// <summary>
@@ -861,7 +861,7 @@ namespace MBVIP
         /// <param name="str"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbCreateString", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbCreateString", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbCreateString(string str, long length);
         
         /// <summary>
@@ -870,7 +870,7 @@ namespace MBVIP
         /// <param name="str"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbCreateStringWithoutNullTermination", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbCreateStringWithoutNullTermination", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbCreateStringWithoutNullTermination(string str, long length);
 
         /// <summary>
@@ -893,7 +893,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbGetString", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbGetString", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbGetString(IntPtr str);
 
         /// <summary>
@@ -910,7 +910,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="debugString"></param>
         /// <param name="param"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetDebugConfig", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbSetDebugConfig", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetDebugConfig(IntPtr webView, string debugString, string param);
 
         /// <summary>
@@ -919,7 +919,7 @@ namespace MBVIP
         /// <param name="jobPtr"></param>
         /// <param name="buf"></param>
         /// <param name="len"></param>
-        [DllImport("mb.dll", EntryPoint = "IntPtr", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "IntPtr", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbNetSetData(IntPtr jobPtr, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, int len);
 
         /// <summary>
@@ -934,7 +934,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="jobPtr"></param>
         /// <param name="url"></param>
-        [DllImport("mb.dll", EntryPoint = "mbNetChangeRequestUrl", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbNetChangeRequestUrl", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbNetChangeRequestUrl(IntPtr jobPtr, string url);
 
         /// <summary>
@@ -1029,7 +1029,7 @@ namespace MBVIP
         /// <param name="method"></param>
         /// <param name="mime"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbNetCreateWebUrlRequest", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbNetCreateWebUrlRequest", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbNetCreateWebUrlRequest(string url, string method, string mime);
 
         /// <summary>
@@ -1038,7 +1038,7 @@ namespace MBVIP
         /// <param name="request"></param>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        [DllImport("mb.dll", EntryPoint = "mbNetAddHTTPHeaderFieldToUrlRequest", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbNetAddHTTPHeaderFieldToUrlRequest", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbNetAddHTTPHeaderFieldToUrlRequest(IntPtr request, string name, string value);
 
         /// <summary>
@@ -1081,7 +1081,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbNetGetResponseUrl", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbNetGetResponseUrl", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbNetGetResponseUrl(IntPtr response);
 
         /// <summary>
@@ -1096,7 +1096,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="jobPtr"></param>
         /// <param name="type"></param>
-        [DllImport("mb.dll", EntryPoint = "mbNetSetMIMEType", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbNetSetMIMEType", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbNetSetMIMEType(IntPtr jobPtr, string type);
 
         /// <summary>
@@ -1104,7 +1104,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="jobPtr"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbNetGetMIMEType", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbNetGetMIMEType", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbNetGetMIMEType(IntPtr jobPtr);
 
         /// <summary>
@@ -1114,7 +1114,7 @@ namespace MBVIP
         /// <param name="key"></param>
         /// <param name="fromRequestOrResponse"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbNetGetHTTPHeaderField", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbNetGetHTTPHeaderField", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbNetGetHTTPHeaderField(IntPtr job, string key, int fromRequestOrResponse);
 
         /// <summary>
@@ -1124,7 +1124,7 @@ namespace MBVIP
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="response"></param>
-        [DllImport("mb.dll", EntryPoint = "mbNetSetHTTPHeaderField", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbNetSetHTTPHeaderField", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbNetSetHTTPHeaderField(IntPtr jobPtr, string key, string value, int response);
 
         /// <summary>
@@ -1247,7 +1247,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="url"></param>
         /// <param name="cookie"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetCookie", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbSetCookie", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetCookie(IntPtr webView, string url, string cookie);
 
         /// <summary>
@@ -1263,7 +1263,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="path"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetCookieJarPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbSetCookieJarPath", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetCookieJarPath(IntPtr webView, string path);
 
         /// <summary>
@@ -1271,7 +1271,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="path"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetCookieJarFullPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbSetCookieJarFullPath", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetCookieJarFullPath(IntPtr webView, string path);
 
         /// <summary>
@@ -1279,7 +1279,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="path"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetLocalStorageFullPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbSetLocalStorageFullPath", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetLocalStorageFullPath(IntPtr webView, string path);
 
         /// <summary>
@@ -1287,7 +1287,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbGetTitle", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbGetTitle", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbGetTitle(IntPtr webView);
 
         /// <summary>
@@ -1295,7 +1295,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbGetUrl", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbGetUrl", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbGetUrl(IntPtr webView);
 
         /// <summary>
@@ -1303,7 +1303,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="path"></param>
-        [DllImport("mb.dll", EntryPoint = "mbAddPluginDirectory", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbAddPluginDirectory", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbAddPluginDirectory(IntPtr webView, string path);
 
         /// <summary>
@@ -1311,7 +1311,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="userAgent"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetUserAgent", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbSetUserAgent", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetUserAgent(IntPtr webView, string userAgent);
 
         /// <summary>
@@ -1343,7 +1343,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="path"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetDiskCachePath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbSetDiskCachePath", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetDiskCachePath(IntPtr webView, string path);
 
         /// <summary>
@@ -1410,7 +1410,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbGetCookieOnBlinkThread", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbGetCookieOnBlinkThread", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbGetCookieOnBlinkThread(IntPtr webView);
 
         /// <summary>
@@ -1826,7 +1826,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="url"></param>
-        [DllImport("mb.dll", EntryPoint = "mbLoadURL", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbLoadURL", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbLoadURL(IntPtr webView, string url);
 
         /// <summary>
@@ -1835,7 +1835,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="html"></param>
         /// <param name="baseUrl"></param>
-        [DllImport("mb.dll", EntryPoint = "mbLoadHtmlWithBaseUrl", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbLoadHtmlWithBaseUrl", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbLoadHtmlWithBaseUrl(IntPtr webView, string html, string baseUrl);
 
         /// <summary>
@@ -1884,7 +1884,7 @@ namespace MBVIP
         /// <param name="es"></param>
         /// <param name="v"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbJsToString", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbJsToString", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbJsToString(IntPtr es, ulong v);
 
         /// <summary>
@@ -1903,7 +1903,7 @@ namespace MBVIP
         /// <param name="queryId"></param>
         /// <param name="customMsg"></param>
         /// <param name="response"></param>
-        [DllImport("mb.dll", EntryPoint = "mbResponseQuery", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbResponseQuery", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbResponseQuery(IntPtr webView, long queryId, int customMsg, string response);
 
         /// <summary>
@@ -1916,7 +1916,7 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         /// <param name="unuse"></param>
-        [DllImport("mb.dll", EntryPoint = "mbRunJs", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbRunJs", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbRunJs(IntPtr webView, IntPtr frameId, string script, int isInClosure, mbRunJsCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param, [MarshalAs(UnmanagedType.LPArray)]byte[] unuse);
 
         /// <summary>
@@ -1927,7 +1927,7 @@ namespace MBVIP
         /// <param name="script"></param>
         /// <param name="isInClosure"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbRunJsSync", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbRunJsSync", CallingConvention = CallingConvention.StdCall)]
         public static extern long mbRunJsSync(IntPtr webView, IntPtr frameId, string script, int isInClosure);
 
         /// <summary>
@@ -1963,7 +1963,7 @@ namespace MBVIP
         /// <param name="paramStr"></param>
         /// <param name="paramInt"></param>
         /// <param name="paramFloat"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetDeviceParameter", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbSetDeviceParameter", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbSetDeviceParameter(IntPtr webView, string device, string paramStr, int paramInt, float paramFloat);
 
         /// <summary>
@@ -1999,7 +1999,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="registerInfo"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilCreateRequestCode", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbUtilCreateRequestCode", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbUtilCreateRequestCode(string registerInfo);
 
         /// <summary>
@@ -2007,7 +2007,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="defaultPath"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilIsRegistered", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        [DllImport("mb.dll", EntryPoint = "mbUtilIsRegistered", CallingConvention = CallingConvention.StdCall)]
         public static extern int mbUtilIsRegistered(string defaultPath);
 
         /// <summary>
@@ -2025,7 +2025,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilBase64Encode", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbUtilBase64Encode", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbUtilBase64Encode(string str);
 
         /// <summary>
@@ -2033,7 +2033,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilBase64Decode", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbUtilBase64Decode", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbUtilBase64Decode(string str);
 
         /// <summary>
@@ -2041,7 +2041,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilDecodeURLEscape", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbUtilDecodeURLEscape", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbUtilDecodeURLEscape(string url);
 
         /// <summary>
@@ -2049,7 +2049,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilEncodeURLEscape", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbUtilEncodeURLEscape", CallingConvention = CallingConvention.StdCall)]
         public static extern string mbUtilEncodeURLEscape(string url);
 
         /// <summary>
@@ -2057,7 +2057,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilCreateV8Snapshot", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbUtilCreateV8Snapshot", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbUtilCreateV8Snapshot(string str);
 
         /// <summary>
@@ -2099,7 +2099,7 @@ namespace MBVIP
         /// <param name="url"></param>
         /// <param name="downloadJob"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbPopupDownloadMgr", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbPopupDownloadMgr", CallingConvention = CallingConvention.StdCall)]
         public static extern int mbPopupDownloadMgr(IntPtr webView, string url, [MarshalAs(UnmanagedType.LPArray)]byte[] downloadJob);
 
         /// <summary>
@@ -2115,7 +2115,7 @@ namespace MBVIP
         /// <param name="dataBind"></param>
         /// <param name="callbackBind"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbPopupDialogAndDownload", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbPopupDialogAndDownload", CallingConvention = CallingConvention.StdCall)]
         public static extern mbDownloadOpt mbPopupDialogAndDownload(IntPtr webView, [MarshalAs(UnmanagedType.LPArray)]byte[] param, long contentLength, string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
@@ -2132,7 +2132,7 @@ namespace MBVIP
         /// <param name="dataBind"></param>
         /// <param name="callbackBind"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbDownloadByPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbDownloadByPath", CallingConvention = CallingConvention.StdCall)]
         public static extern mbDownloadOpt mbDownloadByPath(IntPtr webView, [MarshalAs(UnmanagedType.LPArray)]byte[] param, [MarshalAs(UnmanagedType.LPWStr)]string path, long contentLength, string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
@@ -2168,7 +2168,7 @@ namespace MBVIP
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="fileName"></param>
-        [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddPlugin", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddPlugin", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbPluginListBuilderAddPlugin(string builder, string name, string description, string fileName);
 
         /// <summary>
@@ -2177,7 +2177,7 @@ namespace MBVIP
         /// <param name="builder"></param>
         /// <param name="name"></param>
         /// <param name="description"></param>
-        [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddMediaTypeToLastPlugin", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddMediaTypeToLastPlugin", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbPluginListBuilderAddMediaTypeToLastPlugin(string builder, string name, string description);
 
         /// <summary>
@@ -2185,7 +2185,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="fileExtension"></param>
-        [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddFileExtensionToLastMediaType", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddFileExtensionToLastMediaType", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbPluginListBuilderAddFileExtensionToLastMediaType(string builder, string fileExtension);
 
         /// <summary>

@@ -120,16 +120,11 @@ namespace MBVIP
         /// </summary>
         public class TitleChangeEventArgs : MiniblinkEventArgs
         {
-            private IntPtr m_title;
+            public IntPtr Title { get; }
 
             public TitleChangeEventArgs(IntPtr webView, IntPtr title) : base(webView)
             {
-                m_title = title;
-            }
-
-            public string Title
-            {
-                get { return Marshal.PtrToStringUni(m_title); }
+                Title = title;
             }
         }
 
@@ -138,16 +133,11 @@ namespace MBVIP
         /// </summary>
         public class UrlChangeEventArgs : MiniblinkEventArgs
         {
-            private IntPtr m_url;
+            public string URL { get; }
 
-            public UrlChangeEventArgs(IntPtr webView, IntPtr url) : base(webView)
+            public UrlChangeEventArgs(IntPtr webView, string url) : base(webView)
             {
-                m_url = url;
-            }
-
-            public string URL
-            {
-                get { return Marshal.PtrToStringUni(m_url); }
+                URL = url;
             }
         }
 
@@ -191,7 +181,7 @@ namespace MBVIP
 
                     if (m_url != IntPtr.Zero)
                     {
-                        strRet = Marshal.PtrToStringUni(MBVIP_API.mbGetString(m_url));
+                        strRet = Marshal.PtrToStringUni(m_url);
                     }
 
                     return strRet;
@@ -969,7 +959,7 @@ namespace MBVIP
                 m_TitleChangeHandler?.Invoke(this, new TitleChangeEventArgs(WebView, title));
             });
 
-            m_mbUrlChangedCallback = new mbUrlChangedCallback((IntPtr webView, IntPtr param, IntPtr url, int canGoBack, int canGoForward) =>
+            m_mbUrlChangedCallback = new mbUrlChangedCallback((IntPtr webView, IntPtr param, string url, int canGoBack, int canGoForward) =>
             {
                 m_UrlChangeHandler?.Invoke(this, new UrlChangeEventArgs(webView, url));
             });
