@@ -822,7 +822,7 @@ namespace MBVIP
         public static extern void mbDestroyWebView(IntPtr webview);
 
         /// <summary>
-        /// 
+        /// 新建一个web窗口，只是在内存结构上新建，如果要显示到屏幕上，还需要配合窗口绘制函数或直接绑定到一个可见的控件上
         /// </summary>
         /// <param name="type"></param>
         /// <param name="parent"></param>
@@ -886,10 +886,11 @@ namespace MBVIP
         /// <param name="str"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbGetStringLen", CallingConvention = CallingConvention.StdCall)]
-        public static extern long mbGetStringLen(IntPtr str); 
+        public static extern long mbGetStringLen(IntPtr str);
 
         /// <summary>
-        /// 视参数不同获取相关的字符串，标题，url等
+        /// 设计初衷是用来转码，该接口会继续调用node.dll的wkeGetStringW接口，但是由于vip版是跨线程调用，
+        /// 会导致调用失败，所以该接口在vip版中基本是没用的，转码请自行解决
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -897,7 +898,7 @@ namespace MBVIP
         public static extern IntPtr mbGetString(IntPtr str);
 
         /// <summary>
-        /// 
+        /// 设置页面代理
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="proxy"></param>
@@ -914,16 +915,20 @@ namespace MBVIP
         public static extern void mbSetDebugConfig(IntPtr webView, string debugString, string param);
 
         /// <summary>
-        /// 
+        /// 网络层收到数据会存储在一buf内，接收数据完成后响应OnLoadUrlEnd事件，此调用严重影响性能，慎用。
+        /// 此函数和mbNetHookRequest的区别是，mbNetHookRequest会在接受到真正网络数据后再调用回调，并允许回调修改网络数据，
+        /// 而mbNetSetData是在网络数据还没发送的时候修改
         /// </summary>
         /// <param name="jobPtr"></param>
         /// <param name="buf"></param>
         /// <param name="len"></param>
-        [DllImport("mb.dll", EntryPoint = "IntPtr", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("mb.dll", EntryPoint = "mbNetSetData", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbNetSetData(IntPtr jobPtr, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, int len);
 
         /// <summary>
-        /// 
+        /// RT，对网络请求下钩子。此接口需在mbLoadUrlBeginCallback里设置。如果设置了此钩子，则会缓存获取到的网络数据，
+        /// 并在这次网络请求结束后调用mbOnLoadUrlEnd设置的回调，同时传递缓存的数据。在此期间，mb不会处理网络数据。
+        /// 如果在mbLoadUrlBeginCallback里没设置mbNetHookRequest，则不会触发mbOnLoadUrlEnd回调。
         /// </summary>
         /// <param name="jobPtr"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetHookRequest", CallingConvention = CallingConvention.StdCall)]
@@ -938,7 +943,7 @@ namespace MBVIP
         public static extern void mbNetChangeRequestUrl(IntPtr jobPtr, string url);
 
         /// <summary>
-        /// 
+        /// 继续执行后续的操作，通常配合其他异步操作的接口一起使用
         /// </summary>
         /// <param name="jobPtr"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetContinueJob", CallingConvention = CallingConvention.StdCall)]
@@ -1449,7 +1454,7 @@ namespace MBVIP
         public static extern void mbOnNavigationSync(IntPtr webView, mbNavigationCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 点击超链接创建新窗口时将触发此回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1458,7 +1463,7 @@ namespace MBVIP
         public static extern void mbOnCreateView(IntPtr webView, mbCreateViewCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 网页文档加载完成时会触发此回调，相比mbOnLoadingFinish，优先推荐此接口
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1467,7 +1472,7 @@ namespace MBVIP
         public static extern void mbOnDocumentReady(IntPtr webView, mbDocumentReadyCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 页面有任何部分需要重新绘制时（移动、缩放、窗口重叠部分被移开等），将触发此回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1476,7 +1481,8 @@ namespace MBVIP
         public static extern void mbOnPaintUpdated(IntPtr webView, mbPaintUpdatedCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 任何网络请求发起前，会触发此回调，如果mbLoadUrlBeginCallback回调里返回true，表示取消该请求。
+        /// 注意：与普通版不同，VIP版的此接口是在非UI线程执行，请自行处理需要同步的线程数据。
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1485,7 +1491,7 @@ namespace MBVIP
         public static extern void mbOnLoadUrlBegin(IntPtr webView, mbLoadUrlBeginCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 网络请求结束时，如果在mbLoadUrlBeginCallback里设置mbNetHookRequest，则会触发此回调。
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1494,7 +1500,7 @@ namespace MBVIP
         public static extern void mbOnLoadUrlEnd(IntPtr webView, mbLoadUrlEndCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 网页标题改变时会触发此回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1503,7 +1509,7 @@ namespace MBVIP
         public static extern void mbOnTitleChanged(IntPtr webView, mbTitleChangedCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 网页URL改变时会触发此回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1512,7 +1518,7 @@ namespace MBVIP
         public static extern void mbOnURLChanged(IntPtr webView, mbUrlChangedCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 网页加载完成时会触发此回调，如果URL的主域名（如百度搜索后跳转搜索结果页面时）未改变的，则不会触发
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
