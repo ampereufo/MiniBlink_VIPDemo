@@ -249,7 +249,7 @@ namespace MBVIP
             return (int)dword >> 16;
         }
 
-        public static string PtrToStringUTF8(IntPtr utf8)
+        public static string UTF8PtrToStr(IntPtr utf8)
         {
             if (utf8 == IntPtr.Zero)
             {
@@ -261,6 +261,21 @@ namespace MBVIP
             Marshal.Copy(utf8, bytes, 0, iLen);
 
             return Encoding.UTF8.GetString(bytes);
+        }
+
+        public static IntPtr Utf8StrToPtr(string str)
+        {
+            IntPtr ptr = IntPtr.Zero;
+
+            if (!string.IsNullOrEmpty(str))
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(str);
+                ptr = Marshal.AllocHGlobal(bytes.Length + 1);
+                Marshal.Copy(bytes, 0, ptr, bytes.Length);
+                Marshal.WriteByte(ptr, bytes.Length, 0);
+            }
+
+            return ptr;
         }
     }
 }

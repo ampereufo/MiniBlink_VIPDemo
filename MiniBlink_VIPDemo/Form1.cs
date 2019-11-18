@@ -31,12 +31,12 @@ namespace MiniBlink_VIPDemo
 
         void webView_OnTitleChange(object sender, MBVIP_WebView.TitleChangeEventArgs e)
         {
-            Text = Common.UTF8PtrtoString(e.Title);
+            Text = MBVIP_Common.UTF8PtrToStr(e.Title);
         }
 
         void webView_OnUrlChange(object sender, MBVIP_WebView.UrlChangeEventArgs e)
         {
-            //Text = e.URL;
+            Text = MBVIP_Common.UTF8PtrToStr(e.URL);
         }
     }
 }

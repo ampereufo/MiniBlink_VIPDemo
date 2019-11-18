@@ -133,9 +133,9 @@ namespace MBVIP
         /// </summary>
         public class UrlChangeEventArgs : MiniblinkEventArgs
         {
-            public string URL { get; }
+            public IntPtr URL { get; }
 
-            public UrlChangeEventArgs(IntPtr webView, string url) : base(webView)
+            public UrlChangeEventArgs(IntPtr webView, IntPtr url) : base(webView)
             {
                 URL = url;
             }
@@ -178,7 +178,6 @@ namespace MBVIP
                 get
                 {
                     string strRet = null;
-
                     if (m_url != IntPtr.Zero)
                     {
                         strRet = Marshal.PtrToStringUni(m_url);
@@ -193,7 +192,6 @@ namespace MBVIP
                 get
                 {
                     string strRet = null;
-
                     if (m_failedReason != IntPtr.Zero)
                     {
                         strRet = Marshal.PtrToStringUni(MBVIP_API.mbGetString(m_failedReason));
@@ -226,10 +224,9 @@ namespace MBVIP
                 get
                 {
                     string strRet = null;
-
                     if (m_url != IntPtr.Zero)
                     {
-                        strRet = MBVIP_Common.PtrToStringUTF8(m_url);
+                        strRet = MBVIP_Common.UTF8PtrToStr(m_url);
                     }
 
                     return strRet;
@@ -262,7 +259,6 @@ namespace MBVIP
                 get
                 {
                     string strRet = null;
-
                     if (m_url != IntPtr.Zero)
                     {
                         strRet = Marshal.PtrToStringUni(MBVIP_API.mbGetString(m_url));
@@ -313,10 +309,9 @@ namespace MBVIP
                 get
                 {
                     string strRet = null;
-
                     if (m_url != IntPtr.Zero)
                     {
-                        strRet = MBVIP_Common.PtrToStringUTF8(m_url);
+                        strRet = MBVIP_Common.UTF8PtrToStr(m_url);
                     }
 
                     return strRet;
@@ -348,10 +343,9 @@ namespace MBVIP
                 get
                 {
                     string strRet = null;
-
                     if (m_url != IntPtr.Zero)
                     {
-                        strRet = MBVIP_Common.PtrToStringUTF8(m_url);
+                        strRet = MBVIP_Common.UTF8PtrToStr(m_url);
                     }
 
                     return strRet;
@@ -363,7 +357,6 @@ namespace MBVIP
                 get
                 {
                     byte[] data = null;
-
                     if (m_buf != IntPtr.Zero)
                     {
                         data = new byte[m_len];
@@ -950,7 +943,7 @@ namespace MBVIP
         /// <summary>
         /// RT
         /// </summary>
-        protected void SetEventCallBack()
+        protected void SetCallBack()
         {
             m_mbPaintUpdatedCallback = new mbPaintUpdatedCallback(mbOnPaintUpdated);
             m_mbWndProcCallback = new WndProcCallback(OnWndProc);
@@ -959,7 +952,7 @@ namespace MBVIP
                 m_TitleChangeHandler?.Invoke(this, new TitleChangeEventArgs(WebView, title));
             });
 
-            m_mbUrlChangedCallback = new mbUrlChangedCallback((IntPtr webView, IntPtr param, string url, int canGoBack, int canGoForward) =>
+            m_mbUrlChangedCallback = new mbUrlChangedCallback((IntPtr webView, IntPtr param, IntPtr url, int canGoBack, int canGoForward) =>
             {
                 m_UrlChangeHandler?.Invoke(this, new UrlChangeEventArgs(webView, url));
             });
@@ -1036,7 +1029,7 @@ namespace MBVIP
             m_settings.mask = mbSettingMask.MB_ENABLE_NODEJS;
             MBVIP_API.mbInit(ref m_settings);
 
-            SetEventCallBack();
+            SetCallBack();
 
             m_WebView = MBVIP_API.mbCreateWebView();
             MBVIP_API.mbSetHandle(m_WebView, m_hWnd);
