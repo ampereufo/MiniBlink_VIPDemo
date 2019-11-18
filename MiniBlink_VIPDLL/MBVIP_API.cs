@@ -1009,6 +1009,24 @@ namespace MBVIP
         public static extern void mbNetSetWebsocketCallback(IntPtr webview, ref mbWebsocketHookCallbacks callbacks, IntPtr param);
 
         /// <summary>
+        /// 发送的文本
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="buf"></param>
+        /// <param name="len"></param>
+        [DllImport("mb.dll", EntryPoint = "mbNetSendWsText", CallingConvention = CallingConvention.StdCall)]
+        public static extern void mbNetSendWsText(IntPtr channel, IntPtr buf, int len);
+
+        /// <summary>
+        /// 发送的二进制数据
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="buf"></param>
+        /// <param name="len"></param>
+        [DllImport("mb.dll", EntryPoint = "mbNetSendWsBlob", CallingConvention = CallingConvention.StdCall)]
+        public static extern void mbNetSendWsBlob(IntPtr channel, IntPtr buf, int len);
+
+        /// <summary>
         /// 获取此请求中的post数据。只有当请求是post时才有效果
         /// </summary>
         /// <param name="jobPtr"></param>
@@ -1717,13 +1735,6 @@ namespace MBVIP
         public static extern void mbEditorSelectAll(IntPtr webView);
 
         /// <summary>
-        /// 给webview发送反选命令
-        /// </summary>
-        /// <param name="webView"></param>
-        [DllImport("mb.dll", EntryPoint = "mbEditorUnSelect", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbEditorUnSelect(IntPtr webView);
-
-        /// <summary>
         /// 拷贝页面里被选中的字符串
         /// </summary>
         /// <param name="webView"></param>
@@ -1910,13 +1921,13 @@ namespace MBVIP
         public static extern double mbJsToDouble(IntPtr es, ulong v);
 
         /// <summary>
-        /// js返回值转化为int类型
+        /// js返回值转化为bool类型
         /// </summary>
         /// <param name="es"></param>
         /// <param name="v"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbJsTointean", CallingConvention = CallingConvention.StdCall)]
-        public static extern int mbJsTointean(IntPtr es, ulong v);
+        [DllImport("mb.dll", EntryPoint = "mbJsToBoolean", CallingConvention = CallingConvention.StdCall)]
+        public static extern double mbJsToBoolean(IntPtr es, ulong v);
 
         /// <summary>
         /// js返回值转化为string类型
