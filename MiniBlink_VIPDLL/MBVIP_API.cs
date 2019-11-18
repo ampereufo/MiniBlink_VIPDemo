@@ -220,7 +220,7 @@ namespace MBVIP
         kMbMenuGoBackId = 1 << 10,
         kMbMenuReloadId = 1 << 11
     }
-    
+
     /// <summary>
     /// JS值类型
     /// </summary>
@@ -277,7 +277,7 @@ namespace MBVIP
         kMbDownloadOptCancel = 0,
         kMbDownloadOptCacheData = 1
     }
-    
+
     /// <summary>
     /// 网页元素类型
     /// </summary>
@@ -795,21 +795,21 @@ namespace MBVIP
         /// </summary>
         /// <param name="dllMbPath"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetMbDllPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetMbDllPath(string dllMbPath);
+        public static extern void mbSetMbDllPath(IntPtr dllMbPath);
 
         /// <summary>
         /// 设置node.dll路径，默认是exe的同目录，不修改的话不用调用此接口
         /// </summary>
         /// <param name="dllNodePath"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetMbMainDllPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetMbMainDllPath(string dllNodePath);
+        public static extern void mbSetMbMainDllPath(IntPtr dllNodePath);
 
         /// <summary>
         /// 设置key路径，默认是exe的同目录，不修改的话不用调用此接口（盟主没有，我先替他写上）
         /// </summary>
         /// <param name="keyPath"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetKeyPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetKeyPath(string keyPath);
+        public static extern void mbSetKeyPath(IntPtr keyPath);
 
         /// <summary>
         /// 反初始化
@@ -872,7 +872,7 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateString", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr mbCreateString(string str, long length);
+        public static extern IntPtr mbCreateString(IntPtr str, long length);
         
         /// <summary>
         /// 
@@ -881,7 +881,7 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateStringWithoutNullTermination", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr mbCreateStringWithoutNullTermination(string str, long length);
+        public static extern IntPtr mbCreateStringWithoutNullTermination(IntPtr str, long length);
 
         /// <summary>
         /// 
@@ -931,7 +931,7 @@ namespace MBVIP
         /// "defaultFixedFontSize" 默认fixed字体</param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetDebugConfig", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetDebugConfig(IntPtr webView, string debugString, string param);
+        public static extern void mbSetDebugConfig(IntPtr webView, IntPtr debugString, IntPtr param);
 
         /// <summary>
         /// 设置hook后缓存的数据，网络层收到数据会存储在一buf内，接收数据完成后响应OnLoadUrlEnd事件，此调用严重影响性能，慎用。
@@ -942,7 +942,7 @@ namespace MBVIP
         /// <param name="buf"></param>
         /// <param name="len"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetSetData", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbNetSetData(IntPtr jobPtr, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, int len);
+        public static extern void mbNetSetData(IntPtr jobPtr, IntPtr buf, int len);
 
         /// <summary>
         /// RT，对网络请求下钩子。此接口需在mbLoadUrlBeginCallback里设置。如果设置了此钩子，则会缓存获取到的网络数据，
@@ -954,12 +954,12 @@ namespace MBVIP
         public static extern void mbNetHookRequest(IntPtr jobPtr);
 
         /// <summary>
-        /// 
+        /// 修改请求url
         /// </summary>
         /// <param name="jobPtr"></param>
         /// <param name="url"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetChangeRequestUrl", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbNetChangeRequestUrl(IntPtr jobPtr, string url);
+        public static extern void mbNetChangeRequestUrl(IntPtr jobPtr, IntPtr url);
 
         /// <summary>
         /// 继续执行后续的操作，通常配合其他异步操作的接口一起使用
@@ -977,7 +977,7 @@ namespace MBVIP
         public static extern IntPtr mbNetGetRawHttpHeadInBlinkThread(IntPtr jobPtr);
 
         /// <summary>
-        /// 
+        /// 获取渲染线程响应头
         /// </summary>
         /// <param name="jobPtr"></param>
         /// <returns></returns>
@@ -993,20 +993,20 @@ namespace MBVIP
         public static extern void mbNetHoldJobToAsynCommit(IntPtr jobPtr);
 
         /// <summary>
-        /// 
+        /// 取消网络请求
         /// </summary>
         /// <param name="jobPtr"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetCancelRequest", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbNetCancelRequest(IntPtr jobPtr);
 
         /// <summary>
-        /// 
+        /// socket发生时将触发回调
         /// </summary>
         /// <param name="webview"></param>
         /// <param name="callbacks"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetSetWebsocketCallback", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbNetSetWebsocketCallback(IntPtr webview, ref mbWebsocketHookCallbacks callbacks, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbNetSetWebsocketCallback(IntPtr webview, ref mbWebsocketHookCallbacks callbacks, IntPtr param);
 
         /// <summary>
         /// 获取此请求中的post数据。只有当请求是post时才有效果
@@ -1052,26 +1052,26 @@ namespace MBVIP
         public static extern void mbNetFreePostBodyElement(ref mbPostBodyElement element);
 
         /// <summary>
-        /// 
+        /// 创建网络请求
         /// </summary>
         /// <param name="url"></param>
         /// <param name="method"></param>
         /// <param name="mime"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbNetCreateWebUrlRequest", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr mbNetCreateWebUrlRequest(string url, string method, string mime);
+        public static extern IntPtr mbNetCreateWebUrlRequest(IntPtr url, IntPtr method, IntPtr mime);
 
         /// <summary>
-        /// 
+        /// 向请求中添加http头字段
         /// </summary>
         /// <param name="request"></param>
         /// <param name="name"></param>
         /// <param name="value"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetAddHTTPHeaderFieldToUrlRequest", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbNetAddHTTPHeaderFieldToUrlRequest(IntPtr request, string name, string value);
+        public static extern void mbNetAddHTTPHeaderFieldToUrlRequest(IntPtr request, IntPtr name, IntPtr value);
 
         /// <summary>
-        /// 
+        /// 请求开始将触发回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="request"></param>
@@ -1079,10 +1079,10 @@ namespace MBVIP
         /// <param name="callbacks"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbNetStartUrlRequest", CallingConvention = CallingConvention.StdCall)]
-        public static extern int mbNetStartUrlRequest(IntPtr webView, IntPtr request, [MarshalAs(UnmanagedType.LPArray)]byte[] param, ref mbUrlRequestCallbacks callbacks);
+        public static extern int mbNetStartUrlRequest(IntPtr webView, IntPtr request, IntPtr param, ref mbUrlRequestCallbacks callbacks);
 
         /// <summary>
-        /// 
+        /// 获取http响应状态码
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
@@ -1098,7 +1098,7 @@ namespace MBVIP
         public static extern mbRequestType mbNetGetRequestMethod(IntPtr jobPtr);
 
         /// <summary>
-        /// 
+        /// 获取预期内容长度
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
@@ -1106,15 +1106,15 @@ namespace MBVIP
         public static extern long mbNetGetExpectedContentLength(IntPtr response);
 
         /// <summary>
-        /// 
+        /// 获取响应地址
         /// </summary>
         /// <param name="response"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbNetGetResponseUrl", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbNetGetResponseUrl(IntPtr response);
+        public static extern IntPtr mbNetGetResponseUrl(IntPtr response);
 
         /// <summary>
-        /// 
+        /// 取消web请求
         /// </summary>
         /// <param name="requestId"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetCancelWebUrlRequest", CallingConvention = CallingConvention.StdCall)]
@@ -1134,17 +1134,17 @@ namespace MBVIP
         /// <param name="jobPtr"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbNetGetMIMEType", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbNetGetMIMEType(IntPtr jobPtr);
+        public static extern IntPtr mbNetGetMIMEType(IntPtr jobPtr);
 
         /// <summary>
-        /// 
+        /// 获取HTTP请求头字段
         /// </summary>
         /// <param name="job"></param>
         /// <param name="key"></param>
         /// <param name="fromRequestOrResponse"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbNetGetHTTPHeaderField", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbNetGetHTTPHeaderField(IntPtr job, IntPtr key, int fromRequestOrResponse);
+        public static extern IntPtr mbNetGetHTTPHeaderField(IntPtr job, IntPtr key, int fromRequestOrResponse);
 
         /// <summary>
         /// 在mbOnLoadUrlBegin回调里调用，表示设置http请求（或者file:///协议）的 http header field。response一直要被设置成0
@@ -1277,7 +1277,7 @@ namespace MBVIP
         /// <param name="url"></param>
         /// <param name="cookie"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetCookie", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetCookie(IntPtr webView, string url, string cookie);
+        public static extern void mbSetCookie(IntPtr webView, IntPtr url, IntPtr cookie);
 
         /// <summary>
         /// 开启或关闭cookie，这个接口只是影响blink，并不会设置curl。所以还是会生成curl的cookie文件
@@ -1293,7 +1293,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="path"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetCookieJarPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetCookieJarPath(IntPtr webView, string path);
+        public static extern void mbSetCookieJarPath(IntPtr webView, IntPtr path);
 
         /// <summary>
         /// 设置cookie的全路径+文件名，如果不存在则自动新建
@@ -1301,7 +1301,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="path"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetCookieJarFullPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetCookieJarFullPath(IntPtr webView, string path);
+        public static extern void mbSetCookieJarFullPath(IntPtr webView, IntPtr path);
 
         /// <summary>
         /// 设置local storage的全路径，如果不存在则自动新建
@@ -1309,7 +1309,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="path"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetLocalStorageFullPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetLocalStorageFullPath(IntPtr webView, string path);
+        public static extern void mbSetLocalStorageFullPath(IntPtr webView, IntPtr path);
 
         /// <summary>
         /// 获取页面标题
@@ -1317,7 +1317,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbGetTitle", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbGetTitle(IntPtr webView);
+        public static extern IntPtr mbGetTitle(IntPtr webView);
 
         /// <summary>
         /// 获取页面URL
@@ -1325,7 +1325,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbGetUrl", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbGetUrl(IntPtr webView);
+        public static extern IntPtr mbGetUrl(IntPtr webView);
 
         /// <summary>
         /// 添加插件目录
@@ -1333,7 +1333,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="path"></param>
         [DllImport("mb.dll", EntryPoint = "mbAddPluginDirectory", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbAddPluginDirectory(IntPtr webView, string path);
+        public static extern void mbAddPluginDirectory(IntPtr webView, IntPtr path);
 
         /// <summary>
         /// 设置UA
@@ -1341,7 +1341,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="userAgent"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetUserAgent", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetUserAgent(IntPtr webView, string userAgent);
+        public static extern void mbSetUserAgent(IntPtr webView, IntPtr userAgent);
 
         /// <summary>
         /// 设置页面缩放系数，默认是1
@@ -1368,15 +1368,15 @@ namespace MBVIP
         public static extern void mbSetDiskCacheEnabled(IntPtr webView, int enable);
 
         /// <summary>
-        /// 
+        /// 设置硬盘缓存路径
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="path"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetDiskCachePath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetDiskCachePath(IntPtr webView, string path);
+        public static extern void mbSetDiskCachePath(IntPtr webView, IntPtr path);
 
         /// <summary>
-        /// 
+        /// 设置硬盘缓存大小
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="limit"></param>
@@ -1384,7 +1384,7 @@ namespace MBVIP
         public static extern void mbSetDiskCacheLimit(IntPtr webView, long limit);
 
         /// <summary>
-        /// 
+        /// 设置硬盘缓存磁盘
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="limit"></param>
@@ -1400,7 +1400,7 @@ namespace MBVIP
         public static extern void mbSetDiskCacheLevel(IntPtr webView, int Level);
 
         /// <summary>
-        /// 
+        /// 设置资源自动清理时间间隔，默认是
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="intervalSec"></param>
@@ -1414,7 +1414,7 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbCanGoForward", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbCanGoForward(IntPtr webView, mbCanGoBackForwardCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbCanGoForward(IntPtr webView, mbCanGoBackForwardCallback callback, IntPtr param);
 
         /// <summary>
         /// 判断能否后退
@@ -1423,7 +1423,7 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbCanGoBack", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbCanGoBack(IntPtr webView, mbCanGoBackForwardCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbCanGoBack(IntPtr webView, mbCanGoBackForwardCallback callback, IntPtr param);
 
         /// <summary>
         /// 获取Cookie
@@ -1432,7 +1432,7 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbGetCookie", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbGetCookie(IntPtr webView, mbGetCookieCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbGetCookie(IntPtr webView, mbGetCookieCallback callback, IntPtr param);
 
         /// <summary>
         /// 获取渲染线程Cookie
@@ -1440,7 +1440,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbGetCookieOnBlinkThread", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbGetCookieOnBlinkThread(IntPtr webView);
+        public static extern IntPtr mbGetCookieOnBlinkThread(IntPtr webView);
 
         /// <summary>
         /// 清理cookie。目前只支持清理所有页面的cookie。
@@ -1469,7 +1469,7 @@ namespace MBVIP
         public static extern void mbOnNavigation(IntPtr webView, mbNavigationCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 网页异步加载时将触发回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
@@ -1867,7 +1867,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="url"></param>
         [DllImport("mb.dll", EntryPoint = "mbLoadURL", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbLoadURL(IntPtr webView, string url);
+        public static extern void mbLoadURL(IntPtr webView, IntPtr url);
 
         /// <summary>
         /// 加载一段html，但可以指定baseURL，也就是相对于那个目录的url
@@ -1876,10 +1876,10 @@ namespace MBVIP
         /// <param name="html"></param>
         /// <param name="baseUrl"></param>
         [DllImport("mb.dll", EntryPoint = "mbLoadHtmlWithBaseUrl", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbLoadHtmlWithBaseUrl(IntPtr webView, string html, string baseUrl);
+        public static extern void mbLoadHtmlWithBaseUrl(IntPtr webView, IntPtr html, IntPtr baseUrl);
 
         /// <summary>
-        /// 
+        /// 锁定窗口DC
         /// </summary>
         /// <param name="webView"></param>
         /// <returns></returns>
@@ -1887,21 +1887,21 @@ namespace MBVIP
         public static extern IntPtr mbGetLockedViewDC(IntPtr webView);
 
         /// <summary>
-        /// 
+        /// 解锁窗口DC
         /// </summary>
         /// <param name="webView"></param>
         [DllImport("mb.dll", EntryPoint = "mbUnlockViewDC", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbUnlockViewDC(IntPtr webView);
 
         /// <summary>
-        /// 
+        /// 强制唤醒MB
         /// </summary>
         /// <param name="webView"></param>
         [DllImport("mb.dll", EntryPoint = "mbWake", CallingConvention = CallingConvention.StdCall)]
         public static extern void mbWake(IntPtr webView);
 
         /// <summary>
-        /// 
+        /// js返回值转化为double类型
         /// </summary>
         /// <param name="es"></param>
         /// <param name="v"></param>
@@ -1910,7 +1910,7 @@ namespace MBVIP
         public static extern double mbJsToDouble(IntPtr es, ulong v);
 
         /// <summary>
-        /// 
+        /// js返回值转化为int类型
         /// </summary>
         /// <param name="es"></param>
         /// <param name="v"></param>
@@ -1919,13 +1919,13 @@ namespace MBVIP
         public static extern int mbJsTointean(IntPtr es, ulong v);
 
         /// <summary>
-        /// 
+        /// js返回值转化为string类型
         /// </summary>
         /// <param name="es"></param>
         /// <param name="v"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbJsToString", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbJsToString(IntPtr es, ulong v);
+        public static extern IntPtr mbJsToString(IntPtr es, ulong v);
 
         /// <summary>
         /// 注册js通知native的回调。
@@ -1934,17 +1934,17 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbOnJsQuery", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbOnJsQuery(IntPtr webView, mbJsQueryCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbOnJsQuery(IntPtr webView, mbJsQueryCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 网络响应查询
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="queryId"></param>
         /// <param name="customMsg"></param>
         /// <param name="response"></param>
         [DllImport("mb.dll", EntryPoint = "mbResponseQuery", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbResponseQuery(IntPtr webView, long queryId, int customMsg, string response);
+        public static extern void mbResponseQuery(IntPtr webView, long queryId, int customMsg, IntPtr response);
 
         /// <summary>
         /// 运行一段js。返回js的值mbValue在callback中获取。mbValue是个封装了内部v8各种类型的类
@@ -1957,10 +1957,10 @@ namespace MBVIP
         /// <param name="param"></param>
         /// <param name="unuse"></param>
         [DllImport("mb.dll", EntryPoint = "mbRunJs", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbRunJs(IntPtr webView, IntPtr frameId, string script, int isInClosure, mbRunJsCallback callback, IntPtr param, IntPtr unuse);
+        public static extern void mbRunJs(IntPtr webView, IntPtr frameId, IntPtr script, int isInClosure, mbRunJsCallback callback, IntPtr param, IntPtr unuse);
 
         /// <summary>
-        /// 
+        /// 异步运行js
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="frameId"></param>
@@ -1968,7 +1968,7 @@ namespace MBVIP
         /// <param name="isInClosure"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbRunJsSync", CallingConvention = CallingConvention.StdCall)]
-        public static extern long mbRunJsSync(IntPtr webView, IntPtr frameId, string script, int isInClosure);
+        public static extern long mbRunJsSync(IntPtr webView, IntPtr frameId, IntPtr script, int isInClosure);
 
         /// <summary>
         /// 获取主frame的句柄
@@ -1988,7 +1988,7 @@ namespace MBVIP
         public static extern int mbIsMainFrame(IntPtr webView, IntPtr frameId);
 
         /// <summary>
-        /// 
+        /// 是否允许nodejs
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="b"></param>
@@ -1996,15 +1996,25 @@ namespace MBVIP
         public static extern void mbSetNodeJsEnable(IntPtr webView, int b);
 
         /// <summary>
-        /// 
+        /// 设置硬件参数，可以用于模拟手机环境等
         /// </summary>
         /// <param name="webView"></param>
-        /// <param name="device"></param>
+        /// <param name="device">设备的字符串。可取值有：
+        /// "navigator.maxTouchPoints"此时 paramInt 需要被设置，表示 touch 的点数。
+        /// "navigator.platform"此时 paramStr 需要被设置，表示js里获取的 navigator.platform字符串。
+        /// "navigator.hardwareConcurrency"此时 paramInt 需要被设置，表示js里获取的 navigator.hardwareConcurrency 整数值。
+        /// "screen.width"此时 paramInt 需要被设置，表示js里获取的 screen.width 整数值。
+        /// "screen.height"此时 paramInt 需要被设置，表示js里获取的 screen.height 整数值。
+        /// "screen.availWidth"此时 paramInt 需要被设置，表示js里获取的 screen.availWidth 整数值。
+        /// "screen.availHeight"此时 paramInt 需要被设置，表示js里获取的 screen.availHeight 整数值。
+        /// "screen.pixelDepth"此时 paramInt 需要被设置，表示js里获取的 screen.pixelDepth 整数值。
+        /// "screen.pixelDepth"目前等价于"screen.pixelDepth"。
+        /// "window.devicePixelRatio"同上</param>
         /// <param name="paramStr"></param>
         /// <param name="paramInt"></param>
         /// <param name="paramFloat"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetDeviceParameter", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetDeviceParameter(IntPtr webView, string device, string paramStr, int paramInt, float paramFloat);
+        public static extern void mbSetDeviceParameter(IntPtr webView, IntPtr device, IntPtr paramStr, int paramInt, float paramFloat);
 
         /// <summary>
         /// 
@@ -2014,44 +2024,44 @@ namespace MBVIP
         /// <param name="param"></param>
         /// <param name="frameId"></param>
         [DllImport("mb.dll", EntryPoint = "mbGetContentAsMarkup", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbGetContentAsMarkup(IntPtr webView, mbGetContentAsMarkupCallback calback, [MarshalAs(UnmanagedType.LPArray)]byte[] param, IntPtr frameId);
+        public static extern void mbGetContentAsMarkup(IntPtr webView, mbGetContentAsMarkupCallback calback, IntPtr param, IntPtr frameId);
 
         /// <summary>
-        /// 
+        /// 获取网页源码，可以在回调函数中干点你想干的事
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="calback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbGetSource", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbGetSource(IntPtr webView, mbGetSourceCallback calback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbGetSource(IntPtr webView, mbGetSourceCallback calback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 序列号HTML时触发回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="calback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbUtilSerializeToMHTML", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbUtilSerializeToMHTML(IntPtr webView, mbGetSourceCallback calback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbUtilSerializeToMHTML(IntPtr webView, mbGetSourceCallback calback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 创建请求码
         /// </summary>
         /// <param name="registerInfo"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbUtilCreateRequestCode", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbUtilCreateRequestCode(string registerInfo);
+        public static extern IntPtr mbUtilCreateRequestCode(IntPtr registerInfo);
 
         /// <summary>
-        /// 
+        /// 是否注册
         /// </summary>
         /// <param name="defaultPath"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbUtilIsRegistered", CallingConvention = CallingConvention.StdCall)]
-        public static extern int mbUtilIsRegistered(string defaultPath);
+        public static extern int mbUtilIsRegistered(IntPtr defaultPath);
 
         /// <summary>
-        /// 
+        /// 打印
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="frameId"></param>
@@ -2061,47 +2071,47 @@ namespace MBVIP
         public static extern int mbUtilPrint(IntPtr webView, IntPtr frameId, ref mbPrintSettings printParams);
 
         /// <summary>
-        /// 
+        /// Base64编码
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbUtilBase64Encode", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbUtilBase64Encode(string str);
+        public static extern IntPtr mbUtilBase64Encode(IntPtr str);
 
         /// <summary>
-        /// 
+        /// Base64解码
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbUtilBase64Decode", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbUtilBase64Decode(string str);
+        public static extern IntPtr mbUtilBase64Decode(IntPtr str);
 
         /// <summary>
-        /// 
+        /// url编码转回
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbUtilDecodeURLEscape", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbUtilDecodeURLEscape(string url);
+        public static extern IntPtr mbUtilDecodeURLEscape(IntPtr url);
 
         /// <summary>
-        /// 
+        /// url编码转义
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbUtilEncodeURLEscape", CallingConvention = CallingConvention.StdCall)]
-        public static extern string mbUtilEncodeURLEscape(string url);
+        public static extern IntPtr mbUtilEncodeURLEscape(IntPtr url);
 
         /// <summary>
-        /// 
+        /// 创建V8引擎执行后的内存快照
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbUtilCreateV8Snapshot", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr mbUtilCreateV8Snapshot(string str);
+        public static extern IntPtr mbUtilCreateV8Snapshot(IntPtr str);
 
         /// <summary>
-        /// 
+        /// 打印PDF文件时触发回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="frameId"></param>
@@ -2109,10 +2119,10 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbUtilPrintToPdf", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbUtilPrintToPdf(IntPtr webView, IntPtr frameId, ref mbPrintSettings settings, mbPrintPdfDataCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbUtilPrintToPdf(IntPtr webView, IntPtr frameId, ref mbPrintSettings settings, mbPrintPdfDataCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 打印位图时触发回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="frameId"></param>
@@ -2120,30 +2130,30 @@ namespace MBVIP
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbUtilPrintToBitmap", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbUtilPrintToBitmap(IntPtr webView, IntPtr frameId, ref mbScreenshotSettings settings, mbPrintBitmapCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbUtilPrintToBitmap(IntPtr webView, IntPtr frameId, ref mbScreenshotSettings settings, mbPrintBitmapCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 截图时触发回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="settings"></param>
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbUtilScreenshot", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbUtilScreenshot(IntPtr webView, ref mbScreenshotSettings settings, mbOnScreenshotCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbUtilScreenshot(IntPtr webView, ref mbScreenshotSettings settings, mbOnScreenshotCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 弹出式下载
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="url"></param>
         /// <param name="downloadJob"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbPopupDownloadMgr", CallingConvention = CallingConvention.StdCall)]
-        public static extern int mbPopupDownloadMgr(IntPtr webView, string url, [MarshalAs(UnmanagedType.LPArray)]byte[] downloadJob);
+        public static extern int mbPopupDownloadMgr(IntPtr webView, IntPtr url, IntPtr downloadJob);
 
         /// <summary>
-        /// 
+        /// 弹出下载对话框的方式下载
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="param"></param>
@@ -2156,10 +2166,10 @@ namespace MBVIP
         /// <param name="callbackBind"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbPopupDialogAndDownload", CallingConvention = CallingConvention.StdCall)]
-        public static extern mbDownloadOpt mbPopupDialogAndDownload(IntPtr webView, [MarshalAs(UnmanagedType.LPArray)]byte[] param, long contentLength, string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
+        public static extern mbDownloadOpt mbPopupDialogAndDownload(IntPtr webView, IntPtr param, long contentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
-        /// 
+        /// 下载到指定目录
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="param"></param>
@@ -2173,29 +2183,29 @@ namespace MBVIP
         /// <param name="callbackBind"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbDownloadByPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern mbDownloadOpt mbDownloadByPath(IntPtr webView, [MarshalAs(UnmanagedType.LPArray)]byte[] param, [MarshalAs(UnmanagedType.LPWStr)]string path, long contentLength, string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
+        public static extern mbDownloadOpt mbDownloadByPath(IntPtr webView, IntPtr param, IntPtr path, long contentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
-        /// 
+        /// 获取pdf页面数据，可以通过回调干点你想干的事情
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
         /// <param name="param"></param>
         [DllImport("mb.dll", EntryPoint = "mbGetPdfPageData", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbGetPdfPageData(IntPtr webView, mbOnGetPdfPageDataCallback callback, [MarshalAs(UnmanagedType.LPArray)]byte[] param);
+        public static extern void mbGetPdfPageData(IntPtr webView, mbOnGetPdfPageDataCallback callback, IntPtr param);
 
         /// <summary>
-        /// 
+        /// 创建内存缓存
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="buf"></param>
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateMemBuf", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr mbCreateMemBuf(IntPtr webView, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, long length);
+        public static extern IntPtr mbCreateMemBuf(IntPtr webView, IntPtr buf, long length);
 
         /// <summary>
-        /// 
+        /// 释放内存缓存
         /// </summary>
         /// <param name="buf"></param>
         [DllImport("mb.dll", EntryPoint = "mbFreeMemBuf", CallingConvention = CallingConvention.StdCall)]
@@ -2209,7 +2219,7 @@ namespace MBVIP
         /// <param name="description"></param>
         /// <param name="fileName"></param>
         [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddPlugin", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbPluginListBuilderAddPlugin(string builder, string name, string description, string fileName);
+        public static extern void mbPluginListBuilderAddPlugin(IntPtr builder, IntPtr name, IntPtr description, IntPtr fileName);
 
         /// <summary>
         /// 
@@ -2218,7 +2228,7 @@ namespace MBVIP
         /// <param name="name"></param>
         /// <param name="description"></param>
         [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddMediaTypeToLastPlugin", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbPluginListBuilderAddMediaTypeToLastPlugin(string builder, string name, string description);
+        public static extern void mbPluginListBuilderAddMediaTypeToLastPlugin(IntPtr builder, IntPtr name, IntPtr description);
 
         /// <summary>
         /// 
@@ -2226,7 +2236,7 @@ namespace MBVIP
         /// <param name="builder"></param>
         /// <param name="fileExtension"></param>
         [DllImport("mb.dll", EntryPoint = "mbPluginListBuilderAddFileExtensionToLastMediaType", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbPluginListBuilderAddFileExtensionToLastMediaType(string builder, string fileExtension);
+        public static extern void mbPluginListBuilderAddFileExtensionToLastMediaType(IntPtr builder, IntPtr fileExtension);
 
         /// <summary>
         /// 

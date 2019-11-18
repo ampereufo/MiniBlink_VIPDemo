@@ -263,7 +263,7 @@ namespace MBVIP
             return Encoding.UTF8.GetString(bytes);
         }
 
-        public static IntPtr Utf8StrToPtr(string str)
+        public static IntPtr StrToUtf8Ptr(string str)
         {
             IntPtr ptr = IntPtr.Zero;
 

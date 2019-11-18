@@ -1105,7 +1105,7 @@ namespace MBVIP
 
         public void LoadUrl(string strUrl)
         {
-            MBVIP_API.mbLoadURL(m_WebView, strUrl);
+            MBVIP_API.mbLoadURL(m_WebView, MBVIP_Common.StrToUtf8Ptr(strUrl));
         }
 
         #endregion
