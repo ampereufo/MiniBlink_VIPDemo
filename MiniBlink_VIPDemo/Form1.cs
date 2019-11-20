@@ -23,20 +23,20 @@ namespace MiniBlink_VIPDemo
             m_webView = new MBVIP_WebView();
             m_webView.Bind(panel1.Handle);
 
-            m_webView.OnTitleChange += new EventHandler<MBVIP_WebView.TitleChangeEventArgs>(webView_OnTitleChange);
-            m_webView.OnUrlChange += new EventHandler<MBVIP_WebView.UrlChangeEventArgs>(webView_OnUrlChange);
+            m_webView.onTitleChanged += new EventHandler<MBVIP_WebView.TitleChangedEventArgs>(webView_OnTitleChange);
+            m_webView.onUrlChanged += new EventHandler<MBVIP_WebView.UrlChangedEventArgs>(webView_OnUrlChange);
 
-            m_webView.LoadUrl("www.baidu.com");
+            m_webView.LoadUrl("http://miniblink.net/");
         }
 
-        void webView_OnTitleChange(object sender, MBVIP_WebView.TitleChangeEventArgs e)
+        void webView_OnTitleChange(object sender, MBVIP_WebView.TitleChangedEventArgs e)
         {
-            Text = MBVIP_Common.UTF8PtrToStr(e.Title);
+            Text = e.Title;
         }
 
-        void webView_OnUrlChange(object sender, MBVIP_WebView.UrlChangeEventArgs e)
+        void webView_OnUrlChange(object sender, MBVIP_WebView.UrlChangedEventArgs e)
         {
-            Text = MBVIP_Common.UTF8PtrToStr(e.URL);
+            Text = e.URL;
         }
     }
 }

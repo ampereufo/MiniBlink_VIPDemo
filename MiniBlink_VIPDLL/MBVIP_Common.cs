@@ -238,7 +238,6 @@ namespace MBVIP
         public static extern int lstrlen(IntPtr lpString);
 
 
-
         public static int LOWORD(IntPtr dword)
         {
             return (int)dword & 65535;
@@ -253,7 +252,7 @@ namespace MBVIP
         {
             if (utf8 == IntPtr.Zero)
             {
-                return null;
+                return string.Empty;
             }
 
             int iLen = lstrlen(utf8);
