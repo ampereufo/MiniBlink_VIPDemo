@@ -805,13 +805,6 @@ namespace MBVIP
         public static extern void mbSetMbMainDllPath(IntPtr dllNodePath);
 
         /// <summary>
-        /// 设置key路径，默认是exe的同目录，不修改的话不用调用此接口（盟主没有，我先替他写上）
-        /// </summary>
-        /// <param name="keyPath"></param>
-        [DllImport("mb.dll", EntryPoint = "mbSetKeyPath", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbSetKeyPath(IntPtr keyPath);
-
-        /// <summary>
         /// 反初始化
         /// </summary>
         [DllImport("mb.dll", EntryPoint = "mbUninit", CallingConvention = CallingConvention.StdCall)]
@@ -841,6 +834,7 @@ namespace MBVIP
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
+        /// 不懂
         [DllImport("mb.dll", EntryPoint = "mbCreateWebWindow", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbCreateWebWindow(mbWindowType type, IntPtr parent, int x, int y, int width, int height);
 
@@ -855,6 +849,7 @@ namespace MBVIP
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
+        /// 不懂
         [DllImport("mb.dll", EntryPoint = "mbCreateWebCustomWindow", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbCreateWebCustomWindow(IntPtr parent, ulong style, ulong styleEx, int x, int y, int width, int height);
 
@@ -871,6 +866,7 @@ namespace MBVIP
         /// <param name="str"></param>
         /// <param name="length"></param>
         /// <returns></returns>
+        /// 不懂
         [DllImport("mb.dll", EntryPoint = "mbCreateString", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbCreateString(IntPtr str, long length);
         
@@ -880,6 +876,7 @@ namespace MBVIP
         /// <param name="str"></param>
         /// <param name="length"></param>
         /// <returns></returns>
+        /// 不懂
         [DllImport("mb.dll", EntryPoint = "mbCreateStringWithoutNullTermination", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr mbCreateStringWithoutNullTermination(IntPtr str, long length);
 
@@ -921,7 +918,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="debugString">
-        /// "showDevTools"	开启开发者工具，此时param要填写开发者工具的资源路径，如file:///c:/miniblink-release/front_end/inspector.html。注意param此时必须是utf8编
+        /// "showDevTools"	开启开发者工具，此时param要填写开发者工具的资源路径，如file:///c:/miniblink-release/front_end/inspector.html。注意param此时必须是utf8
         /// "wakeMinInterval" 设置帧率，默认值是10，值越大帧率越低
         /// "drawMinInterval" 设置帧率，默认值是3，值越大帧率越低
         /// "antiAlias" 设置抗锯齿渲染。param必须设置为"1"
@@ -941,8 +938,8 @@ namespace MBVIP
         /// <param name="jobPtr"></param>
         /// <param name="buf"></param>
         /// <param name="len"></param>
-        [DllImport("mb.dll", EntryPoint = "mbNetSetData", CallingConvention = CallingConvention.StdCall)]
-        public static extern void mbNetSetData(IntPtr jobPtr, IntPtr buf, int len);
+        [DllImport("mb.dll", EntryPoint = "mbNetSetData", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern void mbNetSetData(IntPtr jobPtr, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, int len);
 
         /// <summary>
         /// RT，对网络请求下钩子。此接口需在mbLoadUrlBeginCallback里设置。如果设置了此钩子，则会缓存获取到的网络数据，
@@ -1161,8 +1158,8 @@ namespace MBVIP
         /// <param name="key"></param>
         /// <param name="fromRequestOrResponse"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbNetGetHTTPHeaderField", CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr mbNetGetHTTPHeaderField(IntPtr job, IntPtr key, int fromRequestOrResponse);
+        [DllImport("mb.dll", EntryPoint = "mbNetGetHTTPHeaderField", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern IntPtr mbNetGetHTTPHeaderField(IntPtr job, string key, int fromRequestOrResponse);
 
         /// <summary>
         /// 在mbOnLoadUrlBegin回调里调用，表示设置http请求（或者file:///协议）的 http header field。response一直要被设置成0

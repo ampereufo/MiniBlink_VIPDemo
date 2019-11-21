@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace MBVIP
 {
@@ -20,8 +24,8 @@ namespace MBVIP
         private WndProcCallback m_mbWndProcCallback = null;
         private mbPaintUpdatedCallback m_mbPaintUpdatedCallback = null;
         private mbPaintBitUpdatedCallback m_mbPaintBitUpdatedCallback = null;
-        private mbOnBlinkThreadInitCallback m_mbOnBlinkThreadInitCallback = null;
-        private mbOnGetPdfPageDataCallback m_mbOnGetPdfPageDataCallback = null;
+        private mbOnBlinkThreadInitCallback m_mbBlinkThreadInitCallback = null;
+        private mbOnGetPdfPageDataCallback m_mbGetPdfPageDataCallback = null;
         private mbRunJsCallback m_mbRunJsCallback = null;
         private mbJsQueryCallback m_mbJsQueryCallback = null;
         private mbTitleChangedCallback m_mbTitleChangedCallback = null;
@@ -36,7 +40,7 @@ namespace MBVIP
         private mbDocumentReadyCallback m_mbDocumentReadyCallback = null;
         private mbCloseCallback m_mbCloseCallback = null;
         private mbDestroyCallback m_mbDestroyCallback = null;
-        private mbOnShowDevtoolsCallback m_mbOnShowDevtoolsCallback = null;
+        private mbOnShowDevtoolsCallback m_mbShowDevtoolsCallback = null;
         private mbDidCreateScriptContextCallback m_mbDidCreateScriptContextCallback = null;
         private mbGetPluginListCallback m_mbGetPluginListCallback = null;
         private mbLoadingFinishCallback m_mbLoadingFinishCallback = null;
@@ -51,11 +55,11 @@ namespace MBVIP
         private mbGetCookieCallback m_mbGetCookieCallback = null;
         private mbGetSourceCallback m_mbGetSourceCallback = null;
         private mbGetContentAsMarkupCallback m_mbGetContentAsMarkupCallback = null;
-        private mbOnUrlRequestWillRedirectCallback m_mbOnUrlRequestWillRedirectCallback = null;
-        private mbOnUrlRequestDidReceiveResponseCallback m_mbOnUrlRequestDidReceiveResponseCallback = null;
-        private mbOnUrlRequestDidReceiveDataCallback m_mbOnUrlRequestDidReceiveDataCallback = null;
-        private mbOnUrlRequestDidFailCallback m_mbOnUrlRequestDidFailCallback = null;
-        private mbOnUrlRequestDidFinishLoadingCallback m_mbOnUrlRequestDidFinishLoadingCallback = null;
+        private mbOnUrlRequestWillRedirectCallback m_mbUrlRequestWillRedirectCallback = null;
+        private mbOnUrlRequestDidReceiveResponseCallback m_mbUrlRequestDidReceiveResponseCallback = null;
+        private mbOnUrlRequestDidReceiveDataCallback m_mbUrlRequestDidReceiveDataCallback = null;
+        private mbOnUrlRequestDidFailCallback m_mbUrlRequestDidFailCallback = null;
+        private mbOnUrlRequestDidFinishLoadingCallback m_mbUrlRequestDidFinishLoadingCallback = null;
         private mbNetJobDataRecvCallback m_mbNetJobDataRecvCallback = null;
         private mbNetJobDataFinishCallback m_mbNetJobDataFinishCallback = null;
         private mbPopupDialogSaveNameCallback m_mbPopupDialogSaveNameCallback = null;
@@ -66,16 +70,16 @@ namespace MBVIP
         private mbWindowDestroyCallback m_mbWindowDestroyCallback = null;
         private mbDraggableRegionsChangedCallback m_mbDraggableRegionsChangedCallback = null;
         private mbPrintingCallback m_mbPrintingCallback = null;
-        private mbImageBufferToDataURLCallback m_mbImageBufferToDataURLCallback = null;
-        private mbOnScreenshotCallback m_mbOnScreenshotCallback = null;
-        private mbOnCallUiThread m_mbOnCallUiThreadCallback = null;
+        private mbImageBufferToDataURLCallback m_mbImageBufferToDataUrlCallback = null;
+        private mbOnScreenshotCallback m_mbScreenshotCallback = null;
+        private mbOnCallUiThread m_mbCallUiThreadCallback = null;
 
 
         // 定义事件句柄
         private event EventHandler<WindowProcEventArgs> m_mbWindowProcHandler = null;
         private event EventHandler<PaintBitUpdatedEventArgs> m_mbPaintBitUpdatedHandler = null;
-        private event EventHandler<OnBlinkThreadInitEventArgs> m_mbBlinkThreadInitHandler = null;
-        private event EventHandler<OnGetPdfPageDataEventArgs> m_mbGetPdfPageDataHandler = null;
+        private event EventHandler<BlinkThreadInitEventArgs> m_mbBlinkThreadInitHandler = null;
+        private event EventHandler<GetPdfPageDataEventArgs> m_mbGetPdfPageDataHandler = null;
         private event EventHandler<RunJsEventArgs> m_mbRunJsHandler = null;
         private event EventHandler<JsQueryEventArgs> m_mbJsQueryHandler = null;
         private event EventHandler<TitleChangedEventArgs> m_mbTitleChangedHandler = null;
@@ -90,7 +94,7 @@ namespace MBVIP
         private event EventHandler<DocumentReadyEventArgs> m_mbDocumentReadyHandler = null;
         private event EventHandler<CloseEventArgs> m_mbCloseHandler = null;
         private event EventHandler<DestroyEventArgs> m_mbDestroyHandler = null;
-        private event EventHandler<OnShowDevtoolsEventArgs> m_mbShowDevtoolsHandler = null;
+        private event EventHandler<ShowDevtoolsEventArgs> m_mbShowDevtoolsHandler = null;
         private event EventHandler<DidCreateScriptContextEventArgs> m_mbDidCreateScriptContextHandler = null;
         private event EventHandler<GetPluginListEventArgs> m_mbGetPluginListHandler = null;
         private event EventHandler<LoadingFinishEventArgs> m_mbLoadingFinishHandler = null;
@@ -105,11 +109,11 @@ namespace MBVIP
         private event EventHandler<GetCookieEventArgs> m_mbGetCookieHandler = null;
         private event EventHandler<GetSourceEventArgs> m_mbGetSourceHandler = null;
         private event EventHandler<GetContentAsMarkupEventArgs> m_mbGetContentAsMarkupHandler = null;
-        private event EventHandler<OnUrlRequestWillRedirectEventArgs> m_mbUrlRequestWillRedirectHandler = null;
-        private event EventHandler<OnUrlRequestDidReceiveResponseEventArgs> m_mbUrlRequestDidReceiveResponseHandler = null;
-        private event EventHandler<OnUrlRequestDidReceiveDataEventArgs> m_mbUrlRequestDidReceiveDataHandler = null;
-        private event EventHandler<OnUrlRequestDidFailEventArgs> m_mbUrlRequestDidFailHandler = null;
-        private event EventHandler<OnUrlRequestDidFinishLoadingEventArgs> m_mbUrlRequestDidFinishLoadingHandler = null;
+        private event EventHandler<UrlRequestWillRedirectEventArgs> m_mbUrlRequestWillRedirectHandler = null;
+        private event EventHandler<UrlRequestDidReceiveResponseEventArgs> m_mbUrlRequestDidReceiveResponseHandler = null;
+        private event EventHandler<UrlRequestDidReceiveDataEventArgs> m_mbUrlRequestDidReceiveDataHandler = null;
+        private event EventHandler<UrlRequestDidFailEventArgs> m_mbUrlRequestDidFailHandler = null;
+        private event EventHandler<UrlRequestDidFinishLoadingEventArgs> m_mbUrlRequestDidFinishLoadingHandler = null;
         private event EventHandler<NetJobDataRecvEventArgs> m_mbNetJobDataRecvHandler = null;
         private event EventHandler<NetJobDataFinishEventArgs> m_mbNetJobDataFinishHandler = null;
         private event EventHandler<PopupDialogSaveNameEventArgs> m_mbPopupDialogSaveNameHandler = null;
@@ -120,9 +124,9 @@ namespace MBVIP
         private event EventHandler<WindowDestroyEventArgs> m_mbWindowDestroyHandler = null;
         private event EventHandler<DraggableRegionsChangedEventArgs> m_mbDraggableRegionsChangedHandler = null;
         private event EventHandler<PrintingEventArgs> m_mbPrintingHandler = null;
-        private event EventHandler<ImageBufferToDataURLEventArgs> m_mbImageBufferToDataURLHandler = null;
-        private event EventHandler<OnScreenshotEventArgs> m_mbScreenshotHandler = null;
-        private event EventHandler<OnCallUiThreadEventArgs> m_mbCallUiThreadHandler = null;
+        private event EventHandler<ImageBufferToDataUrlEventArgs> m_mbImageBufferToDataUrlHandler = null;
+        private event EventHandler<ScreenshotEventArgs> m_mbScreenshotHandler = null;
+        private event EventHandler<CallUiThreadEventArgs> m_mbCallUiThreadHandler = null;
 
 
 
@@ -149,13 +153,9 @@ namespace MBVIP
             }
 
             public IntPtr Handle { get; }
-
             public int Msg { get; }
-
             public IntPtr wParam { get; }
-
             public IntPtr lParam { get; }
-
             public IntPtr Result { get; set; }
 
             /// <summary>
@@ -172,17 +172,17 @@ namespace MBVIP
             }
         }
 
-        public class OnBlinkThreadInitEventArgs
+        public class BlinkThreadInitEventArgs
         {
-            public OnBlinkThreadInitEventArgs(IntPtr param)
+            public BlinkThreadInitEventArgs(IntPtr param)
             {
 
             }
         }
 
-        public class OnGetPdfPageDataEventArgs : MiniblinkEventArgs
+        public class GetPdfPageDataEventArgs : MiniblinkEventArgs
         {
-            public OnGetPdfPageDataEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
+            public GetPdfPageDataEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
             {
 
             }
@@ -281,7 +281,18 @@ namespace MBVIP
         {
             public ConfirmBoxEventArgs(IntPtr webView, IntPtr param, IntPtr msg) : base(webView)
             {
+                strMsg = MBVIP_Common.UTF8PtrToStr(msg);
+                ptrMsg = msg;
+            }
 
+            public string strMsg { get; }
+            public IntPtr ptrMsg { get; }
+            public int iRet
+            {
+                get
+                {
+                    return ptrMsg == IntPtr.Zero ? 0 : 1;
+                }
             }
         }
 
@@ -289,15 +300,34 @@ namespace MBVIP
         {
             public PromptBoxEventArgs(IntPtr webView, IntPtr param, IntPtr msg, IntPtr defaultResult) : base(webView)
             {
-
+                strMsg = MBVIP_Common.UTF8PtrToStr(msg);
+                strResult = MBVIP_Common.UTF8PtrToStr(defaultResult);
+                ptrRet = msg;
             }
+
+            public string strMsg { get; }
+            public string strResult { get; }
+            public IntPtr ptrRet { get; }
         }
 
         public class NavigationEventArgs : MiniblinkEventArgs
         {
             public NavigationEventArgs(IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url) : base(webView)
             {
+                Type = navigationType;
+                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                ptrUrl = url;
+            }
 
+            public mbNavigationType Type { get; set; }
+            public string strUrl { get; }
+            public IntPtr ptrUrl { get; }
+            public int iRet
+            {
+                get
+                {
+                    return ptrUrl == IntPtr.Zero ? 0 : 1;
+                }
             }
         }
 
@@ -358,19 +388,26 @@ namespace MBVIP
             {
 
             }
+
+            /// <summary>
+            /// 1取消关闭，0不取消
+            /// </summary>
+            public int iCancel { get; set; }
         }
 
         public class DestroyEventArgs : MiniblinkEventArgs
         {
             public DestroyEventArgs(IntPtr webView, IntPtr param, IntPtr unuse) : base(webView)
             {
-
+                iRet = 1;
             }
+
+            public int iRet { get; }
         }
 
-        public class OnShowDevtoolsEventArgs : MiniblinkEventArgs
+        public class ShowDevtoolsEventArgs : MiniblinkEventArgs
         {
-            public OnShowDevtoolsEventArgs(IntPtr webView, IntPtr param) : base(webView)
+            public ShowDevtoolsEventArgs(IntPtr webView, IntPtr param) : base(webView)
             {
 
             }
@@ -388,8 +425,10 @@ namespace MBVIP
         {
             public GetPluginListEventArgs(int refresh, IntPtr pluginListBuilder, IntPtr param)
             {
-
+                iRefresh = refresh;
             }
+
+            public int iRefresh { get; }
         }
 
         public class LoadingFinishEventArgs : MiniblinkEventArgs
@@ -534,7 +573,19 @@ namespace MBVIP
         {
             public NetResponseEventArgs(IntPtr webView, IntPtr param, IntPtr url, IntPtr job) : base(webView)
             {
+                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                ptrUrl = url;
+            }
 
+            public string strUrl { get; }
+            public IntPtr ptrUrl { get; }
+
+            public int iRet
+            {
+                get
+                {
+                    return ptrUrl == IntPtr.Zero ? 0 : 1;
+                }
             }
         }
 
@@ -588,41 +639,41 @@ namespace MBVIP
             }
         }
 
-        public class OnUrlRequestWillRedirectEventArgs : MiniblinkEventArgs
+        public class UrlRequestWillRedirectEventArgs : MiniblinkEventArgs
         {
-            public OnUrlRequestWillRedirectEventArgs(IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse) : base(webView)
+            public UrlRequestWillRedirectEventArgs(IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse) : base(webView)
             {
 
             }
         }
 
-        public class OnUrlRequestDidReceiveResponseEventArgs : MiniblinkEventArgs
+        public class UrlRequestDidReceiveResponseEventArgs : MiniblinkEventArgs
         {
-            public OnUrlRequestDidReceiveResponseEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr response) : base(webView)
+            public UrlRequestDidReceiveResponseEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr response) : base(webView)
             {
 
             }
         }
 
-        public class OnUrlRequestDidReceiveDataEventArgs : MiniblinkEventArgs
+        public class UrlRequestDidReceiveDataEventArgs : MiniblinkEventArgs
         {
-            public OnUrlRequestDidReceiveDataEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr data, int dataLength) : base(webView)
+            public UrlRequestDidReceiveDataEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr data, int dataLength) : base(webView)
             {
 
             }
         }
 
-        public class OnUrlRequestDidFailEventArgs : MiniblinkEventArgs
+        public class UrlRequestDidFailEventArgs : MiniblinkEventArgs
         {
-            public OnUrlRequestDidFailEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr error) : base(webView)
+            public UrlRequestDidFailEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr error) : base(webView)
             {
 
             }
         }
 
-        public class OnUrlRequestDidFinishLoadingEventArgs : MiniblinkEventArgs
+        public class UrlRequestDidFinishLoadingEventArgs : MiniblinkEventArgs
         {
-            public OnUrlRequestDidFinishLoadingEventArgs(IntPtr webView, IntPtr param, IntPtr request, double finishTime) : base(webView)
+            public UrlRequestDidFinishLoadingEventArgs(IntPtr webView, IntPtr param, IntPtr request, double finishTime) : base(webView)
             {
 
             }
@@ -656,7 +707,25 @@ namespace MBVIP
         {
             public DownloadInBlinkThreadEventArgs(IntPtr webView, IntPtr param, ulong expectedContentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, IntPtr dataBind) : base(webView)
             {
+                Param = param;
+                Length = expectedContentLength;
+                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strMime = MBVIP_Common.UTF8PtrToStr(mime);
+                strDisposition = MBVIP_Common.UTF8PtrToStr(disposition);
+            }
 
+            public IntPtr Param { get; }
+            public ulong Length { get; }
+            public string strUrl { get; }
+            public string strMime { get; }
+            public string strDisposition { get; }
+
+            public mbDownloadOpt downloadRet
+            {
+                get
+                {
+                    return Length == 0 ? mbDownloadOpt.kMbDownloadOptCancel : mbDownloadOpt.kMbDownloadOptCacheData;
+                }
             }
         }
 
@@ -682,6 +751,11 @@ namespace MBVIP
             {
 
             }
+
+            /// <summary>
+            /// 1取消关闭，0不取消
+            /// </summary>
+            public int Cancel { get; set; }
         }
 
         public class WindowDestroyEventArgs : MiniblinkEventArgs
@@ -704,29 +778,45 @@ namespace MBVIP
         {
             public PrintingEventArgs(IntPtr webView, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount) : base(webView)
             {
-
+                Param = param;
+                mStep = step;
+                HDC = hDC;
+                Settings = MBVIP_Common.UTF8PtrToStr(settings);
+                iPageCount = pageCount;
             }
+
+            public IntPtr Param { get; }
+            public mbPrintintStep mStep { get; set; }
+            public IntPtr HDC { get; set; }
+            public string Settings { get; set; }
+            public int iPageCount { get; set; }
         }
 
-        public class ImageBufferToDataURLEventArgs : MiniblinkEventArgs
+        public class ImageBufferToDataUrlEventArgs : MiniblinkEventArgs
         {
-            public ImageBufferToDataURLEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
+            public ImageBufferToDataUrlEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
+            {
+                Param = param;
+                Data = data;
+                Size = size;
+            }
+
+            public IntPtr Param { get; }
+            public IntPtr Data { get; set; }
+            public ulong Size { get; set; }
+        }
+
+        public class ScreenshotEventArgs : MiniblinkEventArgs
+        {
+            public ScreenshotEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
             {
 
             }
         }
 
-        public class OnScreenshotEventArgs : MiniblinkEventArgs
+        public class CallUiThreadEventArgs : MiniblinkEventArgs
         {
-            public OnScreenshotEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
-            {
-
-            }
-        }
-
-        public class OnCallUiThreadEventArgs : MiniblinkEventArgs
-        {
-            public OnCallUiThreadEventArgs(IntPtr webView, IntPtr paramOnInThread) : base(webView)
+            public CallUiThreadEventArgs(IntPtr webView, IntPtr paramOnInThread) : base(webView)
             {
 
             }
@@ -1145,7 +1235,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnBlinkThreadInitEventArgs> onBlinkThreadInit
+        public event EventHandler<BlinkThreadInitEventArgs> onBlinkThreadInit
         {
             add
             {
@@ -1158,7 +1248,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnGetPdfPageDataEventArgs> onGetPdfPageData
+        public event EventHandler<GetPdfPageDataEventArgs> onGetPdfPageData
         {
             add
             {
@@ -1387,7 +1477,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnShowDevtoolsEventArgs> onShowDevtools
+        public event EventHandler<ShowDevtoolsEventArgs> onShowDevtools
         {
             add
             {
@@ -1614,7 +1704,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnUrlRequestWillRedirectEventArgs> onUrlRequestWillRedirect
+        public event EventHandler<UrlRequestWillRedirectEventArgs> onUrlRequestWillRedirect
         {
             add
             {
@@ -1627,7 +1717,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnUrlRequestDidReceiveResponseEventArgs> onUrlRequestDidReceiveResponse
+        public event EventHandler<UrlRequestDidReceiveResponseEventArgs> onUrlRequestDidReceiveResponse
         {
             add
             {
@@ -1640,7 +1730,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnUrlRequestDidReceiveDataEventArgs> onUrlRequestDidReceiveData
+        public event EventHandler<UrlRequestDidReceiveDataEventArgs> onUrlRequestDidReceiveData
         {
             add
             {
@@ -1653,7 +1743,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnUrlRequestDidFailEventArgs> onUrlRequestDidFail
+        public event EventHandler<UrlRequestDidFailEventArgs> onUrlRequestDidFail
         {
             add
             {
@@ -1666,7 +1756,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnUrlRequestDidFinishLoadingEventArgs> onUrlRequestDidFinishLoading
+        public event EventHandler<UrlRequestDidFinishLoadingEventArgs> onUrlRequestDidFinishLoading
         {
             add
             {
@@ -1809,20 +1899,20 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<ImageBufferToDataURLEventArgs> onImageBufferToDataURL
+        public event EventHandler<ImageBufferToDataUrlEventArgs> onImageBufferToDataURL
         {
             add
             {
-                m_mbImageBufferToDataURLHandler += value;
+                m_mbImageBufferToDataUrlHandler += value;
             }
 
             remove
             {
-                m_mbImageBufferToDataURLHandler -= value;
+                m_mbImageBufferToDataUrlHandler -= value;
             }
         }
 
-        public event EventHandler<OnScreenshotEventArgs> onScreenshot
+        public event EventHandler<ScreenshotEventArgs> onScreenshot
         {
             add
             {
@@ -1835,7 +1925,7 @@ namespace MBVIP
             }
         }
 
-        public event EventHandler<OnCallUiThreadEventArgs> onCallUiThread
+        public event EventHandler<CallUiThreadEventArgs> onCallUiThread
         {
             add
             {
@@ -1854,38 +1944,33 @@ namespace MBVIP
 
         protected void SetCallBack()
         {
-
             m_mbPaintUpdatedCallback = new mbPaintUpdatedCallback(onPaintUpdated);
 
             m_mbWndProcCallback = new WndProcCallback(onWndProc);
 
-            m_mbPaintBitUpdatedCallback = new mbPaintBitUpdatedCallback((IntPtr webView, IntPtr param, IntPtr buffer, IntPtr r, int width, int height) =>
-            { 
-            
+            m_mbPaintBitUpdatedCallback = new mbPaintBitUpdatedCallback((IntPtr webView, IntPtr param, IntPtr buffer, IntPtr rect, int width, int height) =>
+            {
+                m_mbPaintBitUpdatedHandler?.Invoke(this, new PaintBitUpdatedEventArgs(webView, param, buffer, rect, width, height));
             });
 
-            m_mbOnBlinkThreadInitCallback = new mbOnBlinkThreadInitCallback((IntPtr param) =>
+            m_mbBlinkThreadInitCallback = new mbOnBlinkThreadInitCallback((IntPtr param) =>
             {
-
+                m_mbBlinkThreadInitHandler?.Invoke(this, new BlinkThreadInitEventArgs(param));
             });
 
-            m_mbOnGetPdfPageDataCallback = new mbOnGetPdfPageDataCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
+            m_mbGetPdfPageDataCallback = new mbOnGetPdfPageDataCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
             {
-
+                m_mbGetPdfPageDataHandler?.Invoke(this, new GetPdfPageDataEventArgs(webView, param, data, size));
             });
 
             m_mbRunJsCallback = new mbRunJsCallback((IntPtr webView, IntPtr param, IntPtr es, ulong v) =>
             {
-                if (m_mbRunJsHandler != null)
-                {
-                    RunJsEventArgs e = new RunJsEventArgs(webView, param, es, v);
-                    m_mbRunJsHandler(this, e);
-                }
+                m_mbRunJsHandler?.Invoke(this, new RunJsEventArgs(webView, param, es, v));
             });
 
             m_mbJsQueryCallback = new mbJsQueryCallback((IntPtr webView, IntPtr param, IntPtr es, ulong queryId, int customMsg, IntPtr request) =>
             {
-
+                m_mbJsQueryHandler?.Invoke(this, new JsQueryEventArgs(webView, param, es, queryId, customMsg, request));
             });
 
             m_mbTitleChangedCallback = new mbTitleChangedCallback((IntPtr WebView, IntPtr param, IntPtr title) =>
@@ -1895,7 +1980,7 @@ namespace MBVIP
 
             m_mbMouseOverUrlChangedCallback = new mbMouseOverUrlChangedCallback((IntPtr webView, IntPtr param, IntPtr url) =>
             {
-
+                m_mbMouseOverUrlChangedHandler?.Invoke(this, new MouseOverUrlChangedEventArgs(webView, param, url));
             });
 
             m_mbUrlChangedCallback = new mbUrlChangedCallback((IntPtr webView, IntPtr param, IntPtr url, int canGoBack, int canGoForward) =>
@@ -1905,24 +1990,38 @@ namespace MBVIP
 
             m_mbUrlChangedCallback2 = new mbUrlChangedCallback2((IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url) =>
             {
-
+                m_mbUrlChangedHandler2?.Invoke(this, new UrlChangedEventArgs2(webView, param, frameId, url));
             });
 
             m_mbAlertBoxCallback = new mbAlertBoxCallback((IntPtr webView, IntPtr param, IntPtr msg) =>
             {
-
+                m_mbAlertBoxHandler?.Invoke(this, new AlertBoxEventArgs(webView, param, msg));
             });
 
             m_mbConfirmBoxCallback = new mbConfirmBoxCallback((IntPtr webView, IntPtr param, IntPtr msg) =>
             {
                 int iRet = 0;
+                if (m_mbConfirmBoxHandler != null)
+                {
+                    ConfirmBoxEventArgs e = new ConfirmBoxEventArgs(webView, param, msg);
+                    m_mbConfirmBoxHandler(this, e);
 
-                return iRet;
+                    iRet = e.iRet;
+                }
+
+                return iRet; 
             });
 
             m_mbPromptBoxCallback = new mbPromptBoxCallback((IntPtr webView, IntPtr param, IntPtr msg, IntPtr defaultResult) =>
             {
                 IntPtr ptrRet = IntPtr.Zero;
+                if (m_mbPromptBoxHandler != null)
+                {
+                    PromptBoxEventArgs e = new PromptBoxEventArgs(webView, param, msg, defaultResult);
+                    m_mbPromptBoxHandler(this, e);
+
+                    ptrRet = e.ptrRet;
+                }
 
                 return ptrRet;
             });
@@ -1930,6 +2029,13 @@ namespace MBVIP
             m_mbNavigationCallback = new mbNavigationCallback((IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url) =>
             {
                 int iRet = 0;
+                if (m_mbNavigationHandler != null)
+                {
+                    NavigationEventArgs e = new NavigationEventArgs(webView, param, navigationType, url);
+                    m_mbNavigationHandler(this, e);
+
+                    iRet = e.iRet;
+                }
 
                 return iRet;
             });
@@ -1955,31 +2061,52 @@ namespace MBVIP
 
             m_mbCloseCallback = new mbCloseCallback((IntPtr webView, IntPtr param, IntPtr unuse) =>
             {
-                int iRet = 0;
+                int iRet = 1;
+                if (m_mbCloseHandler != null)
+                {
+                    CloseEventArgs e = new CloseEventArgs(webView, param, unuse);
+                    m_mbCloseHandler(this, e);
+
+                    iRet = e.iCancel;
+                }
 
                 return iRet;
             });
 
             m_mbDestroyCallback = new mbDestroyCallback((IntPtr webView, IntPtr param, IntPtr unuse) =>
             {
-                int iRet = 0;
+                int iRet = 1;
+                if (m_mbDestroyHandler != null)
+                {
+                    DestroyEventArgs e = new DestroyEventArgs(webView, param, unuse);
+                    m_mbDestroyHandler(this, e);
+
+                    iRet = e.iRet;
+                }
 
                 return iRet;
             });
 
-            m_mbOnShowDevtoolsCallback = new mbOnShowDevtoolsCallback((IntPtr webView, IntPtr param) =>
+            m_mbShowDevtoolsCallback = new mbOnShowDevtoolsCallback((IntPtr webView, IntPtr param) =>
             {
-
+                m_mbShowDevtoolsHandler?.Invoke(this, new ShowDevtoolsEventArgs(webView, param));
             });
 
             m_mbDidCreateScriptContextCallback = new mbDidCreateScriptContextCallback((IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int extensionGroup, int worldId) =>
             {
-
+                m_mbDidCreateScriptContextHandler?.Invoke(this, new DidCreateScriptContextEventArgs(webView, param, frameId, context, extensionGroup, worldId));
             });
 
             m_mbGetPluginListCallback = new mbGetPluginListCallback((int refresh, IntPtr pluginListBuilder, IntPtr param) =>
             {
                 int iRet = 0;
+                if (m_mbGetPluginListHandler != null)
+                {
+                    GetPluginListEventArgs e = new GetPluginListEventArgs(refresh, pluginListBuilder, param);
+                    m_mbGetPluginListHandler(this, e);
+
+                    iRet = e.iRefresh;
+                }
 
                 return iRet;
             });
@@ -1997,7 +2124,7 @@ namespace MBVIP
                     DownloadEventArgs e = new DownloadEventArgs(webView, param, frameId, url, downloadJob);
                     m_mbDownloadHandler(this, e);
 
-                    iRet = (byte)(e.Cancel ? 0 : 1);
+                    iRet = e.Cancel ? 0 : 1;
                 }
 
                 return iRet;
@@ -2005,7 +2132,7 @@ namespace MBVIP
 
             m_mbConsoleCallback = new mbConsoleCallback((IntPtr webView, IntPtr param, mbConsoleLevel level, IntPtr message, IntPtr sourceName, uint sourceLine, IntPtr stackTrace) =>
             {
-
+                m_mbConsoleHandler?.Invoke(this, new ConsoleEventArgs(webView, param, level, message, sourceName, sourceLine, stackTrace));
             });
 
             m_mbLoadUrlBeginCallback = new mbLoadUrlBeginCallback((IntPtr webView, IntPtr param, IntPtr url, IntPtr job) =>
@@ -2016,7 +2143,7 @@ namespace MBVIP
                     LoadUrlBeginEventArgs e = new LoadUrlBeginEventArgs(webView, param, url, job);
                     m_mbLoadUrlBeginHandler(this, e);
 
-                    iRet = (byte)(e.Cancel ? 1 : 0);
+                    iRet = e.Cancel ? 1 : 0;
                 }
 
                 return iRet;
@@ -2024,150 +2151,177 @@ namespace MBVIP
 
             m_mbLoadUrlEndCallback = new mbLoadUrlEndCallback((IntPtr webView, IntPtr param, IntPtr url, IntPtr job, IntPtr buf, int len) =>
             {
-                if (m_mbLoadUrlEndHandler != null)
-                {
-                    LoadUrlEndEventArgs e = new LoadUrlEndEventArgs(webView, param, url, job, buf, len);
-                    m_mbLoadUrlEndHandler(this, e);
-                }
+                m_mbLoadUrlEndHandler?.Invoke(this, new LoadUrlEndEventArgs(webView, param, url, job, buf, len));
             });
 
             m_mbWillReleaseScriptContextCallback = new mbWillReleaseScriptContextCallback((IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int worldId) =>
             {
-
+                m_mbWillReleaseScriptContextHandler?.Invoke(this, new WillReleaseScriptContextEventArgs(webView, param, frameId, context, worldId));
             });
 
             m_mbNetResponseCallback = new mbNetResponseCallback((IntPtr webView, IntPtr param, IntPtr url, IntPtr job) =>
             {
                 int iRet = 0;
+                if (m_mbNetResponseHandler != null)
+                {
+                    NetResponseEventArgs e = new NetResponseEventArgs(webView, param, url, job);
+                    m_mbNetResponseHandler(this, e);
+
+                    iRet = e.iRet;
+                }
 
                 return iRet;
             });
 
             m_mbNetGetFaviconCallback = new mbNetGetFaviconCallback((IntPtr webView, IntPtr param, IntPtr url, IntPtr buf) =>
             {
-
+                m_mbNetGetFaviconHandler?.Invoke(this, new NetGetFaviconEventArgs(webView, param, url, buf));
             });
 
             m_mbCanGoBackForwardCallback = new mbCanGoBackForwardCallback((IntPtr webView, IntPtr param, MbAsynRequestState state, int b) =>
             {
-
+                m_mbCanGoBackForwardHandler?.Invoke(this, new CanGoBackForwardEventArgs(webView, param, state, b));
             });
 
             m_mbGetCookieCallback = new mbGetCookieCallback((IntPtr webView, IntPtr param, MbAsynRequestState state, IntPtr cookie) =>
             {
-
+                m_mbGetCookieHandler?.Invoke(this, new GetCookieEventArgs(webView, param, state, cookie));
             });
 
             m_mbGetSourceCallback = new mbGetSourceCallback((IntPtr webView, IntPtr param, IntPtr mhtml) =>
             {
-                if (m_mbGetSourceHandler != null)
-                {
-                    GetSourceEventArgs e = new GetSourceEventArgs(webView, param, mhtml);
-                    m_mbGetSourceHandler(this, e);
-                }
+                m_mbGetSourceHandler?.Invoke(this, new GetSourceEventArgs(webView, param, mhtml));
             });
 
             m_mbGetContentAsMarkupCallback = new mbGetContentAsMarkupCallback((IntPtr webView, IntPtr param, IntPtr content, ulong size) =>
             {
-
+                m_mbGetContentAsMarkupHandler?.Invoke(this, new GetContentAsMarkupEventArgs(webView, param, content, size));
             });
 
-            m_mbOnUrlRequestWillRedirectCallback = new mbOnUrlRequestWillRedirectCallback((IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse) =>
+            m_mbUrlRequestWillRedirectCallback = new mbOnUrlRequestWillRedirectCallback((IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse) =>
             {
-
+                m_mbUrlRequestWillRedirectHandler?.Invoke(this, new UrlRequestWillRedirectEventArgs(webView, param, oldRequest, request, redirectResponse));
             });
 
-            m_mbOnUrlRequestDidReceiveResponseCallback = new mbOnUrlRequestDidReceiveResponseCallback((IntPtr webView, IntPtr param, IntPtr request, IntPtr response) =>
+            m_mbUrlRequestDidReceiveResponseCallback = new mbOnUrlRequestDidReceiveResponseCallback((IntPtr webView, IntPtr param, IntPtr request, IntPtr response) =>
             {
-
+                m_mbUrlRequestDidReceiveResponseHandler?.Invoke(this, new UrlRequestDidReceiveResponseEventArgs(webView, param, request, response));
             });
 
-            m_mbOnUrlRequestDidReceiveDataCallback = new mbOnUrlRequestDidReceiveDataCallback((IntPtr webView, IntPtr param, IntPtr request, IntPtr data, int dataLength) =>
+            m_mbUrlRequestDidReceiveDataCallback = new mbOnUrlRequestDidReceiveDataCallback((IntPtr webView, IntPtr param, IntPtr request, IntPtr data, int dataLength) =>
             {
-
+                m_mbUrlRequestDidReceiveDataHandler?.Invoke(this, new UrlRequestDidReceiveDataEventArgs(webView, param, request, data, dataLength));
             });
 
-            m_mbOnUrlRequestDidFailCallback = new mbOnUrlRequestDidFailCallback((IntPtr webView, IntPtr param, IntPtr request, IntPtr error) =>
+            m_mbUrlRequestDidFailCallback = new mbOnUrlRequestDidFailCallback((IntPtr webView, IntPtr param, IntPtr request, IntPtr error) =>
             {
-
+                m_mbUrlRequestDidFailHandler?.Invoke(this, new UrlRequestDidFailEventArgs(webView, param, request, error));
             });
 
-            m_mbOnUrlRequestDidFinishLoadingCallback = new mbOnUrlRequestDidFinishLoadingCallback((IntPtr webView, IntPtr param, IntPtr request, double finishTime) =>
+            m_mbUrlRequestDidFinishLoadingCallback = new mbOnUrlRequestDidFinishLoadingCallback((IntPtr webView, IntPtr param, IntPtr request, double finishTime) =>
             {
-
+                m_mbUrlRequestDidFinishLoadingHandler?.Invoke(this, new UrlRequestDidFinishLoadingEventArgs(webView, param, request, finishTime));
             });
 
             m_mbNetJobDataRecvCallback = new mbNetJobDataRecvCallback((IntPtr ptr, IntPtr job, IntPtr data, int length) =>
             {
-
+                m_mbNetJobDataRecvHandler?.Invoke(this, new NetJobDataRecvEventArgs(ptr, job, data, length));
             });
 
             m_mbNetJobDataFinishCallback = new mbNetJobDataFinishCallback((IntPtr ptr, IntPtr job, mbLoadingResult result) =>
             {
-
+                m_mbNetJobDataFinishHandler?.Invoke(this, new NetJobDataFinishEventArgs(ptr, job, result));
             });
 
             m_mbPopupDialogSaveNameCallback = new mbPopupDialogSaveNameCallback((IntPtr ptr, IntPtr filePath) =>
             {
-
+                m_mbPopupDialogSaveNameHandler?.Invoke(this, new PopupDialogSaveNameEventArgs(ptr, filePath));
             });
 
             m_mbDownloadInBlinkThreadCallback = new mbDownloadInBlinkThreadCallback((IntPtr webView, IntPtr param, ulong expectedContentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, IntPtr dataBind) =>
             {
-                mbDownloadOpt downloadRet = 0;
+                mbDownloadOpt downloadRet = mbDownloadOpt.kMbDownloadOptCacheData;
+                if (m_mbDownloadInBlinkThreadHandler != null)
+                {
+                    DownloadInBlinkThreadEventArgs e = new DownloadInBlinkThreadEventArgs(webView, param, expectedContentLength, url, mime, disposition, job, dataBind);
+                    m_mbDownloadInBlinkThreadHandler(this, e);
+
+                    downloadRet = e.downloadRet;
+                }
 
                 return downloadRet;
             });
 
             m_mbPrintPdfDataCallback = new mbPrintPdfDataCallback((IntPtr webView, IntPtr param, IntPtr datas) =>
             {
-
+                m_mbPrintPdfDataHandler?.Invoke(this, new PrintPdfDataEventArgs(webView, param, datas));
             });
 
             m_mbPrintBitmapCallback = new mbPrintBitmapCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
             {
-
+                m_mbPrintBitmapHandler?.Invoke(this, new PrintBitmapEventArgs(webView, param, data, size));
             });
 
             m_mbWindowClosingCallback = new mbWindowClosingCallback((IntPtr webView, IntPtr param) =>
             {
                 int iRet = 0;
+                if (m_mbWindowClosingHandler != null)
+                {
+                    WindowClosingEventArgs e = new WindowClosingEventArgs(webView, param);
+                    m_mbWindowClosingHandler(this, e);
+
+                    iRet = e.Cancel;
+                }
 
                 return iRet;
             });
 
             m_mbWindowDestroyCallback = new mbWindowDestroyCallback((IntPtr webView, IntPtr param) =>
             {
-
+                m_mbWindowDestroyHandler?.Invoke(this, new WindowDestroyEventArgs(webView, param));
             });
 
             m_mbDraggableRegionsChangedCallback = new mbDraggableRegionsChangedCallback((IntPtr webView, IntPtr param, IntPtr rects, int rectCount) =>
             {
-
+                m_mbDraggableRegionsChangedHandler?.Invoke(this, new DraggableRegionsChangedEventArgs(webView, param, rects, rectCount));
             });
 
             m_mbPrintingCallback = new mbPrintingCallback((IntPtr webView, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount) =>
             {
                 int iRet = 0;
+                if (m_mbPrintingHandler != null)
+                {
+                    PrintingEventArgs e = new PrintingEventArgs(webView, param, step, hDC, settings, pageCount);
+                    m_mbPrintingHandler(this, e);
+
+                    iRet = e.iPageCount;
+                }
 
                 return iRet;
             });
 
-            m_mbImageBufferToDataURLCallback = new mbImageBufferToDataURLCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
+            m_mbImageBufferToDataUrlCallback = new mbImageBufferToDataURLCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
             {
                 IntPtr ptrRet = IntPtr.Zero;
+                if (m_mbImageBufferToDataUrlHandler != null)
+                {
+                    ImageBufferToDataUrlEventArgs e = new ImageBufferToDataUrlEventArgs(webView, param, data, size);
+                    m_mbImageBufferToDataUrlHandler(this, e);
+
+                    ptrRet = e.Data;
+                }
 
                 return ptrRet;
             });
 
-            m_mbOnScreenshotCallback = new mbOnScreenshotCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
+            m_mbScreenshotCallback = new mbOnScreenshotCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
             {
-
+                m_mbScreenshotHandler?.Invoke(this, new ScreenshotEventArgs(webView, param, data, size));
             });
 
-            m_mbOnCallUiThreadCallback = new mbOnCallUiThread((IntPtr webView, IntPtr paramOnInThread) =>
+            m_mbCallUiThreadCallback = new mbOnCallUiThread((IntPtr webView, IntPtr paramOnInThread) =>
             {
-
+                m_mbCallUiThreadHandler?.Invoke(this, new CallUiThreadEventArgs(webView, paramOnInThread));
             });
         }
 
@@ -2181,12 +2335,185 @@ namespace MBVIP
         public string Name { get; set; }
 
         /// <summary>
+        /// 获取网页标题
+        /// </summary>
+        public string Title
+        {
+            get { return MBVIP_Common.UTF8PtrToStr(MBVIP_API.mbGetTitle(m_WebView)); }
+        }
+
+        /// <summary>
+        /// 获取网页URL
+        /// </summary>
+        public string URL
+        {
+            get { return MBVIP_Common.UTF8PtrToStr(MBVIP_API.mbGetUrl(m_WebView)); }
+        }
+
+        /// <summary>
+        /// 是否允许鼠标
+        /// </summary>
+        public bool MouseEnabled
+        {
+            set { MBVIP_API.mbSetMouseEnabled(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 是否允许触屏
+        /// </summary>
+        public bool TouchEnabled
+        {
+            set { MBVIP_API.mbSetTouchEnabled(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 是否允许菜单
+        /// </summary>
+        public bool ContextMenuEnabled
+        {
+            set { MBVIP_API.mbSetContextMenuEnabled(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
         /// 设置是否导航到新窗口
         /// </summary>
-        /// <param name="enable">如果为0 则不会弹出新窗口</param>
-        public int NavigationToNewWindowEnable
+        public bool NavigationToNewWindowEnable
         {
-            set { MBVIP_API.mbSetNavigationToNewWindowEnable(m_WebView, value); }
+            set { MBVIP_API.mbSetNavigationToNewWindowEnable(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 是否允许无头模式，启用后可关闭渲染
+        /// </summary>
+        public bool HeadlessEnabled
+        {
+            set { MBVIP_API.mbSetHeadlessEnabled(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 是否允许拖放
+        /// </summary>
+        public bool DragDropEnable
+        {
+            set { MBVIP_API.mbSetDragDropEnable(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 是否允许拖动
+        /// </summary>
+        public bool DragEnable
+        {
+            set { MBVIP_API.mbSetDragEnable(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 设置页面代理，全局生效
+        /// </summary>
+        public mbProxy Proxy
+        {
+            set { MBVIP_API.mbSetProxy(m_WebView, ref value); }
+        }
+
+        /// <summary>
+        /// 设置UA
+        /// </summary>
+        public string UserAgent
+        {
+            set { MBVIP_API.mbSetUserAgent(m_WebView, MBVIP_Common.StrToUtf8Ptr(value)); }
+        }
+
+        /// <summary>
+        /// 是否允许Cookie
+        /// </summary>
+        public bool CookieEnabled
+        {
+            set { MBVIP_API.mbSetCookieEnabled(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 设置Cookie文件的完整路径，注意：是完整的，路径，不存在会自动新建
+        /// </summary>
+        public string CookieFullPath
+        {
+            set { MBVIP_API.mbSetCookieJarFullPath(m_WebView, MBVIP_Common.StrToUtf8Ptr(value)); }
+        }
+
+        /// <summary>
+        /// 设置Storage文件的完整路径，注意：是完整的，路径，不存在会自动新建
+        /// </summary>
+        public string StorageFullPath
+        {
+            set { MBVIP_API.mbSetLocalStorageFullPath(m_WebView, MBVIP_Common.StrToUtf8Ptr(value)); }
+        }
+
+        /// <summary>
+        /// 是否允许跨域检查
+        /// </summary>
+        public bool CspCheckEnable
+        {
+            set { MBVIP_API.mbSetCspCheckEnable(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 是否允许Npapi
+        /// </summary>
+        public bool NpapiEnabled
+        {
+            set { MBVIP_API.mbSetNpapiPluginsEnabled(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 是否允许内存缓存
+        /// </summary>
+        public bool MemoryCacheEnable
+        {
+            set { MBVIP_API.mbSetMemoryCacheEnable(m_WebView, value ? 1 : 0); }
+        }
+
+        public float ZoomFactor
+        {
+            set { MBVIP_API.mbSetZoomFactor(m_WebView, value); }
+            get { return MBVIP_API.mbGetZoomFactor(m_WebView); }
+        }
+
+        /// <summary>
+        /// 是否允许磁盘缓存
+        /// </summary>
+        public bool DiskCacheEnabled
+        {
+            set { MBVIP_API.mbSetDiskCacheEnabled(m_WebView, value ? 1 : 0); }
+        }
+
+        /// <summary>
+        /// 设置磁盘缓存路径
+        /// </summary>
+        public string DiskCachePath
+        {
+            set { MBVIP_API.mbSetDiskCachePath(m_WebView, MBVIP_Common.StrToUtf8Ptr(value)); }
+        }
+
+        /// <summary>
+        /// 设置磁盘缓存大小
+        /// </summary>
+        public long DiskCacheLimit
+        {
+            set { MBVIP_API.mbSetDiskCacheLimit(m_WebView, value); }
+        }
+
+        /// <summary>
+        /// 设置磁盘缓存限制
+        /// </summary>
+        public long DiskCacheLimitDisk
+        {
+            set { MBVIP_API.mbSetDiskCacheLimitDisk(m_WebView, value); }
+        }
+
+        /// <summary>
+        /// 设置磁盘缓存级别
+        /// </summary>
+        public int DiskCacheLevel
+        {
+            set { MBVIP_API.mbSetDiskCacheLevel(m_WebView, value); }
         }
 
         #endregion
@@ -2276,6 +2603,34 @@ namespace MBVIP
         }
 
         /// <summary>
+        /// 设置mb.dll路径，默认是exe的同目录
+        /// </summary>
+        /// <param name="strPath"></param>
+        public void setMBDllPath(string strPath)
+        {
+            IntPtr ptrPath = MBVIP_Common.StrToUtf8Ptr(strPath);
+            MBVIP_API.mbSetMbDllPath(ptrPath);
+        }
+
+        /// <summary>
+        /// 设置node.dll路径，默认是exe的同目录
+        /// </summary>
+        /// <param name="strPath"></param>
+        public void setNodeDllPath(string strPath)
+        {
+            IntPtr ptrPath = MBVIP_Common.StrToUtf8Ptr(strPath);
+            MBVIP_API.mbSetMbMainDllPath(ptrPath);
+        }
+
+        /// <summary>
+        /// 设置居中（相对父控件）
+        /// </summary>
+        public void SetCenter()
+        {
+            MBVIP_API.mbMoveToCenter(m_WebView);
+        }
+
+        /// <summary>
         /// 加载网站
         /// </summary>
         /// <param name="strUrl"></param>
@@ -2285,15 +2640,49 @@ namespace MBVIP
         }
 
         /// <summary>
-        /// 设置设备参数
+        /// 设置硬件参数，可以用于模拟手机环境等
         /// </summary>
-        /// <param name="device">如：“navigator.platform”</param>
-        /// <param name="paramStr"></param>
-        /// <param name="paramInt"></param>
-        /// <param name="paramFloat"></param>
-        public void SetDeviceParameter(string device, string paramStr, int paramInt = 0, float paramFloat = 0)
+        /// <param name="strDevice">设备的字符串。可取值有：
+        /// "navigator.maxTouchPoints"此时 paramInt 需要被设置，表示 touch 的点数。
+        /// "navigator.platform"此时 paramStr 需要被设置，表示js里获取的 navigator.platform字符串。
+        /// "navigator.hardwareConcurrency"此时 paramInt 需要被设置，表示js里获取的 navigator.hardwareConcurrency 整数值。
+        /// "screen.width"此时 paramInt 需要被设置，表示js里获取的 screen.width 整数值。
+        /// "screen.height"此时 paramInt 需要被设置，表示js里获取的 screen.height 整数值。
+        /// "screen.availWidth"此时 paramInt 需要被设置，表示js里获取的 screen.availWidth 整数值。
+        /// "screen.availHeight"此时 paramInt 需要被设置，表示js里获取的 screen.availHeight 整数值。
+        /// "screen.pixelDepth"此时 paramInt 需要被设置，表示js里获取的 screen.pixelDepth 整数值。
+        /// "screen.pixelDepth"目前等价于"screen.pixelDepth"。
+        /// "window.devicePixelRatio"同上</param>
+        /// <param name="strParam"></param>
+        /// <param name="iParam"></param>
+        /// <param name="fParam"></param>
+        public void SetDeviceParameter(string strDevice, string strParam, int iParam = 0, float fParam = 0)
         {
-            MBVIP_API.mbSetDeviceParameter(m_WebView, MBVIP_Common.StrToUtf8Ptr(device), MBVIP_Common.StrToUtf8Ptr(paramStr), paramInt, paramFloat);
+            IntPtr ptrDevice = MBVIP_Common.StrToUtf8Ptr(strDevice);
+            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
+
+            MBVIP_API.mbSetDeviceParameter(m_WebView, ptrDevice, ptrParam, iParam, fParam);
+        }
+
+        /// <summary>
+        /// 开启一些实验性选项。
+        /// </summary>
+        /// <param name="strDebug">
+        /// "showDevTools"	开启开发者工具，此时param要填写开发者工具的资源路径，如file:///c:/miniblink-release/front_end/inspector.html。注意param此时必须是utf8编
+        /// "wakeMinInterval" 设置帧率，默认值是10，值越大帧率越低
+        /// "drawMinInterval" 设置帧率，默认值是3，值越大帧率越低
+        /// "antiAlias" 设置抗锯齿渲染。param必须设置为"1"
+        /// "minimumFontSize" 最小字体
+        /// "minimumLogicalFontSize" 最小逻辑字体
+        /// "defaultFontSize" 默认字体
+        /// "defaultFixedFontSize" 默认fixed字体</param>
+        /// <param name="strParam"></param>
+        public void SetDebugConfig(string strDebug, string strParam)
+        {
+            IntPtr ptrDebug = MBVIP_Common.StrToUtf8Ptr(strDebug);
+            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
+
+            MBVIP_API.mbSetDebugConfig(m_WebView, ptrDebug, ptrParam);
         }
 
         /// <summary>
@@ -2346,6 +2735,125 @@ namespace MBVIP
         public void GetSource()
         {
             MBVIP_API.mbGetSource(m_WebView, m_mbGetSourceCallback, IntPtr.Zero);
+        }
+
+        /// <summary>
+        /// 设置mimeType，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="strMimeType"></param>
+        public void SetMimeType(IntPtr ptrJob, string strMimeType)
+        {
+            MBVIP_API.mbNetSetMIMEType(ptrJob, MBVIP_Common.StrToUtf8Ptr(strMimeType));
+        }
+
+        /// <summary>
+        /// 获取mimeType，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <returns></returns>
+        public string GetMimeType(IntPtr ptrJob)
+        {
+            IntPtr ptrRet = MBVIP_API.mbNetGetMIMEType(ptrJob);
+            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+        }
+
+        /// <summary>
+        /// 设置HTTP请求头，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="strKey"></param>
+        /// <param name="strValue"></param>
+        public void SetHttpHeaderField(IntPtr ptrJob, string strKey, string strValue)
+        {
+            IntPtr ptrKey = MBVIP_Common.StrToUtf8Ptr(strKey);
+            IntPtr ptrValue = MBVIP_Common.StrToUtf8Ptr(strValue);
+            MBVIP_API.mbNetSetHTTPHeaderField(ptrJob, ptrKey, ptrValue, 0);
+        }
+
+        /// <summary>
+        /// 获取HTTP请求头字段，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="strKey"></param>
+        /// <param name="iRequestOrResponse"></param>
+        /// <returns></returns>
+        public string GetHttpHeaderField(IntPtr ptrJob, string strKey, int iRequestOrResponse)
+        {
+            IntPtr ptrValue = MBVIP_API.mbNetGetHTTPHeaderField(ptrJob, strKey, iRequestOrResponse);
+            return MBVIP_Common.UTF8PtrToStr(ptrValue);
+        }
+
+        /// <summary>
+        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="data"></param>
+        public void NetSetData(IntPtr ptrJob, byte[] data)
+        {
+            MBVIP_API.mbNetSetData(ptrJob, data, data.Length);
+        }
+
+        /// <summary>
+        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="strData">string数据</param>
+        public void NetSetData(IntPtr ptrJob, string strData)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(strData);
+            NetSetData(ptrJob, data);
+        }
+
+        /// <summary>
+        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="img">图片数据</param>
+        /// <param name="fmt">图片格式</param>
+        public void NetSetData(IntPtr ptrJob, Image img, ImageFormat fmt)
+        {
+            byte[] data = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                img.Save(ms, fmt);
+                data = ms.GetBuffer();
+            }
+
+            NetSetData(ptrJob, data);
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用。如果设置了此钩子，则会缓存获取到的网络数据，
+        /// 并在这次网络请求结束后调用mbOnLoadUrlEnd设置的回调，同时传递缓存的数据。在此期间，mb不会处理网络数据。
+        /// 如果在OnLoadUrlBegin事件里没设置mbNetHookRequest，则不会触发mbOnLoadUrlEnd回调。
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        public void NetHookRequest(IntPtr ptrJob)
+        {
+            MBVIP_API.mbNetHookRequest(ptrJob);
+        }
+
+        /// <summary>
+        /// 设置Cookie，格式必须是PRODUCTINFO=webxpress; domain=.fidelity.com; path=/; secure的标准格式
+        /// </summary>
+        /// <param name="strUrl"></param>
+        /// <param name="strCookie"></param>
+        public void SetCookie(string strUrl, string strCookie)
+        {
+            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
+            IntPtr ptrCookie = MBVIP_Common.StrToUtf8Ptr(strCookie);
+            MBVIP_API.mbSetCookie(m_WebView, ptrUrl, ptrCookie);
+        }
+
+        /// <summary>
+        /// 设置菜单是否显示
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="bShow"></param>
+        public void SetContextMenuItemShow(mbMenuItemId item, bool bShow)
+        {
+            MBVIP_API.mbSetContextMenuItemShow(m_WebView, item, bShow ? 1 : 0);
         }
 
         #endregion
