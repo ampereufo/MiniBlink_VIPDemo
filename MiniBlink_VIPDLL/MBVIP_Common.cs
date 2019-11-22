@@ -136,119 +136,119 @@ namespace MBVIP
     }
 
 
-    public class MBVIP_Common
+    internal class MBVIP_Common
     {
         [DllImport("user32.dll", EntryPoint = "GetWindowLongW")]
-        public static extern int GetWindowLong(IntPtr hwnd, int nIndex);
+        internal static extern int GetWindowLong(IntPtr hwnd, int nIndex);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongW")]
-        public static extern int SetWindowLong(IntPtr hwnd, int nIndex, int dwNewLong);
+        internal static extern int SetWindowLong(IntPtr hwnd, int nIndex, int dwNewLong);
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLongW")]
-        public static extern IntPtr GetWindowLongIntPtr(IntPtr hwnd, int nIndex);
+        internal static extern IntPtr GetWindowLongIntPtr(IntPtr hwnd, int nIndex);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongW")]
-        public static extern IntPtr SetWindowLongDelegate(IntPtr hwnd, int nIndex, Delegate dwNewLong);
+        internal static extern IntPtr SetWindowLongDelegate(IntPtr hwnd, int nIndex, Delegate dwNewLong);
 
         [DllImport("user32.dll", EntryPoint = "CallWindowProcW")]
-        public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+        internal static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", EntryPoint = "GetClientRect")]
-        public static extern int GetClientRect(IntPtr hwnd, ref RECT lpRect);
+        internal static extern int GetClientRect(IntPtr hwnd, ref RECT lpRect);
 
         [DllImport("user32.dll", EntryPoint = "BeginPaint")]
-        public static extern IntPtr BeginPaint(IntPtr hwnd, ref PAINTSTRUCT lpPaint);
+        internal static extern IntPtr BeginPaint(IntPtr hwnd, ref PAINTSTRUCT lpPaint);
 
         [DllImport("user32.dll", EntryPoint = "IntersectRect")]
-        public static extern int IntersectRect(ref RECT lpDestRect, ref RECT lpSrc1Rect, ref RECT lpSrc2Rect);
+        internal static extern int IntersectRect(ref RECT lpDestRect, ref RECT lpSrc1Rect, ref RECT lpSrc2Rect);
 
         [DllImport("gdi32.dll", EntryPoint = "BitBlt")]
-        public static extern int BitBlt(IntPtr hDestDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
+        internal static extern int BitBlt(IntPtr hDestDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
 
         [DllImport("user32.dll", EntryPoint = "EndPaint")]
-        public static extern int EndPaint(IntPtr hwnd, ref PAINTSTRUCT lpPaint);
+        internal static extern int EndPaint(IntPtr hwnd, ref PAINTSTRUCT lpPaint);
 
         [DllImport("user32.dll", EntryPoint = "GetFocus")]
-        public static extern IntPtr GetFocus();
+        internal static extern IntPtr GetFocus();
 
         [DllImport("user32.dll", EntryPoint = "SetFocus")]
-        public static extern IntPtr SetFocus(IntPtr hwnd);
+        internal static extern IntPtr SetFocus(IntPtr hwnd);
 
         [DllImport("user32.dll", EntryPoint = "SetCapture")]
-        public static extern int SetCapture(IntPtr hwnd);
+        internal static extern int SetCapture(IntPtr hwnd);
 
         [DllImport("user32.dll", EntryPoint = "ReleaseCapture")]
-        public static extern int ReleaseCapture();
+        internal static extern int ReleaseCapture();
 
         [DllImport("user32.dll", EntryPoint = "ScreenToClient")]
-        public static extern int ScreenToClient(IntPtr hwnd, ref POINT lpPoint);
+        internal static extern int ScreenToClient(IntPtr hwnd, ref POINT lpPoint);
 
         [DllImport("imm32.dll", EntryPoint = "ImmGetContext")]
-        public static extern IntPtr ImmGetContext(IntPtr hwnd);
+        internal static extern IntPtr ImmGetContext(IntPtr hwnd);
 
         [DllImport("imm32.dll", EntryPoint = "ImmSetCompositionWindow")]
-        public static extern int ImmSetCompositionWindow(IntPtr himc, ref COMPOSITIONFORM lpCompositionForm);
+        internal static extern int ImmSetCompositionWindow(IntPtr himc, ref COMPOSITIONFORM lpCompositionForm);
 
         [DllImport("imm32.dll", EntryPoint = "ImmReleaseContext")]
-        public static extern int ImmReleaseContext(IntPtr hwnd, IntPtr himc);
+        internal static extern int ImmReleaseContext(IntPtr hwnd, IntPtr himc);
 
         [DllImport("user32.dll", EntryPoint = "DefWindowProcA")]
-        public static extern IntPtr DefWindowProc(IntPtr hwnd, uint wMsg, IntPtr wParam, IntPtr lParam);
+        internal static extern IntPtr DefWindowProc(IntPtr hwnd, uint wMsg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", EntryPoint = "GetWindowRect")]
-        public static extern int GetWindowRect(IntPtr hwnd, ref RECT lpRect);
+        internal static extern int GetWindowRect(IntPtr hwnd, ref RECT lpRect);
 
         [DllImport("user32.dll", EntryPoint = "OffsetRect")]
-        public static extern int OffsetRect(ref RECT lpRect, int x, int y);
+        internal static extern int OffsetRect(ref RECT lpRect, int x, int y);
 
         [DllImport("gdi32.dll", EntryPoint = "GetCurrentObject")]
-        public static extern IntPtr GetCurrentObject(IntPtr hdc, int uObjectType);
+        internal static extern IntPtr GetCurrentObject(IntPtr hdc, int uObjectType);
 
         [DllImport("gdi32.dll", EntryPoint = "GetObjectW")]
-        public static extern int GetObject(IntPtr hObject, int nCount, ref BITMAP lpObject);
+        internal static extern int GetObject(IntPtr hObject, int nCount, ref BITMAP lpObject);
 
         [DllImport("user32.dll", EntryPoint = "GetDC")]
-        public static extern IntPtr GetDC(IntPtr hwnd);
+        internal static extern IntPtr GetDC(IntPtr hwnd);
 
         [DllImport("user32.dll", EntryPoint = "UpdateLayeredWindow")]
-        public static extern int UpdateLayeredWindow(IntPtr hWnd, IntPtr hdcDst, IntPtr pptDst, ref SIZE psize, IntPtr hdcSrc, ref POINT pptSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
+        internal static extern int UpdateLayeredWindow(IntPtr hWnd, IntPtr hdcDst, IntPtr pptDst, ref SIZE psize, IntPtr hdcSrc, ref POINT pptSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
 
         [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC")]
-        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+        internal static extern IntPtr CreateCompatibleDC(IntPtr hdc);
 
         [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleBitmap")]
-        public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
+        internal static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
 
         [DllImport("gdi32.dll", EntryPoint = "SelectObject")]
-        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hObject);
+        internal static extern IntPtr SelectObject(IntPtr hdc, IntPtr hObject);
 
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-        public static extern int DeleteObject(IntPtr hObject);
+        internal static extern int DeleteObject(IntPtr hObject);
 
         [DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
-        public static extern int DeleteDC(IntPtr hdc);
+        internal static extern int DeleteDC(IntPtr hdc);
 
         [DllImport("user32.dll", EntryPoint = "ReleaseDC")]
-        public static extern int ReleaseDC(IntPtr hwnd, IntPtr hdc);
+        internal static extern int ReleaseDC(IntPtr hwnd, IntPtr hdc);
 
         [DllImport("user32.dll", EntryPoint = "InvalidateRect")]
-        public static extern int InvalidateRect(IntPtr hwnd, ref RECT lpRect, bool bErase);
+        internal static extern int InvalidateRect(IntPtr hwnd, ref RECT lpRect, bool bErase);
 
         [DllImport("kernel32.dll", EntryPoint = "lstrlenA")]
-        public static extern int lstrlen(IntPtr lpString);
+        internal static extern int lstrlen(IntPtr lpString);
 
 
-        public static int LOWORD(IntPtr dword)
+        internal static int LOWORD(IntPtr dword)
         {
             return (int)dword & 65535;
         }
 
-        public static int HIWORD(IntPtr dword)
+        internal static int HIWORD(IntPtr dword)
         {
             return (int)dword >> 16;
         }
 
-        public static string UTF8PtrToStr(IntPtr utf8)
+        internal static string UTF8PtrToStr(IntPtr utf8)
         {
             if (utf8 == IntPtr.Zero)
             {
@@ -262,7 +262,7 @@ namespace MBVIP
             return Encoding.UTF8.GetString(bytes);
         }
 
-        public static IntPtr StrToUtf8Ptr(string str)
+        internal static IntPtr StrToUtf8Ptr(string str)
         {
             IntPtr ptr = IntPtr.Zero;
 
@@ -275,6 +275,50 @@ namespace MBVIP
             }
 
             return ptr;
+        }
+
+        internal static byte[] StructToBytes(object structObj)
+        {
+            int iSize = Marshal.SizeOf(structObj);
+            byte[] bytes = new byte[iSize];
+            IntPtr structPtr = Marshal.AllocHGlobal(iSize);
+            Marshal.StructureToPtr(structObj, structPtr, false);
+            Marshal.Copy(structPtr, bytes, 0, iSize);
+            Marshal.FreeHGlobal(structPtr);
+
+            return bytes;
+        }
+
+        internal static object BytesToStuct(byte[] bytes, Type type)
+        {
+            object objRet = null;
+
+            int iSize = Marshal.SizeOf(type);
+            if (iSize <= bytes.Length)
+            {
+                IntPtr structPtr = Marshal.AllocHGlobal(iSize);
+                Marshal.Copy(bytes, 0, structPtr, iSize);
+                objRet = Marshal.PtrToStructure(structPtr, type);
+                Marshal.FreeHGlobal(structPtr);
+            }
+
+            return objRet;
+        }
+
+        internal static IntPtr StructToPtr(object structObj)
+        {
+            int iSize = Marshal.SizeOf(structObj);
+            byte[] bytes = new byte[iSize];
+            IntPtr structPtr = Marshal.AllocHGlobal(iSize);
+            Marshal.StructureToPtr(structObj, structPtr, false);
+            Marshal.Copy(structPtr, bytes, 0, iSize);
+
+            return structPtr;
+        }
+
+        internal static object PtrToStruct(IntPtr structPtr, Type type)
+        {
+            return Marshal.PtrToStructure(structPtr, type);
         }
     }
 }

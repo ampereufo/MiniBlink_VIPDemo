@@ -72,7 +72,7 @@ namespace MBVIP
         private mbPrintingCallback m_mbPrintingCallback = null;
         private mbImageBufferToDataURLCallback m_mbImageBufferToDataUrlCallback = null;
         private mbOnScreenshotCallback m_mbScreenshotCallback = null;
-        private mbOnCallUiThread m_mbCallUiThreadCallback = null;
+        private mbOnCallUiThreadCallback m_mbCallUiThreadCallback = null;
 
 
         // 定义事件句柄
@@ -1331,12 +1331,14 @@ namespace MBVIP
                 {
                     MBVIP_API.mbOnURLChanged(m_WebView, m_mbUrlChangedCallback, IntPtr.Zero);
                 }
+
                 m_mbUrlChangedHandler += value;
             }
 
             remove
             {
                 m_mbUrlChangedHandler -= value;
+
                 if (m_mbUrlChangedHandler == null)
                 {
                     MBVIP_API.mbOnURLChanged(m_WebView, null, IntPtr.Zero);
@@ -1348,12 +1350,22 @@ namespace MBVIP
         {
             add
             {
+                if (m_mbUrlChangedHandler2 == null)
+                {
+                    MBVIP_API.mbOnURLChanged2(m_WebView, m_mbUrlChangedCallback2, IntPtr.Zero);
+                }
+
                 m_mbUrlChangedHandler2 += value;
             }
 
             remove
             {
                 m_mbUrlChangedHandler2 -= value;
+
+                if (m_mbUrlChangedHandler2 == null)
+                {
+                    MBVIP_API.mbOnURLChanged2(m_WebView, null, IntPtr.Zero);
+                }
             }
         }
 
@@ -1417,12 +1429,14 @@ namespace MBVIP
                 {
                     MBVIP_API.mbOnCreateView(m_WebView, m_mbCreateViewCallback, IntPtr.Zero);
                 }
+
                 m_mbCreateViewHandler += value;
             }
 
             remove
             {
                 m_mbCreateViewHandler -= value;
+
                 if (m_mbCreateViewHandler == null)
                 {
                     MBVIP_API.mbOnCreateView(m_WebView, null, IntPtr.Zero);
@@ -1438,12 +1452,14 @@ namespace MBVIP
                 {
                     MBVIP_API.mbOnDocumentReady(m_WebView, m_mbDocumentReadyCallback, IntPtr.Zero);
                 }
+
                 m_mbDocumentReadyHandler += value;
             }
 
             remove
             {
                 m_mbDocumentReadyHandler -= value;
+
                 if (m_mbDocumentReadyHandler == null)
                 {
                     MBVIP_API.mbOnDocumentReady(m_WebView, null, IntPtr.Zero);
@@ -1524,12 +1540,14 @@ namespace MBVIP
                 {
                     MBVIP_API.mbOnLoadingFinish(m_WebView, m_mbLoadingFinishCallback, IntPtr.Zero);
                 }
+
                 m_mbLoadingFinishHandler += value;
             }
 
             remove
             {
                 m_mbLoadingFinishHandler -= value;
+
                 if (m_mbLoadingFinishHandler == null)
                 {
                     MBVIP_API.mbOnLoadingFinish(m_WebView, null, IntPtr.Zero);
@@ -1545,12 +1563,14 @@ namespace MBVIP
                 {
                     MBVIP_API.mbOnDownload(m_WebView, m_mbDownloadCallback, IntPtr.Zero);
                 }
+
                 m_mbDownloadHandler += value;
             }
 
             remove
             {
                 m_mbDownloadHandler -= value;
+
                 if (m_mbDownloadHandler == null)
                 {
                     MBVIP_API.mbOnDownload(m_WebView, null, IntPtr.Zero);
@@ -1579,12 +1599,14 @@ namespace MBVIP
                 {
                     MBVIP_API.mbOnLoadUrlBegin(m_WebView, m_mbLoadUrlBeginCallback, IntPtr.Zero);
                 }
+
                 m_mbLoadUrlBeginHandler += value;
             }
 
             remove
             {
                 m_mbLoadUrlBeginHandler -= value;
+
                 if (m_mbLoadUrlBeginHandler == null)
                 {
                     MBVIP_API.mbOnLoadUrlBegin(m_WebView, null, IntPtr.Zero);
@@ -1600,12 +1622,14 @@ namespace MBVIP
                 {
                     MBVIP_API.mbOnLoadUrlEnd(m_WebView, m_mbLoadUrlEndCallback, IntPtr.Zero);
                 }
+
                 m_mbLoadUrlEndHandler += value;
             }
 
             remove
             {
                 m_mbLoadUrlEndHandler -= value;
+
                 if (m_mbLoadUrlEndHandler == null)
                 {
                     MBVIP_API.mbOnLoadUrlEnd(m_WebView, null, IntPtr.Zero);
@@ -2319,7 +2343,7 @@ namespace MBVIP
                 m_mbScreenshotHandler?.Invoke(this, new ScreenshotEventArgs(webView, param, data, size));
             });
 
-            m_mbCallUiThreadCallback = new mbOnCallUiThread((IntPtr webView, IntPtr paramOnInThread) =>
+            m_mbCallUiThreadCallback = new mbOnCallUiThreadCallback((IntPtr webView, IntPtr paramOnInThread) =>
             {
                 m_mbCallUiThreadHandler?.Invoke(this, new CallUiThreadEventArgs(webView, paramOnInThread));
             });
@@ -2470,6 +2494,9 @@ namespace MBVIP
             set { MBVIP_API.mbSetMemoryCacheEnable(m_WebView, value ? 1 : 0); }
         }
 
+        /// <summary>
+        /// 设置或获取缩放比例，默认是1（100%）
+        /// </summary>
         public float ZoomFactor
         {
             set { MBVIP_API.mbSetZoomFactor(m_WebView, value); }
@@ -2516,6 +2543,22 @@ namespace MBVIP
             set { MBVIP_API.mbSetDiskCacheLevel(m_WebView, value); }
         }
 
+        /// <summary>
+        /// 获取主句柄
+        /// </summary>
+        public IntPtr GetHostHWND
+        {
+            get { return MBVIP_API.mbGetHostHWND(m_WebView); }
+        }
+
+        /// <summary>
+        /// 设置支持高度DPI
+        /// </summary>
+        public bool EnableHighDPISupport
+        {
+            set { MBVIP_API.mbEnableHighDPISupport(); }
+        }
+
         #endregion
 
         #region --------------------------- 各种方法封装 ---------------------------
@@ -2532,6 +2575,16 @@ namespace MBVIP
 
             m_WebView = MBVIP_API.mbCreateWebView();
             MBVIP_API.mbSetHandle(m_WebView, m_hWnd);
+        }
+
+        /// <summary>
+        /// 设置无窗口模式下的绘制偏移。在某些情况下（主要是离屏模式），绘制的地方不在真窗口的(0, 0)处，就需要手动调用此接口
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetHandleOffset(int x, int y)
+        {
+            MBVIP_API.mbSetHandleOffset(m_WebView, x, y);
         }
 
         /// <summary>
@@ -2631,12 +2684,23 @@ namespace MBVIP
         }
 
         /// <summary>
-        /// 加载网站
+        /// 打开网页
         /// </summary>
         /// <param name="strUrl"></param>
         public void LoadUrl(string strUrl)
         {
             MBVIP_API.mbLoadURL(m_WebView, MBVIP_Common.StrToUtf8Ptr(strUrl));
+        }
+
+        /// <summary>
+        /// Post数据
+        /// </summary>
+        /// <param name="strUrl"></param>
+        /// <param name="data"></param>
+        /// <param name="iDataLen"></param>
+        public void PostData(string strUrl, byte[] data, int iDataLen)
+        {
+            MBVIP_API.mbPostURL(m_WebView, MBVIP_Common.StrToUtf8Ptr(strUrl), data, iDataLen);
         }
 
         /// <summary>
@@ -2679,10 +2743,7 @@ namespace MBVIP
         /// <param name="strParam"></param>
         public void SetDebugConfig(string strDebug, string strParam)
         {
-            IntPtr ptrDebug = MBVIP_Common.StrToUtf8Ptr(strDebug);
-            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
-
-            MBVIP_API.mbSetDebugConfig(m_WebView, ptrDebug, ptrParam);
+            MBVIP_API.mbSetDebugConfig(m_WebView, strDebug, strParam);
         }
 
         /// <summary>
@@ -2738,6 +2799,229 @@ namespace MBVIP
         }
 
         /// <summary>
+        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="data"></param>
+        public void NetSetData(IntPtr ptrJob, byte[] data)
+        {
+            MBVIP_API.mbNetSetData(ptrJob, data, data.Length);
+        }
+
+        /// <summary>
+        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="strData">string数据</param>
+        public void NetSetData(IntPtr ptrJob, string strData)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(strData);
+            NetSetData(ptrJob, data);
+        }
+
+        /// <summary>
+        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="img">图片数据</param>
+        /// <param name="fmt">图片格式</param>
+        public void NetSetData(IntPtr ptrJob, Image img, ImageFormat fmt)
+        {
+            byte[] data = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                img.Save(ms, fmt);
+                data = ms.GetBuffer();
+            }
+
+            NetSetData(ptrJob, data);
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用。如果设置了此钩子，则会缓存获取到的网络数据，
+        /// 并在这次网络请求结束后调用mbOnLoadUrlEnd设置的回调，同时传递缓存的数据。在此期间，mb不会处理网络数据。
+        /// 如果在OnLoadUrlBegin事件里没设置mbNetHookRequest，则不会触发mbOnLoadUrlEnd回调。
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        public void HookRequest(IntPtr ptrJob)
+        {
+            MBVIP_API.mbNetHookRequest(ptrJob);
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用，修改请求的url
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <param name="strUrl"></param>
+        public void ChangeRequestUrl(IntPtr ptrJob, string strUrl)
+        {
+            MBVIP_API.mbNetChangeRequestUrl(ptrJob, strUrl);
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用，继续被中断的任务
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        public void ContinueJob(IntPtr ptrJob)
+        {
+            MBVIP_API.mbNetContinueJob(ptrJob);
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用，获取渲染线程原始http头
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <returns></returns>
+        public mbSlist GetRawHttpHeadInBlinkThread(IntPtr ptrJob)
+        {
+            mbSlist structRet = new mbSlist();
+            IntPtr ptrStruct = MBVIP_API.mbNetGetRawHttpHeadInBlinkThread(ptrJob);
+
+            return (mbSlist)MBVIP_Common.PtrToStruct(ptrStruct, structRet.GetType());
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用，获取渲染线程原始响应头
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <returns></returns>
+        public mbSlist GetRawResponseHeadInBlinkThread(IntPtr ptrJob)
+        {
+            mbSlist structRet = new mbSlist();
+            IntPtr ptrStruct = MBVIP_API.mbNetGetRawResponseHeadInBlinkThread(ptrJob);
+
+            return (mbSlist)MBVIP_Common.PtrToStruct(ptrStruct, structRet.GetType());
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用，挂起任务，异步提交，配合ContinueJob使用
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        public void HoldJobToAsynCommit(IntPtr ptrJob)
+        {
+            MBVIP_API.mbNetHoldJobToAsynCommit(ptrJob);
+        }
+
+        /// <summary>
+        /// 需在OnLoadUrlBegin事件中调用，取消请求
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        public void CancelRequest(IntPtr ptrJob)
+        {
+            MBVIP_API.mbNetCancelRequest(ptrJob);
+        }
+
+        /// <summary>
+        /// 设置web通信管道，会将结果设置到mbWebsocketHookCallbacks结构体
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <param name="ptrParam"></param>
+        public void SetWebsocketCallback(ref mbWebsocketHookCallbacks callback, IntPtr ptrParam)
+        {
+            MBVIP_API.mbNetSetWebsocketCallback(m_WebView, ref callback, ptrParam);
+        }
+
+        /// <summary>
+        /// 通过web通信管道发送文本数据
+        /// </summary>
+        /// <param name="strChannel"></param>
+        /// <param name="data"></param>
+        /// <param name="iDataLen"></param>
+        public void SendWsText(string strChannel, byte[] data, long iDataLen)
+        {
+            MBVIP_API.mbNetSendWsText(MBVIP_Common.StrToUtf8Ptr(strChannel), data, iDataLen);
+        }
+
+        /// <summary>
+        /// 通过web通信管道发送二进制数据
+        /// </summary>
+        /// <param name="strChannel"></param>
+        /// <param name="data"></param>
+        /// <param name="iDataLen"></param>
+        public void SendWsBlob(string strChannel, byte[] data, long iDataLen)
+        {
+            MBVIP_API.mbNetSendWsBlob(MBVIP_Common.StrToUtf8Ptr(strChannel), data, iDataLen);
+        }
+
+        /// <summary>
+        /// 获取Post内容
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <returns></returns>
+        public mbPostBodyElements GetPostBody(IntPtr ptrJob)
+        {
+            mbPostBodyElements structRet = new mbPostBodyElements();
+            IntPtr ptrStruct = MBVIP_API.mbNetGetPostBody(ptrJob);
+
+            return (mbPostBodyElements)MBVIP_Common.PtrToStruct(ptrStruct, structRet.GetType());
+        }
+
+        /// <summary>
+        /// 创建多个post内容元素
+        /// </summary>
+        /// <param name="iLength"></param>
+        /// <returns></returns>
+        public mbPostBodyElements CreatePostBodyElements(long iLength)
+        {
+            mbPostBodyElements structRet = new mbPostBodyElements();
+            IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElements(m_WebView, iLength);
+
+            return (mbPostBodyElements)MBVIP_Common.PtrToStruct(ptrStruct, structRet.GetType());
+        }
+
+        /// <summary>
+        /// 释放多个Post内容元素
+        /// </summary>
+        /// <param name="elements"></param>
+        public void FreePostBodyElements(mbPostBodyElements elements)
+        {
+            IntPtr ptrStruct = MBVIP_Common.StructToPtr(elements);
+            MBVIP_API.mbNetFreePostBodyElements(ptrStruct);
+        }
+
+        /// <summary>
+        /// 创建post内容元素
+        /// </summary>
+        /// <param name="iLength"></param>
+        /// <returns></returns>
+        public mbPostBodyElements CreatePostBodyElement()
+        {
+            mbPostBodyElements structRet = new mbPostBodyElements();
+            IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElement(m_WebView);
+
+            return (mbPostBodyElements)MBVIP_Common.PtrToStruct(ptrStruct, structRet.GetType());
+        }
+
+        /// <summary>
+        /// 释放Post内容元素
+        /// </summary>
+        /// <param name="elements"></param>
+        public void FreePostBodyElement(mbPostBodyElements element)
+        {
+            IntPtr ptrStruct = MBVIP_Common.StructToPtr(element);
+            MBVIP_API.mbNetFreePostBodyElement(ptrStruct);
+        }
+
+        /// <summary>
+        /// 获取请求方法
+        /// </summary>
+        /// <param name="ptrJob"></param>
+        /// <returns></returns>
+        public mbRequestType GetRequestMethod(IntPtr ptrJob)
+        {
+            return MBVIP_API.mbNetGetRequestMethod(ptrJob);
+        }
+
+        /// <summary>
+        /// 取消网络请求
+        /// </summary>
+        /// <param name="iRequestId"></param>
+        public void CancelWebUrlRequest(int iRequestId)
+        {
+            MBVIP_API.mbNetCancelWebUrlRequest(iRequestId);
+        }
+
+        /// <summary>
         /// 设置mimeType，需在OnLoadUrlBegin事件中调用
         /// </summary>
         /// <param name="ptrJob"></param>
@@ -2785,56 +3069,6 @@ namespace MBVIP
         }
 
         /// <summary>
-        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
-        /// </summary>
-        /// <param name="ptrJob"></param>
-        /// <param name="data"></param>
-        public void NetSetData(IntPtr ptrJob, byte[] data)
-        {
-            MBVIP_API.mbNetSetData(ptrJob, data, data.Length);
-        }
-
-        /// <summary>
-        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
-        /// </summary>
-        /// <param name="ptrJob"></param>
-        /// <param name="strData">string数据</param>
-        public void NetSetData(IntPtr ptrJob, string strData)
-        {
-            byte[] data = Encoding.UTF8.GetBytes(strData);
-            NetSetData(ptrJob, data);
-        }
-
-        /// <summary>
-        /// 设置网络数据，需在OnLoadUrlBegin事件中调用
-        /// </summary>
-        /// <param name="ptrJob"></param>
-        /// <param name="img">图片数据</param>
-        /// <param name="fmt">图片格式</param>
-        public void NetSetData(IntPtr ptrJob, Image img, ImageFormat fmt)
-        {
-            byte[] data = null;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                img.Save(ms, fmt);
-                data = ms.GetBuffer();
-            }
-
-            NetSetData(ptrJob, data);
-        }
-
-        /// <summary>
-        /// 需在OnLoadUrlBegin事件中调用。如果设置了此钩子，则会缓存获取到的网络数据，
-        /// 并在这次网络请求结束后调用mbOnLoadUrlEnd设置的回调，同时传递缓存的数据。在此期间，mb不会处理网络数据。
-        /// 如果在OnLoadUrlBegin事件里没设置mbNetHookRequest，则不会触发mbOnLoadUrlEnd回调。
-        /// </summary>
-        /// <param name="ptrJob"></param>
-        public void NetHookRequest(IntPtr ptrJob)
-        {
-            MBVIP_API.mbNetHookRequest(ptrJob);
-        }
-
-        /// <summary>
         /// 设置Cookie，格式必须是PRODUCTINFO=webxpress; domain=.fidelity.com; path=/; secure的标准格式
         /// </summary>
         /// <param name="strUrl"></param>
@@ -2854,6 +3088,112 @@ namespace MBVIP
         public void SetContextMenuItemShow(mbMenuItemId item, bool bShow)
         {
             MBVIP_API.mbSetContextMenuItemShow(m_WebView, item, bShow ? 1 : 0);
+        }
+
+        /// <summary>
+        /// 创建新窗口
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="hParent">父窗口句柄</param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="iWidth"></param>
+        /// <param name="iHeight"></param>
+        /// <returns>返回mbWebView指针</returns>
+        public IntPtr CreateWebWindow(mbWindowType type, IntPtr hParent, int x, int y, int iWidth, int iHeight)
+        {
+            return MBVIP_API.mbCreateWebWindow(type, hParent, x, y, iWidth, iHeight);
+        }
+
+        /// <summary>
+        /// 创建客户端窗口
+        /// </summary>
+        /// <param name="hParent">父窗口句柄</param>
+        /// <param name="iStyle"></param>
+        /// <param name="iStyleEx"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="iWidth"></param>
+        /// <param name="iHeight"></param>
+        /// <returns>返回mbWebView指针</returns>
+        public IntPtr CreateWebCustomWindow(IntPtr hParent, ulong iStyle, ulong iStyleEx, int x, int y, int iWidth, int iHeight)
+        {
+            return MBVIP_API.mbCreateWebCustomWindow(hParent, iStyle, iStyleEx, x, y, iWidth, iHeight);
+        }
+
+        /// <summary>
+        /// 创建MB内部使用的字符串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public string CreateString(string str)
+        {
+            IntPtr ptr = MBVIP_Common.StrToUtf8Ptr(str);
+            IntPtr ptrRet = MBVIP_API.mbCreateString(ptr, str.Length);
+
+            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+        }
+
+        /// <summary>
+        /// 创建一段不以\0结尾的字符串，其实就是一段内存数据
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public string CreateMemory(string str)
+        {
+            IntPtr ptr = MBVIP_Common.StrToUtf8Ptr(str);
+            IntPtr ptrRet = MBVIP_API.mbCreateStringWithoutNullTermination(ptr, str.Length);
+
+            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+        }
+
+        /// <summary>
+        /// 删除CreateString或CreateMemory创建的字符串
+        /// </summary>
+        /// <param name="str"></param>
+        public void DeleteString(string str)
+        {
+            MBVIP_API.mbDeleteString(MBVIP_Common.StrToUtf8Ptr(str));
+        }
+
+        /// <summary>
+        /// 获取CreateString或CreateMemory创建的字符串长度
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public long GetStringLen(string str)
+        {
+            return MBVIP_API.mbGetStringLen(MBVIP_Common.StrToUtf8Ptr(str));
+        }
+
+        /// <summary>
+        /// 获取CreateString或CreateMemory创建的字符串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public string GetString(string str)
+        {
+            IntPtr ptrRet = MBVIP_API.mbGetString(MBVIP_Common.StrToUtf8Ptr(str));
+            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+        }
+
+        /// <summary>
+        /// 添加插件目录
+        /// </summary>
+        /// <param name="strPah"></param>
+        public void AddPluginDirectory(string strPah)
+        {
+            IntPtr ptrPath = MBVIP_Common.StrToUtf8Ptr(strPah);
+            MBVIP_API.mbAddPluginDirectory(m_WebView, ptrPath);
+        }
+
+        /// <summary>
+        /// 设置资源自动清理时间间隔，默认是
+        /// </summary>
+        /// <param name="iSecond"></param>
+        public void SetResourceGc(int iSecond)
+        {
+            MBVIP_API.mbSetResourceGc(m_WebView, iSecond);
         }
 
         #endregion
