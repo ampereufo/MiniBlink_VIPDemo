@@ -31,12 +31,12 @@ namespace MiniBlink_VIPDemo
 
         void webView_OnTitleChange(object sender, MBVIP_WebView.TitleChangedEventArgs e)
         {
-            Text = e.Title;
+            Text = e.strTitle;
         }
 
         void webView_OnUrlChange(object sender, MBVIP_WebView.UrlChangedEventArgs e)
         {
-            Text = e.URL;
+            Text = e.strUrl;
         }
     }
 }

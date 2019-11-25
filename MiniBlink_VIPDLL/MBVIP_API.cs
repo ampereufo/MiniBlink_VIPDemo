@@ -738,7 +738,7 @@ namespace MBVIP
     internal delegate int mbPrintingCallback(IntPtr webView, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate IntPtr mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
+    internal delegate byte[] mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate void mbOnScreenshotCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
@@ -785,7 +785,7 @@ namespace MBVIP
         /// 通过proxy设置MB_SETTING_PAINTCALLBACK_IN_OTHER_THREAD：这是个高级用法，开启后onPaint回调会在另外个线程（其实就是渲染线程）。
         /// 这个是用来实现多线程上屏功能，性能更快。</param>
         [DllImport("mb.dll", EntryPoint = "mbInit", CallingConvention = CallingConvention.StdCall)]
-        internal static extern void mbInit(ref mbSettings settings);
+        internal static extern void mbInit(ref mbSettings setting);
 
         /// <summary>
         /// 设置mb.dll路径，默认是exe的同目录，不修改的话不用调用此接口
@@ -1408,7 +1408,7 @@ namespace MBVIP
         internal static extern void mbSetDiskCacheLevel(IntPtr webView, int Level);
 
         /// <summary>
-        /// 设置资源自动清理时间间隔，默认是
+        /// 设置资源自动清理时间间隔，默认是盟主说忘了
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="intervalSec"></param>
@@ -1989,7 +1989,7 @@ namespace MBVIP
         /// 注意：如果需要返回值，在isInClosure为true时，需要写return，为false则不用</param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbRunJsSync", CallingConvention = CallingConvention.StdCall)]
-        internal static extern long mbRunJsSync(IntPtr webView, IntPtr frameId, IntPtr script, int isInClosure);
+        internal static extern ulong mbRunJsSync(IntPtr webView, IntPtr frameId, IntPtr script, int isInClosure);
 
         /// <summary>
         /// 获取主frame的句柄
@@ -2038,7 +2038,7 @@ namespace MBVIP
         internal static extern void mbSetDeviceParameter(IntPtr webView, IntPtr device, IntPtr paramStr, int paramInt, float paramFloat);
 
         /// <summary>
-        /// 
+        /// 从标记获取内容
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="calback"></param>
@@ -2070,8 +2070,8 @@ namespace MBVIP
         /// </summary>
         /// <param name="registerInfo"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbUtilCreateRequestCode", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr mbUtilCreateRequestCode(IntPtr registerInfo);
+        [DllImport("mb.dll", EntryPoint = "mbUtilCreateRequestCode", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        internal static extern string mbUtilCreateRequestCode(string registerInfo);
 
         /// <summary>
         /// 是否注册
@@ -2170,8 +2170,8 @@ namespace MBVIP
         /// <param name="url"></param>
         /// <param name="downloadJob"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbPopupDownloadMgr", CallingConvention = CallingConvention.StdCall)]
-        internal static extern int mbPopupDownloadMgr(IntPtr webView, IntPtr url, IntPtr downloadJob);
+        [DllImport("mb.dll", EntryPoint = "mbPopupDownloadMgr", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        internal static extern int mbPopupDownloadMgr(IntPtr webView, string url, IntPtr downloadJob);
 
         /// <summary>
         /// 弹出下载对话框的方式下载
@@ -2186,8 +2186,9 @@ namespace MBVIP
         /// <param name="dataBind"></param>
         /// <param name="callbackBind"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbPopupDialogAndDownload", CallingConvention = CallingConvention.StdCall)]
-        internal static extern mbDownloadOpt mbPopupDialogAndDownload(IntPtr webView, IntPtr param, long contentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
+        [DllImport("mb.dll", EntryPoint = "mbPopupDialogAndDownload", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        internal static extern mbDownloadOpt mbPopupDialogAndDownload(IntPtr webView, IntPtr param, long contentLength, 
+            string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
         /// 下载到指定目录
@@ -2203,8 +2204,9 @@ namespace MBVIP
         /// <param name="dataBind"></param>
         /// <param name="callbackBind"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbDownloadByPath", CallingConvention = CallingConvention.StdCall)]
-        internal static extern mbDownloadOpt mbDownloadByPath(IntPtr webView, IntPtr param, IntPtr path, long contentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
+        [DllImport("mb.dll", EntryPoint = "mbDownloadByPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        internal static extern mbDownloadOpt mbDownloadByPath(IntPtr webView, IntPtr param, IntPtr path, long contentLength,
+            string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
         /// 获取pdf页面数据，可以通过回调干点你想干的事情
@@ -2223,14 +2225,14 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateMemBuf", CallingConvention = CallingConvention.StdCall)]
-        internal static extern byte[] mbCreateMemBuf(IntPtr webView, IntPtr buf, long length);
+        internal static extern IntPtr mbCreateMemBuf(IntPtr webView, IntPtr buf, long length);
 
         /// <summary>
         /// 释放内存缓存
         /// </summary>
         /// <param name="buf"></param>
         [DllImport("mb.dll", EntryPoint = "mbFreeMemBuf", CallingConvention = CallingConvention.StdCall)]
-        internal static extern void mbFreeMemBuf(IntPtr buf);
+        internal static extern void mbFreeMemBuf(ref mbMemBuf buf);
 
         /// <summary>
         /// 
