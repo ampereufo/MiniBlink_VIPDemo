@@ -1285,12 +1285,22 @@ namespace MBVIP
         {
             add
             {
+                if (m_mbMouseOverUrlChangedHandler == null)
+                {
+
+                }
+
                 m_mbMouseOverUrlChangedHandler += value;
             }
 
             remove
             {
                 m_mbMouseOverUrlChangedHandler -= value;
+
+                if (m_mbMouseOverUrlChangedHandler == null)
+                {
+
+                }
             }
         }
 
@@ -2672,14 +2682,6 @@ namespace MBVIP
         }
 
         /// <summary>
-        /// 是否显示窗口
-        /// </summary>
-        public bool ShowWindow
-        {
-            set { MBVIP_API.mbShowWindow(m_WebView, value ? 1 : 0); }
-        }
-
-        /// <summary>
         /// 解锁ViewDC
         /// </summary>
         public bool UnlockViewDC
@@ -3661,6 +3663,125 @@ namespace MBVIP
         public void EditorUndo()
         {
             MBVIP_API.mbEditorUndo(m_WebView);
+        }
+
+        /// <summary>
+        /// 发送鼠标消息
+        /// </summary>
+        /// <param name="iMessage"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="iFlags"></param>
+        /// <returns></returns>
+        public bool FireMouseEvent(uint iMessage, int x, int y, uint iFlags)
+        {
+            int iRet = MBVIP_API.mbFireMouseEvent(m_WebView, iMessage, x, y, iFlags);
+            return iRet == 1 ? true : false ;
+        }
+
+        /// <summary>
+        /// 发送菜单消息
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="iFlags"></param>
+        /// <returns></returns>
+        public bool FireContextMenuEvent(int x, int y, uint iFlags)
+        {
+            int iRet = MBVIP_API.mbFireContextMenuEvent(m_WebView, x, y, iFlags);
+            return iRet == 1 ? true : false;
+        }
+
+        /// <summary>
+        /// 发送滚轮消息
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="iDelta"></param>
+        /// <param name="iFlags"></param>
+        /// <returns></returns>
+        public bool FireMouseWheelEvent(int x, int y, int iDelta, uint iFlags)
+        {
+            int iRet = MBVIP_API.mbFireMouseWheelEvent(m_WebView, x, y, iDelta, iFlags);
+            return iRet == 1 ? true : false;
+        }
+
+        /// <summary>
+        /// 发送按键按下消息
+        /// </summary>
+        /// <param name="iVirtualKeyCode"></param>
+        /// <param name="iFlags"></param>
+        /// <param name="iSystemKey"></param>
+        /// <returns></returns>
+        public bool FireKeyDownEvent(uint iVirtualKeyCode, uint iFlags, int iSystemKey)
+        {
+            int iRet = MBVIP_API.mbFireKeyDownEvent(m_WebView, iVirtualKeyCode, iFlags, iSystemKey);
+            return iRet == 1 ? true : false;
+        }
+
+        /// <summary>
+        /// 发送按键抬起消息
+        /// </summary>
+        /// <param name="iVirtualKeyCode"></param>
+        /// <param name="iFlags"></param>
+        /// <param name="iSystemKey"></param>
+        /// <returns></returns>
+        public bool FireKeyUpEvent(uint iVirtualKeyCode, uint iFlags, int iSystemKey)
+        {
+            int iRet = MBVIP_API.mbFireKeyUpEvent(m_WebView, iVirtualKeyCode, iFlags, iSystemKey);
+            return iRet == 1 ? true : false;
+        }
+
+        /// <summary>
+        /// 发送按键消息
+        /// </summary>
+        /// <param name="iCharCode"></param>
+        /// <param name="iFlags"></param>
+        /// <param name="iSystemKey"></param>
+        /// <returns></returns>
+        public bool FireKeyPressEvent(uint iCharCode, uint iFlags, int iSystemKey)
+        {
+            int iRet = MBVIP_API.mbFireKeyPressEvent(m_WebView, iCharCode, iFlags, iSystemKey);
+            return iRet == 1 ? true : false;
+        }
+
+        /// <summary>
+        /// 发送通用消息
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="iMessage"></param>
+        /// <param name="wParam"></param>
+        /// <param name="lParam"></param>
+        /// <param name="strResult"></param>
+        /// <returns></returns>
+        public bool FireWindowsMessage(IntPtr hWnd, uint iMessage, IntPtr wParam, IntPtr lParam, ref string strResult)
+        {
+            int iRet = MBVIP_API.mbFireWindowsMessage(m_WebView, hWnd, iMessage, wParam, lParam, ref strResult);
+            return iRet == 1 ? true : false;
+        }
+
+        /// <summary>
+        /// 设置焦点
+        /// </summary>
+        public void SetFocus()
+        {
+            MBVIP_API.mbSetFocus(m_WebView);
+        }
+
+        /// <summary>
+        /// 放弃焦点
+        /// </summary>
+        public void KillFocus()
+        {
+            MBVIP_API.mbKillFocus(m_WebView);
+        }
+
+        /// <summary>
+        /// 是否显示窗口
+        /// </summary>
+        public bool ShowWindow
+        {
+            set { MBVIP_API.mbShowWindow(m_WebView, value ? 1 : 0); }
         }
 
         /// <summary>
