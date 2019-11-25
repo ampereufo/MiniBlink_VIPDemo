@@ -1846,8 +1846,8 @@ namespace MBVIP
         /// <param name="lParam"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        [DllImport("mb.dll", EntryPoint = "mbFireWindowsMessage", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-        internal static extern int mbFireWindowsMessage(IntPtr webView, IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam, ref string result);
+        [DllImport("mb.dll", EntryPoint = "mbFireWindowsMessage", CallingConvention = CallingConvention.StdCall)]
+        internal static extern int mbFireWindowsMessage(IntPtr webView, IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam, IntPtr result);
 
         /// <summary>
         /// 设置webview是焦点态。如果webveiw关联了窗口，窗口也会有焦点

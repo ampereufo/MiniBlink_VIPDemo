@@ -3754,9 +3754,9 @@ namespace MBVIP
         /// <param name="lParam"></param>
         /// <param name="strResult"></param>
         /// <returns></returns>
-        public bool FireWindowsMessage(IntPtr hWnd, uint iMessage, IntPtr wParam, IntPtr lParam, ref string strResult)
+        public bool FireWindowsMessage(IntPtr hWnd, uint iMessage, IntPtr wParam, IntPtr lParam)
         {
-            int iRet = MBVIP_API.mbFireWindowsMessage(m_WebView, hWnd, iMessage, wParam, lParam, ref strResult);
+            int iRet = MBVIP_API.mbFireWindowsMessage(m_WebView, hWnd, iMessage, wParam, lParam, IntPtr.Zero);
             return iRet == 1 ? true : false;
         }
 
