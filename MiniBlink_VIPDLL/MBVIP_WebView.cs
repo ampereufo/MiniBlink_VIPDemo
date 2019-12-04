@@ -2104,7 +2104,7 @@ namespace MBVIP
                 m_mbBlinkThreadInitHandler?.Invoke(this, new BlinkThreadInitEventArgs(param));
             });
 
-            m_mbGetPdfPageDataCallback = new mbOnGetPdfPageDataCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
+            m_mbGetPdfPageDataCallback = new mbOnGetPdfPageDataCallback((IntPtr webView, IntPtr param, IntPtr data, uint size) =>
             {
                 m_mbGetPdfPageDataHandler?.Invoke(this, new GetPdfPageDataEventArgs(webView, param, data, size));
             });
@@ -2339,7 +2339,7 @@ namespace MBVIP
                 m_mbGetSourceHandler?.Invoke(this, new GetSourceEventArgs(webView, param, mhtml));
             });
 
-            m_mbGetContentAsMarkupCallback = new mbGetContentAsMarkupCallback((IntPtr webView, IntPtr param, IntPtr content, ulong size) =>
+            m_mbGetContentAsMarkupCallback = new mbGetContentAsMarkupCallback((IntPtr webView, IntPtr param, IntPtr content, uint size) =>
             {
                 m_mbGetContentAsMarkupHandler?.Invoke(this, new GetContentAsMarkupEventArgs(webView, param, content, size));
             });
@@ -2384,7 +2384,7 @@ namespace MBVIP
                 m_mbPopupDialogSaveNameHandler?.Invoke(this, new PopupDialogSaveNameEventArgs(ptr, filePath));
             });
 
-            m_mbDownloadInBlinkThreadCallback = new mbDownloadInBlinkThreadCallback((IntPtr webView, IntPtr param, ulong expectedContentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, IntPtr dataBind) =>
+            m_mbDownloadInBlinkThreadCallback = new mbDownloadInBlinkThreadCallback((IntPtr webView, IntPtr param, uint expectedContentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, IntPtr dataBind) =>
             {
                 mbDownloadOpt downloadRet = mbDownloadOpt.kMbDownloadOptCacheData;
                 if (m_mbDownloadInBlinkThreadHandler != null)
@@ -2403,7 +2403,7 @@ namespace MBVIP
                 m_mbPrintPdfDataHandler?.Invoke(this, new PrintPdfDataEventArgs(webView, param, datas));
             });
 
-            m_mbPrintBitmapCallback = new mbPrintBitmapCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
+            m_mbPrintBitmapCallback = new mbPrintBitmapCallback((IntPtr webView, IntPtr param, IntPtr data, uint size) =>
             {
                 m_mbPrintBitmapHandler?.Invoke(this, new PrintBitmapEventArgs(webView, param, data, size));
             });
@@ -2446,13 +2446,13 @@ namespace MBVIP
                 return iRet;
             });
 
-            m_mbImageBufferToDataUrlCallback = new mbImageBufferToDataURLCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
+            m_mbImageBufferToDataUrlCallback = new mbImageBufferToDataURLCallback((IntPtr webView, IntPtr param, IntPtr data, uint size) =>
             {
                 m_mbImageBufferToDataUrlHandler?.Invoke(this, new ImageBufferToDataUrlEventArgs(webView, param, data, size));
-                return MBVIP_API.mbCreateString(data, (int)size);
+                return MBVIP_API.mbCreateString(data, size);
             });
 
-            m_mbScreenshotCallback = new mbOnScreenshotCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
+            m_mbScreenshotCallback = new mbOnScreenshotCallback((IntPtr webView, IntPtr param, IntPtr data, uint size) =>
             {
                 m_mbScreenshotHandler?.Invoke(this, new ScreenshotEventArgs(webView, param, data, size));
             });
@@ -2636,7 +2636,7 @@ namespace MBVIP
         /// <summary>
         /// 设置磁盘缓存大小
         /// </summary>
-        public long DiskCacheLimit
+        public uint DiskCacheLimit
         {
             set { MBVIP_API.mbSetDiskCacheLimit(m_WebView, value); }
         }
@@ -2644,7 +2644,7 @@ namespace MBVIP
         /// <summary>
         /// 设置磁盘缓存限制
         /// </summary>
-        public long DiskCacheLimitDisk
+        public uint DiskCacheLimitDisk
         {
             set { MBVIP_API.mbSetDiskCacheLimitDisk(m_WebView, value); }
         }
@@ -3115,7 +3115,7 @@ namespace MBVIP
         /// <param name="strChannel"></param>
         /// <param name="data"></param>
         /// <param name="iDataLen"></param>
-        public void SendWsText(string strChannel, byte[] data, long iDataLen)
+        public void SendWsText(string strChannel, byte[] data, uint iDataLen)
         {
             MBVIP_API.mbNetSendWsText(MBVIP_Common.StrToUtf8Ptr(strChannel), data, iDataLen);
         }
@@ -3126,7 +3126,7 @@ namespace MBVIP
         /// <param name="strChannel"></param>
         /// <param name="data"></param>
         /// <param name="iDataLen"></param>
-        public void SendWsBlob(string strChannel, byte[] data, long iDataLen)
+        public void SendWsBlob(string strChannel, byte[] data, uint iDataLen)
         {
             MBVIP_API.mbNetSendWsBlob(MBVIP_Common.StrToUtf8Ptr(strChannel), data, iDataLen);
         }
@@ -3147,7 +3147,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="iLength"></param>
         /// <returns></returns>
-        public mbPostBodyElements CreatePostBodyElements(long iLength)
+        public mbPostBodyElements CreatePostBodyElements(uint iLength)
         {
             IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElements(m_WebView, iLength);
             return (mbPostBodyElements)MBVIP_Common.UTF8PtrToStruct(ptrStruct, new mbPostBodyElements().GetType());
@@ -3384,7 +3384,7 @@ namespace MBVIP
         public string CreateString(string str)
         {
             IntPtr ptr = MBVIP_Common.StrToUtf8Ptr(str);
-            IntPtr ptrRet = MBVIP_API.mbCreateString(ptr, str.Length);
+            IntPtr ptrRet = MBVIP_API.mbCreateString(ptr, (uint)str.Length);
 
             return MBVIP_Common.UTF8PtrToStr(ptrRet);
         }
@@ -3397,7 +3397,7 @@ namespace MBVIP
         public string CreateMemory(string str)
         {
             IntPtr ptr = MBVIP_Common.StrToUtf8Ptr(str);
-            IntPtr ptrRet = MBVIP_API.mbCreateStringWithoutNullTermination(ptr, str.Length);
+            IntPtr ptrRet = MBVIP_API.mbCreateStringWithoutNullTermination(ptr, (uint)str.Length);
 
             return MBVIP_Common.UTF8PtrToStr(ptrRet);
         }
@@ -3524,7 +3524,7 @@ namespace MBVIP
         public mbMemBuf CreateMemBuf(byte[] data)
         {
             IntPtr ptrBuf = MBVIP_Common.ByteToUtf8Ptr(data);
-            IntPtr ptrMem = MBVIP_API.mbCreateMemBuf(m_WebView, ptrBuf, data.Length);
+            IntPtr ptrMem = MBVIP_API.mbCreateMemBuf(m_WebView, ptrBuf, (uint)data.Length);
 
             return (mbMemBuf)MBVIP_Common.UTF8PtrToStruct(ptrMem, new mbMemBuf().GetType());
         }
@@ -3838,7 +3838,7 @@ namespace MBVIP
         /// <param name="dataBind"></param>
         /// <param name="callbackBind"></param>
         /// <returns></returns>
-        public mbDownloadOpt PopupDialogAndDownload(long iContentLength, string strUrl, string strMime,
+        public mbDownloadOpt PopupDialogAndDownload(uint iContentLength, string strUrl, string strMime,
             string strDisposition, IntPtr ptrJob, mbNetJobDataBind dataBind, mbDownloadBind callbackBind)
         {
             return MBVIP_API.mbPopupDialogAndDownload(m_WebView, IntPtr.Zero, iContentLength, strUrl, strMime,
@@ -3857,7 +3857,7 @@ namespace MBVIP
         /// <param name="dataBind"></param>
         /// <param name="callbackBind"></param>
         /// <returns></returns>
-        public mbDownloadOpt DownloadByPath(string strPath, long iContentLength, string strUrl, string strMime,
+        public mbDownloadOpt DownloadByPath(string strPath, uint iContentLength, string strUrl, string strMime,
             string strDisposition, IntPtr ptrJob, mbNetJobDataBind dataBind, mbDownloadBind callbackBind)
         {
             IntPtr ptrPath = MBVIP_Common.StrToUtf8Ptr(strPath);
