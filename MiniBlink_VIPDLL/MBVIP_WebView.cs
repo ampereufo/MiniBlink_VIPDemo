@@ -270,11 +270,11 @@ namespace MBVIP
         {
             public UrlChangedEventArgs2(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url) : base(webView)
             {
-                strFrameId = MBVIP_Common.UTF8PtrToStr(frameId);
+                ptrFrameId = frameId;
                 strUrl = MBVIP_Common.UTF8PtrToStr(url);
             }
 
-            public string strFrameId { get; }
+            public IntPtr ptrFrameId { get; }
             public string strUrl { get; }
         }
 
@@ -404,13 +404,13 @@ namespace MBVIP
         {
             public DidCreateScriptContextEventArgs(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int extensionGroup, int worldId) : base(webView)
             {
-                strFrameId = MBVIP_Common.UTF8PtrToStr(frameId);
+                ptrFrameId = frameId;
                 strContext = MBVIP_Common.UTF8PtrToStr(context);
                 iExtensionGroup = extensionGroup;
                 iWorldId = worldId;
             }
 
-            public string strFrameId { get; }
+            public IntPtr ptrFrameId { get; }
             public string strContext { get; }
             public int iExtensionGroup { get; }
             public int iWorldId { get; }
@@ -430,13 +430,13 @@ namespace MBVIP
         {
             public LoadingFinishEventArgs(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, mbLoadingResult result, IntPtr failedReason) : base(webView)
             {
-                strFrameId = MBVIP_Common.UTF8PtrToStr(frameId);
+                ptrFrameId = frameId;
                 strUrl = MBVIP_Common.UTF8PtrToStr(url);
                 LoadingResult = result;
                 strFailedReason = MBVIP_Common.UTF8PtrToStr(failedReason);
             }
 
-            public string strFrameId { get; }
+            public IntPtr ptrFrameId { get; }
             public string strUrl { get; }
             public mbLoadingResult LoadingResult { get; }
             public string strFailedReason { get; }
@@ -504,12 +504,12 @@ namespace MBVIP
         {
             public WillReleaseScriptContextEventArgs(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int worldId) : base(webView)
             {
-                strFrameId = MBVIP_Common.UTF8PtrToStr(frameId);
+                ptrFrameId = frameId;
                 strContext = MBVIP_Common.UTF8PtrToStr(context);
                 iWorldId = worldId;
             }
 
-            public string strFrameId { get; }
+            public IntPtr ptrFrameId { get; }
             public string strContext { get; }
             public int iWorldId { get; }
         }
@@ -770,7 +770,7 @@ namespace MBVIP
                 byteData = MBVIP_Common.UTF8PtrToByte(data);
             }
 
-            public byte[] byteData { get; }
+            public byte[] byteData { get; set; }
         }
 
         public class ScreenshotEventArgs : MiniblinkEventArgs
@@ -2448,16 +2448,8 @@ namespace MBVIP
 
             m_mbImageBufferToDataUrlCallback = new mbImageBufferToDataURLCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
             {
-                byte[] dataRet = new byte[0];
-                if (m_mbImageBufferToDataUrlHandler != null)
-                {
-                    ImageBufferToDataUrlEventArgs e = new ImageBufferToDataUrlEventArgs(webView, param, data, size);
-                    m_mbImageBufferToDataUrlHandler(this, e);
-
-                    dataRet = e.byteData;
-                }
-
-                return dataRet;
+                m_mbImageBufferToDataUrlHandler?.Invoke(this, new ImageBufferToDataUrlEventArgs(webView, param, data, size));
+                return MBVIP_API.mbCreateString(data, (int)size);
             });
 
             m_mbScreenshotCallback = new mbOnScreenshotCallback((IntPtr webView, IntPtr param, IntPtr data, ulong size) =>
@@ -2947,12 +2939,11 @@ namespace MBVIP
         /// <summary>
         /// 异步运行js
         /// </summary>
-        /// <param name="strFrameId"></param>
+        /// <param name="ptrFrameId"></param>
         /// <param name="strJs"></param>
         /// <returns></returns>
-        public ulong RunJsSync(string strFrameId, string strJs)
+        public ulong RunJsSync(IntPtr ptrFrameId, string strJs)
         {
-            IntPtr ptrFrameId = MBVIP_Common.StrToUtf8Ptr(strFrameId);
             IntPtr ptrJs = MBVIP_Common.StrToUtf8Ptr(strJs);
 
             return MBVIP_API.mbRunJsSync(m_WebView, ptrFrameId, ptrJs, 1);
@@ -2983,13 +2974,11 @@ namespace MBVIP
         /// <summary>
         /// 判断是否是主框架
         /// </summary>
-        /// <param name="strFrameId"></param>
+        /// <param name="ptrFrameId"></param>
         /// <returns></returns>
-        public bool IsMainFrame(string strFrameId)
+        public bool IsMainFrame(IntPtr ptrFrameId)
         {
-            IntPtr ptrFrameId = MBVIP_Common.StrToUtf8Ptr(strFrameId);
             int iRet = MBVIP_API.mbIsMainFrame(m_WebView, ptrFrameId);
-
             return iRet == 1 ? true : false;
         }
 
@@ -3896,36 +3885,32 @@ namespace MBVIP
         /// <summary>
         /// 打印pdf
         /// </summary>
-        /// <param name="strFrameId"></param>
+        /// <param name="ptrFrameId"></param>
         /// <param name="settings"></param>
-        public void UtilPrintToPdf(string strFrameId, mbPrintSettings settings)
+        public void UtilPrintToPdf(IntPtr ptrFrameId, mbPrintSettings settings)
         {
-            IntPtr ptrFrameId = MBVIP_Common.StrToUtf8Ptr(strFrameId);
             MBVIP_API.mbUtilPrintToPdf(m_WebView, ptrFrameId, ref settings, m_mbPrintPdfDataCallback, IntPtr.Zero);
         }
 
         /// <summary>
         /// 打印位图
         /// </summary>
-        /// <param name="strFrameId"></param>
+        /// <param name="ptrFrameId"></param>
         /// <param name="settings"></param>
-        public void UtilPrintToBitmap(string strFrameId, mbScreenshotSettings settings)
+        public void UtilPrintToBitmap(IntPtr ptrFrameId, mbScreenshotSettings settings)
         {
-            IntPtr ptrFrameId = MBVIP_Common.StrToUtf8Ptr(strFrameId);
             MBVIP_API.mbUtilPrintToBitmap(m_WebView, ptrFrameId, ref settings, m_mbPrintBitmapCallback, IntPtr.Zero);
         }
 
         /// <summary>
         /// 打印
         /// </summary>
-        /// <param name="strFrameId"></param>
+        /// <param name="ptrFrameId"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public bool UtilPrint(string strFrameId, mbPrintSettings settings)
+        public bool UtilPrint(IntPtr ptrFrameId, mbPrintSettings settings)
         {
-            IntPtr ptrFrameId = MBVIP_Common.StrToUtf8Ptr(strFrameId);
             int iRet = MBVIP_API.mbUtilPrint(m_WebView, ptrFrameId, ref settings);
-
             return iRet == 1 ? true : false;
         }
 

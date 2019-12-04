@@ -738,7 +738,7 @@ namespace MBVIP
     internal delegate int mbPrintingCallback(IntPtr webView, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate byte[] mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
+    internal delegate IntPtr mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate void mbOnScreenshotCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
@@ -862,7 +862,7 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateString", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr mbCreateString(IntPtr str, long length);
+        internal static extern IntPtr mbCreateString(IntPtr str, int length);
         
         /// <summary>
         /// 
