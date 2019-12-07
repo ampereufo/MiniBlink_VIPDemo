@@ -2468,6 +2468,14 @@ namespace MBVIP
         #region --------------------------- 各种属性封装 ---------------------------
 
         /// <summary>
+        /// 获取 WebView 句柄
+        /// </summary>
+        public IntPtr Handle
+        {
+            get { return m_WebView; }
+        }
+
+        /// <summary>
         /// 获取或设置 WebView 的名称
         /// </summary>
         public string Name { get; set; }
