@@ -1196,7 +1196,8 @@ namespace MBVIP
         internal static extern void mbSetNavigationToNewWindowEnable(IntPtr webView, int b);
 
         /// <summary>
-        /// 开启无头模式。开启后，将不会渲染页面，提升了网页性能。此功能方便用来实现一些爬虫或者**工具，提示：有些网页可能会判断网页是否真的显示，导致网页加载失败
+        /// 开启无头模式。开启后，将不会渲染页面，提升了网页性能。此功能方便用来实现一些爬虫或者**工具
+        /// 提示：有些网页可能会判断网页是否真的显示，导致网页加载失败
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="b"></param>
@@ -1399,7 +1400,7 @@ namespace MBVIP
         internal static extern void mbSetDiskCacheLimitDisk(IntPtr webView, uint limit);
 
         /// <summary>
-        /// 
+        /// 设置硬盘缓存等级
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="Level"></param>
@@ -1485,7 +1486,7 @@ namespace MBVIP
         internal static extern void mbOnNavigationSync(IntPtr webView, mbNavigationCallback callback, IntPtr param);
 
         /// <summary>
-        /// 点击超链接创建新窗口时将触发此回调
+        /// 点击超链接等创建新窗口时将触发此回调
         /// </summary>
         /// <param name="webView"></param>
         /// <param name="callback"></param>
