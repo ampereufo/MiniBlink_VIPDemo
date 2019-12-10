@@ -4,8 +4,7 @@ using System.Runtime.InteropServices;
 
 /// <summary>
 /// 挫盟主只写代码不写文档，这个是根据mb.h头文件整理的，有错误找他，别找我
-/// 封装以2019-11-11的mb.h文件为基准，后续修改尽量同步
-/// 参考kyozy大神，https://gitee.com/kyozy/miniblinknet
+/// 封装以2019-11-11的mb.h文件为基准，后续修改会保持同步
 /// 合作联系QQ：17136608，违法黑产勿扰，我还年轻！
 /// 项目地址：https://github.com/ampereufo/MiniBlink_VIPDemo
 /// </summary>
@@ -418,7 +417,7 @@ namespace MBVIP
     {
         public int size;
         public IntPtr data;
-        public ulong length;
+        public uint length;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -563,7 +562,7 @@ namespace MBVIP
         public int size;
         [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr element;
-        public long elementSize;
+        public uint elementSize;
         [MarshalAs(UnmanagedType.I1)]
         public char isDirty;
     }
@@ -603,7 +602,7 @@ namespace MBVIP
     internal delegate void mbOnBlinkThreadInitCallback(IntPtr param);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnGetPdfPageDataCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
+    internal delegate void mbOnGetPdfPageDataCallback(IntPtr webView, IntPtr param, IntPtr data, uint size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate void mbRunJsCallback(IntPtr webView, IntPtr param, IntPtr es, ulong v);
@@ -690,7 +689,7 @@ namespace MBVIP
     internal delegate void mbGetSourceCallback(IntPtr webView, IntPtr param, IntPtr mhtml);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbGetContentAsMarkupCallback(IntPtr webView, IntPtr param, IntPtr content, ulong size);
+    internal delegate void mbGetContentAsMarkupCallback(IntPtr webView, IntPtr param, IntPtr content, uint size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate void mbOnUrlRequestWillRedirectCallback(IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse);
@@ -717,13 +716,13 @@ namespace MBVIP
     internal delegate void mbPopupDialogSaveNameCallback(IntPtr ptr, IntPtr filePath);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate mbDownloadOpt mbDownloadInBlinkThreadCallback(IntPtr webView, IntPtr param, ulong expectedContentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, IntPtr dataBind);
+    internal delegate mbDownloadOpt mbDownloadInBlinkThreadCallback(IntPtr webView, IntPtr param, uint expectedContentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, IntPtr dataBind);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate void mbPrintPdfDataCallback(IntPtr webView, IntPtr param, IntPtr datas);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbPrintBitmapCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
+    internal delegate void mbPrintBitmapCallback(IntPtr webView, IntPtr param, IntPtr data, uint size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate int mbWindowClosingCallback(IntPtr webView, IntPtr param);
@@ -738,10 +737,10 @@ namespace MBVIP
     internal delegate int mbPrintingCallback(IntPtr webView, IntPtr param, mbPrintintStep step, IntPtr hDC, IntPtr settings, int pageCount);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate IntPtr mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
+    internal delegate IntPtr mbImageBufferToDataURLCallback(IntPtr webView, IntPtr param, IntPtr data, uint size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void mbOnScreenshotCallback(IntPtr webView, IntPtr param, IntPtr data, ulong size);
+    internal delegate void mbOnScreenshotCallback(IntPtr webView, IntPtr param, IntPtr data, uint size);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate void mbOnCallUiThreadCallback(IntPtr webView, IntPtr paramOnInThread);
@@ -754,10 +753,10 @@ namespace MBVIP
     internal delegate int onConnected(IntPtr webView, IntPtr param, IntPtr channel);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate IntPtr onReceive(IntPtr webView, IntPtr param, IntPtr channel, int opCode, IntPtr buf, ulong len, IntPtr isContinue);
+    internal delegate IntPtr onReceive(IntPtr webView, IntPtr param, IntPtr channel, int opCode, IntPtr buf, uint len, IntPtr isContinue);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate IntPtr onSend(IntPtr webView, IntPtr param, IntPtr channel, int opCode, IntPtr buf, ulong len, IntPtr isContinue);
+    internal delegate IntPtr onSend(IntPtr webView, IntPtr param, IntPtr channel, int opCode, IntPtr buf, uint len, IntPtr isContinue);
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate void onError(IntPtr webView, IntPtr param, IntPtr channel);
@@ -862,7 +861,7 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateString", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr mbCreateString(IntPtr str, int length);
+        internal static extern IntPtr mbCreateString(IntPtr str, uint length);
         
         /// <summary>
         /// 
@@ -871,7 +870,7 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateStringWithoutNullTermination", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr mbCreateStringWithoutNullTermination(IntPtr str, long length);
+        internal static extern IntPtr mbCreateStringWithoutNullTermination(IntPtr str, uint length);
 
         /// <summary>
         /// 删除 mbCreateString 创建的对象
@@ -886,7 +885,7 @@ namespace MBVIP
         /// <param name="str"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbGetStringLen", CallingConvention = CallingConvention.StdCall)]
-        internal static extern long mbGetStringLen(IntPtr str);
+        internal static extern uint mbGetStringLen(IntPtr str);
 
         /// <summary>
         /// 设计初衷是用来转码，该接口会继续调用node.dll的wkeGetStringW接口，从ASCII转成UTF8字符指针，
@@ -1005,7 +1004,7 @@ namespace MBVIP
         /// <param name="buf"></param>
         /// <param name="len"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetSendWsText", CallingConvention = CallingConvention.StdCall)]
-        internal static extern void mbNetSendWsText(IntPtr channel, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, long len);
+        internal static extern void mbNetSendWsText(IntPtr channel, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, uint len);
 
         /// <summary>
         /// 发送的二进制数据
@@ -1014,7 +1013,7 @@ namespace MBVIP
         /// <param name="buf"></param>
         /// <param name="len"></param>
         [DllImport("mb.dll", EntryPoint = "mbNetSendWsBlob", CallingConvention = CallingConvention.StdCall)]
-        internal static extern void mbNetSendWsBlob(IntPtr channel, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, long len);
+        internal static extern void mbNetSendWsBlob(IntPtr channel, [MarshalAs(UnmanagedType.LPArray)]byte[] buf, uint len);
 
         /// <summary>
         /// 获取此请求中的post数据。只有当请求是post时才有效果
@@ -1032,7 +1031,7 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbNetCreatePostBodyElements", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr mbNetCreatePostBodyElements(IntPtr webView, long length);
+        internal static extern IntPtr mbNetCreatePostBodyElements(IntPtr webView, uint length);
 
         /// <summary>
         /// 这四个接口要结合起来使用。 当mbOnLoadUrlBegin里判断是post时，可以通过mbNetCreatePostBodyElements来创建一个新的post数据包。 
@@ -1389,7 +1388,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="limit"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetDiskCacheLimit", CallingConvention = CallingConvention.StdCall)]
-        internal static extern void mbSetDiskCacheLimit(IntPtr webView, long limit);
+        internal static extern void mbSetDiskCacheLimit(IntPtr webView, uint limit);
 
         /// <summary>
         /// 设置硬盘缓存磁盘
@@ -1397,7 +1396,7 @@ namespace MBVIP
         /// <param name="webView"></param>
         /// <param name="limit"></param>
         [DllImport("mb.dll", EntryPoint = "mbSetDiskCacheLimitDisk", CallingConvention = CallingConvention.StdCall)]
-        internal static extern void mbSetDiskCacheLimitDisk(IntPtr webView, long limit);
+        internal static extern void mbSetDiskCacheLimitDisk(IntPtr webView, uint limit);
 
         /// <summary>
         /// 
@@ -2187,7 +2186,7 @@ namespace MBVIP
         /// <param name="callbackBind"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbPopupDialogAndDownload", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-        internal static extern mbDownloadOpt mbPopupDialogAndDownload(IntPtr webView, IntPtr param, long contentLength, 
+        internal static extern mbDownloadOpt mbPopupDialogAndDownload(IntPtr webView, IntPtr param, uint contentLength, 
             string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
@@ -2205,7 +2204,7 @@ namespace MBVIP
         /// <param name="callbackBind"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbDownloadByPath", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-        internal static extern mbDownloadOpt mbDownloadByPath(IntPtr webView, IntPtr param, IntPtr path, long contentLength,
+        internal static extern mbDownloadOpt mbDownloadByPath(IntPtr webView, IntPtr param, IntPtr path, uint contentLength,
             string url, string mime, string disposition, IntPtr job, ref mbNetJobDataBind dataBind, ref mbDownloadBind callbackBind);
 
         /// <summary>
@@ -2225,7 +2224,7 @@ namespace MBVIP
         /// <param name="length"></param>
         /// <returns></returns>
         [DllImport("mb.dll", EntryPoint = "mbCreateMemBuf", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr mbCreateMemBuf(IntPtr webView, IntPtr buf, long length);
+        internal static extern IntPtr mbCreateMemBuf(IntPtr webView, IntPtr buf, uint length);
 
         /// <summary>
         /// 释放内存缓存

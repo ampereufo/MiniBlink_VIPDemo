@@ -277,6 +277,36 @@ namespace MBVIP
             return ptr;
         }
 
+
+        internal static string UnicodePtrToStr(IntPtr unicode)
+        {
+            if (unicode == IntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            int iLen = lstrlen(unicode);
+            byte[] bytes = new byte[iLen];
+            Marshal.Copy(unicode, bytes, 0, iLen);
+
+            return Encoding.Unicode.GetString(bytes);
+        }
+
+        internal static IntPtr StrToUnicodePtr(string str)
+        {
+            IntPtr ptr = IntPtr.Zero;
+
+            if (!string.IsNullOrEmpty(str))
+            {
+                byte[] bytes = Encoding.Unicode.GetBytes(str);
+                ptr = Marshal.AllocHGlobal(bytes.Length + 1);
+                Marshal.Copy(bytes, 0, ptr, bytes.Length);
+                Marshal.WriteByte(ptr, bytes.Length, 0);
+            }
+
+            return ptr;
+        }
+
         internal static byte[] StructToBytes(object structObj)
         {
             int iSize = Marshal.SizeOf(structObj);
