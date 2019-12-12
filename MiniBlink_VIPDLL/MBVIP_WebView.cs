@@ -1,25 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 
 
 namespace MBVIP
 {
     public class MBVIP_WebView : IDisposable
     {
-        private IntPtr m_WebView;
-        private IntPtr m_hWnd;
-        private IntPtr m_OldProc;
-        private bool m_noDestory;
-        private mbSettings m_settings;
-
-
         // 定义回调变量
         private WndProcCallback m_mbWndProcCallback = null;
         private mbPaintUpdatedCallback m_mbPaintUpdatedCallback = null;
@@ -1186,7 +1177,7 @@ namespace MBVIP
                     }
             }
 
-            return MBVIP_Common.CallWindowProc(m_OldProc, hWnd, msg, wParam, lParam);
+            return MBVIP_Common.CallWindowProc(m_WinProc, hWnd, msg, wParam, lParam);
         }
 
         #endregion
@@ -2468,6 +2459,11 @@ namespace MBVIP
         #region --------------------------- 各种属性封装 ---------------------------
 
         /// <summary>
+        /// WebView
+        /// </summary>
+        private IntPtr m_WebView { get; set; }
+
+        /// <summary>
         /// 获取 WebView 句柄
         /// </summary>
         public IntPtr Handle
@@ -2709,6 +2705,14 @@ namespace MBVIP
 
         #region --------------------------- 各种方法封装 ---------------------------
 
+        private IntPtr m_hWnd;
+        private IntPtr m_WinProc;
+        private mbSettings m_settings;
+
+        private Timer RefreshTimer = new Timer();
+        private WndProcCallback m_procRefresh = null;
+        private mbPaintUpdatedCallback m_updatedRefresh = null;
+
         /// <summary>
         /// 构造函数，初始化
         /// </summary>
@@ -2721,6 +2725,17 @@ namespace MBVIP
 
             m_WebView = MBVIP_API.mbCreateWebView();
             MBVIP_API.mbSetHandle(m_WebView, m_hWnd);
+
+            RefreshTimer.Interval = 60 * 1000;
+            RefreshTimer.Elapsed += RefreshTimer_Elapsed;
+            RefreshTimer.Start();
+        }
+
+        // GC蛋疼的回收机制，委托传给非托管对象后，GC没法监控其使用情况而自动将其释放，定时引用下，防止被释放而引发的崩溃
+        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            m_procRefresh = m_mbWndProcCallback;
+            m_updatedRefresh = m_mbPaintUpdatedCallback;
         }
 
         /// <summary>
@@ -2738,26 +2753,16 @@ namespace MBVIP
         /// </summary>
         public void Dispose()
         {
-            if (m_WebView != IntPtr.Zero)
-            {
-                if (m_OldProc != IntPtr.Zero)
-                {
-                    MBVIP_Common.SetWindowLong(m_hWnd, (int)WinConst.GWL_WNDPROC, m_OldProc.ToInt32());
-                    m_OldProc = IntPtr.Zero;
-                }
+            RefreshTimer.Stop();
+            MBVIP_Common.SetWindowLong(m_hWnd, (int)WinConst.GWL_WNDPROC, null);
+            MBVIP_API.mbOnPaintUpdated(m_WebView, null, m_hWnd);
+            MBVIP_API.mbSetHandle(m_WebView, IntPtr.Zero);
+            MBVIP_API.mbDestroyWebView(m_WebView);
+            MBVIP_API.mbUninit();
 
-                if (!m_noDestory)
-                {
-                    MBVIP_API.mbSetHandle(m_WebView, IntPtr.Zero);
-                    MBVIP_API.mbDestroyWebView(m_WebView);
-                }
-
-                MBVIP_API.mbUninit();
-
-                m_WebView = IntPtr.Zero;
-                m_hWnd = IntPtr.Zero;
-                m_noDestory = false;
-            }
+            m_WinProc = IntPtr.Zero;
+            m_WebView = IntPtr.Zero;
+            m_hWnd = IntPtr.Zero;
         }
 
         /// <summary>
@@ -2787,12 +2792,7 @@ namespace MBVIP
 
             MBVIP_API.mbSetHandle(m_WebView, m_hWnd);
             MBVIP_API.mbOnPaintUpdated(m_WebView, m_mbPaintUpdatedCallback, m_hWnd);
-
-            m_OldProc = MBVIP_Common.GetWindowLongIntPtr(m_hWnd, (int)WinConst.GWL_WNDPROC);
-            if (m_OldProc != Marshal.GetFunctionPointerForDelegate(m_mbWndProcCallback))
-            {
-                m_OldProc = MBVIP_Common.SetWindowLongDelegate(m_hWnd, (int)WinConst.GWL_WNDPROC, m_mbWndProcCallback);
-            }
+            m_WinProc = MBVIP_Common.SetWindowLong(m_hWnd, (int)WinConst.GWL_WNDPROC, m_mbWndProcCallback);
 
             RECT rc = new RECT();
             MBVIP_Common.GetClientRect(m_hWnd, ref rc);

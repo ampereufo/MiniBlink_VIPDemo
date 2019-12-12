@@ -148,7 +148,7 @@ namespace MBVIP
         internal static extern IntPtr GetWindowLongIntPtr(IntPtr hwnd, int nIndex);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongW")]
-        internal static extern IntPtr SetWindowLongDelegate(IntPtr hwnd, int nIndex, Delegate dwNewLong);
+        internal static extern IntPtr SetWindowLong(IntPtr hwnd, int nIndex, Delegate dwNewLong);
 
         [DllImport("user32.dll", EntryPoint = "CallWindowProcW")]
         internal static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
