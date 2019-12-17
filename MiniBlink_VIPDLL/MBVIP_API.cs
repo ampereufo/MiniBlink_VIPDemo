@@ -855,6 +855,14 @@ namespace MBVIP
         internal static extern void mbMoveToCenter(IntPtr webview);
 
         /// <summary>
+        /// 离屏模式下控制是否自动上屏
+        /// </summary>
+        /// <param name="webview"></param>
+        /// <param name="b"></param>
+        [DllImport("mb.dll", EntryPoint = "mbSetAutoDrawToHwnd", CallingConvention = CallingConvention.StdCall)]
+        internal static extern void mbSetAutoDrawToHwnd(IntPtr webview, int b);
+
+        /// <summary>
         /// 创建字符串对象
         /// </summary>
         /// <param name="str"></param>

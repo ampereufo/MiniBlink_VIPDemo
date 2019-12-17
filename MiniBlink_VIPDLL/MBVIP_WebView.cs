@@ -2701,6 +2701,14 @@ namespace MBVIP
             set { MBVIP_API.mbEnableHighDPISupport(); }
         }
 
+        /// <summary>
+        /// 离屏模式下控制是否自动上屏
+        /// </summary>
+        public bool SetAutoDrawToHwnd
+        {
+            set { MBVIP_API.mbSetAutoDrawToHwnd(m_WebView, value ? 1 : 0); }
+        }
+
         #endregion
 
         #region --------------------------- 各种方法封装 ---------------------------
