@@ -2709,6 +2709,14 @@ namespace MBVIP
             set { MBVIP_API.mbSetAutoDrawToHwnd(m_WebView, value ? 1 : 0); }
         }
 
+        /// <summary>
+        /// 获取页面主框架的ID
+        /// </summary>
+        public IntPtr GetMainFrame
+        {
+            get { return MBVIP_API.mbWebFrameGetMainFrame(m_WebView);  }
+        }
+
         #endregion
 
         #region --------------------------- 各种方法封装 ---------------------------
