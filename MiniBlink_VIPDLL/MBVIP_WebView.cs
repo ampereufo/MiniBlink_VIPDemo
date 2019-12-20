@@ -470,13 +470,15 @@ namespace MBVIP
             public LoadUrlBeginEventArgs(IntPtr webView, IntPtr param, IntPtr url, IntPtr job) : base(webView)
             {
                 strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                ptrJob = job;
             }
 
             /// <summary>
-            /// 是否取消载入，true 表示取消
+            /// 是否取消载入，true 表示取消，该方法已经被mbNetCancelRequest所取代
             /// </summary>
             public bool bCancel { get; set; }
             public string strUrl { get; }
+            public IntPtr ptrJob { get; }
         }
 
         public class LoadUrlEndEventArgs : MiniblinkEventArgs
@@ -485,10 +487,12 @@ namespace MBVIP
             {
                 strUrl = MBVIP_Common.UTF8PtrToStr(url);
                 byteData = MBVIP_Common.UTF8PtrToByte(buf);
+                ptrJob = job;
             }
 
             public string strUrl { get; }
             public byte[] byteData { get; }
+            public IntPtr ptrJob { get; }
         }
 
         public class WillReleaseScriptContextEventArgs : MiniblinkEventArgs
@@ -511,10 +515,12 @@ namespace MBVIP
             {
                 strUrl = MBVIP_Common.UTF8PtrToStr(url);
                 iRet = url == IntPtr.Zero ? 0 : 1; ;
+                ptrJob = job;
             }
 
             public string strUrl { get; }
             public int iRet { get; }
+            public IntPtr ptrJob { get; }
         }
 
         public class NetGetFaviconEventArgs : MiniblinkEventArgs
@@ -640,9 +646,11 @@ namespace MBVIP
             public NetJobDataRecvEventArgs(IntPtr ptr, IntPtr job, IntPtr data, int length)
             {
                 byteData = MBVIP_Common.UTF8PtrToByte(data);
+                ptrJob = job;
             }
 
             public byte[] byteData { get; }
+            public IntPtr ptrJob { get; }
         }
 
         public class NetJobDataFinishEventArgs
@@ -650,9 +658,11 @@ namespace MBVIP
             public NetJobDataFinishEventArgs(IntPtr ptr, IntPtr job, mbLoadingResult result)
             {
                 Result = result;
+                ptrJob = job;
             }
 
             public mbLoadingResult Result { get; }
+            public IntPtr ptrJob { get; }
         }
 
         public class PopupDialogSaveNameEventArgs
@@ -675,6 +685,7 @@ namespace MBVIP
                 strDisposition = MBVIP_Common.UTF8PtrToStr(disposition);
                 DownloadRet = expectedContentLength == 0 ? mbDownloadOpt.kMbDownloadOptCancel : mbDownloadOpt.kMbDownloadOptCacheData;
                 byteData = MBVIP_Common.UTF8PtrToByte(dataBind);
+                ptrJob = job;
             }
 
             public ulong iLength { get; }
@@ -683,6 +694,7 @@ namespace MBVIP
             public string strDisposition { get; }
             public mbDownloadOpt DownloadRet { get; }
             public byte[] byteData { get; }
+            public IntPtr ptrJob { get; }
         }
 
         public class PrintPdfDataEventArgs : MiniblinkEventArgs
