@@ -23,13 +23,13 @@ namespace MiniBlink_VIPDemo
             m_webView = new MBVIP_WebView();
             m_webView.Bind(panel1.Handle);
 
-            m_webView.onTitleChanged += new EventHandler<MBVIP_WebView.TitleChangedEventArgs>(webView_OnTitleChange);
-            m_webView.onUrlChanged += new EventHandler<MBVIP_WebView.UrlChangedEventArgs>(webView_OnURLChange);
-            m_webView.onLoadingFinish += new EventHandler<MBVIP_WebView.LoadingFinishEventArgs>(webView_OnLoadingFinish);
-            m_webView.onLoadUrlBegin += new EventHandler<MBVIP_WebView.LoadUrlBeginEventArgs>(webView_OnLoadUrlBegin);
-            m_webView.onDocumentReady += new EventHandler<MBVIP_WebView.DocumentReadyEventArgs>(webView_OnDocumentReady);
-            m_webView.onDownload += new EventHandler<MBVIP_WebView.DownloadEventArgs>(webView_OnDownload);
-            m_webView.onImageBufferToDataURL += new EventHandler<MBVIP_WebView.ImageBufferToDataUrlEventArgs>(webView_OnImageBufferToDataURL);
+            m_webView.onTitleChanged += webView_OnTitleChange;
+            m_webView.onUrlChanged += webView_OnURLChange;
+            m_webView.onLoadingFinish += webView_OnLoadingFinish;
+            m_webView.onLoadUrlBegin += webView_OnLoadUrlBegin;
+            m_webView.onDocumentReady += webView_OnDocumentReady;
+            m_webView.onDownload += webView_OnDownload;
+            m_webView.onImageBufferToDataURL += webView_OnImageBufferToDataURL;
 
             m_webView.LoadUrl("http://miniblink.net/");
         }
@@ -69,10 +69,10 @@ namespace MiniBlink_VIPDemo
             string ss = $"{e.LoadingResult} {e.strFailedReason}";
 
             m_webView.GetSource();
-            m_webView.onGetSource += new EventHandler<MBVIP_WebView.GetSourceEventArgs>(webView_OnGetHtmlCode);
+            m_webView.onGetSource += webView_OnGetHtmlCode;
 
             m_webView.RunJs("return document.URL;");
-            m_webView.onRunJs += new EventHandler<MBVIP_WebView.RunJsEventArgs>(webView_OnRunJs);
+            m_webView.onRunJs += webView_OnRunJs;
         }
 
         private void webView_OnGetHtmlCode(object sender, MBVIP_WebView.GetSourceEventArgs e)
