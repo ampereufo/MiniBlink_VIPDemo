@@ -32,46 +32,65 @@ namespace MiniBlink_VIPDemo
             return Encoding.Unicode.GetString(bytes);
         }
 
+        public static byte[] StructToBytes(this object structObj)
+        {
+            int iSize = Marshal.SizeOf(structObj);
+            byte[] bytes = new byte[iSize];
+            IntPtr structPtr = Marshal.AllocHGlobal(iSize);
+            Marshal.StructureToPtr(structObj, structPtr, false);
+            Marshal.Copy(structPtr, bytes, 0, iSize);
+            Marshal.FreeHGlobal(structPtr);
+
+            return bytes;
+        }
+
         public static Dictionary<string, string> GetHttpPostData(MBVIP_WebView webView, IntPtr ptrJob)
         {
             Dictionary<string, string> HttpDataRet = new Dictionary<string, string>();
 
-            mbPostBodyElement[] elementsArr = webView.GetPostBody(ptrJob);
-            foreach (var item in elementsArr)
+            try
             {
-                if (item.type == mbHttpBodyElementType.mbHttpBodyElementTypeData)
+                mbPostBodyElement[] elementsArr = webView.GetPostBody(ptrJob);
+                foreach (var item in elementsArr)
                 {
-                    mbMemBuf memBuf = (mbMemBuf)item.data.UTF8PtrToStruct(typeof(mbMemBuf));
-                    byte[] byteBuf = new byte[memBuf.length];
-                    Marshal.Copy(memBuf.data, byteBuf, 0, byteBuf.Length);
-
-                    string strHttpData = Encoding.UTF8.GetString(byteBuf);
-                    if (!strHttpData.StartsWith("--"))
+                    if (item.type == mbHttpBodyElementType.mbHttpBodyElementTypeData)
                     {
-                        string[] strDatas = strHttpData.Split('&');
-                        foreach (string strData in strDatas)
+                        mbMemBuf memBuf = (mbMemBuf)item.data.UTF8PtrToStruct(typeof(mbMemBuf));
+                        byte[] byteBuf = new byte[memBuf.length];
+                        Marshal.Copy(memBuf.data, byteBuf, 0, byteBuf.Length);
+
+                        string strHttpData = Encoding.UTF8.GetString(byteBuf);
+                        if (!strHttpData.StartsWith("--"))
                         {
-                            string[] strDatas2 = strData.Split('=');
-                            if (strDatas2.Length < 1)
+                            string[] strDatas = strHttpData.Split('&');
+                            foreach (string strData in strDatas)
                             {
-                                continue;
-                            }
-                            else if (strDatas2.Length == 1)
-                            {
-                                HttpDataRet[strDatas2[0]] = string.Empty;
-                            }
-                            else
-                            {
-                                int iIndex = strData.IndexOf("=", StringComparison.Ordinal) + 1;
-                                HttpDataRet[strDatas2[0]] = strData.Length > iIndex ? strData.Substring(iIndex) : string.Empty;
+                                string[] strDatas2 = strData.Split('=');
+                                if (strDatas2.Length < 1)
+                                {
+                                    continue;
+                                }
+                                else if (strDatas2.Length == 1)
+                                {
+                                    HttpDataRet[strDatas2[0]] = string.Empty;
+                                }
+                                else
+                                {
+                                    int iIndex = strData.IndexOf("=", StringComparison.Ordinal) + 1;
+                                    HttpDataRet[strDatas2[0]] = strData.Length > iIndex ? strData.Substring(iIndex) : string.Empty;
+                                }
                             }
                         }
                     }
+                    else if (item.type == mbHttpBodyElementType.mbHttpBodyElementTypeFile)
+                    {
+                        string strFile = item.filePath.UnicodePtrToStr();
+                    }
                 }
-                else if (item.type == mbHttpBodyElementType.mbHttpBodyElementTypeFile)
-                {
-                    string strFile = item.filePath.UnicodePtrToStr();
-                }
+            }
+            catch
+            {
+                HttpDataRet = null;
             }
 
             return HttpDataRet;

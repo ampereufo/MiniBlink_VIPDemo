@@ -160,7 +160,7 @@ namespace MBVIP
             public PaintBitUpdatedEventArgs(IntPtr webView, IntPtr param, IntPtr buffer, IntPtr rect, int width, int height) : base(webView)
             {
                 byteBuffer = buffer.UTF8PtrToByte();
-                Rect = (mbRect)rect.UTF8PtrToStruct(new mbRect().GetType());
+                Rect = (mbRect)rect.UTF8PtrToStruct(typeof(mbRect));
                 iWidth = width;
                 iHeight = height;
             }
@@ -742,7 +742,7 @@ namespace MBVIP
         {
             public DraggableRegionsChangedEventArgs(IntPtr webView, IntPtr param, IntPtr rects, int rectCount) : base(webView)
             {
-                Region = (mbDraggableRegion)rects.UTF8PtrToStruct(new mbDraggableRegion().GetType());
+                Region = (mbDraggableRegion)rects.UTF8PtrToStruct(typeof(mbDraggableRegion));
                 iRectCount = rectCount;
             }
 
@@ -756,7 +756,7 @@ namespace MBVIP
             {
                 mStep = step;
                 ptrHDC = hDC;
-                Settings = (mbPrintintSettings)settings.UTF8PtrToStruct(new mbPrintintSettings().GetType());
+                Settings = (mbPrintintSettings)settings.UTF8PtrToStruct(typeof(mbPrintintSettings));
                 iPageCount = pageCount;
             }
 
@@ -3103,7 +3103,7 @@ namespace MBVIP
         public mbSlist GetRawHttpHeadInBlinkThread(IntPtr ptrJob)
         {
             IntPtr ptrStruct = MBVIP_API.mbNetGetRawHttpHeadInBlinkThread(ptrJob);
-            return (mbSlist)ptrStruct.UTF8PtrToStruct(new mbSlist().GetType());
+            return (mbSlist)ptrStruct.UTF8PtrToStruct(typeof(mbSlist));
         }
 
         /// <summary>
@@ -3114,7 +3114,7 @@ namespace MBVIP
         public mbSlist GetRawResponseHeadInBlinkThread(IntPtr ptrJob)
         {
             IntPtr ptrStruct = MBVIP_API.mbNetGetRawResponseHeadInBlinkThread(ptrJob);
-            return (mbSlist)ptrStruct.UTF8PtrToStruct(new mbSlist().GetType());
+            return (mbSlist)ptrStruct.UTF8PtrToStruct(typeof(mbSlist));
         }
 
         /// <summary>
@@ -3205,11 +3205,23 @@ namespace MBVIP
         /// </summary>
         /// <param name="iLength"></param>
         /// <returns></returns>
-        public mbPostBodyElements CreatePostBodyElement()
+        public mbPostBodyElements CreatePostBodyElements(uint length)
+        {
+            IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElements(m_WebView, length);
+
+            return (mbPostBodyElements)ptrStruct.UTF8PtrToStruct(typeof(mbPostBodyElements));
+        }
+
+        /// <summary>
+        /// 创建Http数据
+        /// </summary>
+        /// <param name="iLength"></param>
+        /// <returns></returns>
+        public mbPostBodyElement CreatePostBodyElement()
         {
             IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElement(m_WebView);
 
-            return (mbPostBodyElements)ptrStruct.UTF8PtrToStruct(new mbPostBodyElements().GetType());
+            return (mbPostBodyElement)ptrStruct.UTF8PtrToStruct(typeof(mbPostBodyElement));
         }
 
         /// <summary>
@@ -3352,7 +3364,7 @@ namespace MBVIP
         /// </summary>
         /// <param name="ptrJob"></param>
         /// <param name="strKey"></param>
-        /// <param name="iRequestOrResponse"></param>
+        /// <param name="iRequestOrResponse">0为请求，1为响应</param>
         /// <returns></returns>
         public string GetHttpHeaderField(IntPtr ptrJob, string strKey, int iRequestOrResponse)
         {
@@ -3550,7 +3562,7 @@ namespace MBVIP
             IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
             IntPtr ptrMem = MBVIP_API.mbUtilCreateV8Snapshot(ptrUrl);
 
-            return (mbMemBuf)ptrMem.UTF8PtrToStruct(new mbMemBuf().GetType());
+            return (mbMemBuf)ptrMem.UTF8PtrToStruct(typeof(mbMemBuf));
         }
 
         /// <summary>
@@ -3563,7 +3575,7 @@ namespace MBVIP
             IntPtr ptrBuf = data.ByteToUtf8Ptr();
             IntPtr ptrMem = MBVIP_API.mbCreateMemBuf(m_WebView, ptrBuf, (uint)data.Length);
 
-            return (mbMemBuf)ptrMem.UTF8PtrToStruct(new mbMemBuf().GetType());
+            return (mbMemBuf)ptrMem.UTF8PtrToStruct(typeof(mbMemBuf));
         }
 
         /// <summary>
