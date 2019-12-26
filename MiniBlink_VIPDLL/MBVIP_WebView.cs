@@ -3168,29 +3168,30 @@ namespace MBVIP
         }
 
         /// <summary>
-        /// 获取Post内容
+        /// 获取Post数据内容
         /// </summary>
         /// <param name="ptrJob"></param>
         /// <returns></returns>
-        public mbPostBodyElements GetPostBody(IntPtr ptrJob)
+        public mbPostBodyElement[] GetPostBody(IntPtr ptrJob)
         {
-            IntPtr ptrStruct = MBVIP_API.mbNetGetPostBody(ptrJob);
-            return (mbPostBodyElements)ptrStruct.UTF8PtrToStruct(new mbPostBodyElements().GetType());
+            IntPtr ptrBody = MBVIP_API.mbNetGetPostBody(ptrJob);
+            mbPostBodyElements elements = (mbPostBodyElements)ptrBody.UTF8PtrToStruct(typeof(mbPostBodyElements));
+
+            mbPostBodyElement[] HttpDataArr = new mbPostBodyElement[elements.elementSize];
+            IntPtr ptrElement = elements.element;
+
+            for (int i = 0; i < elements.elementSize; i++)
+            {
+                var temp = (IntPtr)ptrElement.UTF8PtrToStruct(typeof(IntPtr));
+                HttpDataArr[i] = (mbPostBodyElement)temp.UTF8PtrToStruct(typeof(mbPostBodyElement));
+                ptrElement = new IntPtr(ptrElement.ToInt64() + IntPtr.Size);
+            }
+
+            return HttpDataArr;
         }
 
         /// <summary>
-        /// 创建多个post内容元素
-        /// </summary>
-        /// <param name="iLength"></param>
-        /// <returns></returns>
-        public mbPostBodyElements CreatePostBodyElements(uint iLength)
-        {
-            IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElements(m_WebView, iLength);
-            return (mbPostBodyElements)ptrStruct.UTF8PtrToStruct(new mbPostBodyElements().GetType());
-        }
-
-        /// <summary>
-        /// 释放多个Post内容元素
+        /// 释放Http数据
         /// </summary>
         /// <param name="elements"></param>
         public void FreePostBodyElements(mbPostBodyElements elements)
@@ -3200,7 +3201,7 @@ namespace MBVIP
         }
 
         /// <summary>
-        /// 创建post内容元素
+        /// 创建Http数据
         /// </summary>
         /// <param name="iLength"></param>
         /// <returns></returns>
@@ -3212,7 +3213,7 @@ namespace MBVIP
         }
 
         /// <summary>
-        /// 释放Post内容元素
+        /// 释放Http数据
         /// </summary>
         /// <param name="elements"></param>
         public void FreePostBodyElement(mbPostBodyElements element)

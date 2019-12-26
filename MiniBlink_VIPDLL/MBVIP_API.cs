@@ -280,10 +280,10 @@ namespace MBVIP
     /// <summary>
     /// 网页元素类型
     /// </summary>
-    public enum mbHttBodyElementType
+    public enum mbHttpBodyElementType
     {
-        mbHttBodyElementTypeData = 0,
-        mbHttBodyElementTypeFile = 1
+        mbHttpBodyElementTypeData = 0,
+        mbHttpBodyElementTypeFile = 1
     }
 
     /// <summary>
@@ -426,44 +426,34 @@ namespace MBVIP
         public mbStorageType storageType;
 
         // Only valid when storageType == StorageTypeString.
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr stringType;
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr stringData;
 
         // Only valid when storageType == StorageTypeFilename.
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr filenameData;
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr displayNameData;
 
         // Only valid when storageType == StorageTypeBinaryData.
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr binaryData;
 
         // Title associated with a link when stringType == "text/uri-list".
         // Filename when storageType == StorageTypeBinaryData.
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr title;
 
         // Only valid when storageType == StorageTypeFileSystemFile.
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr fileSystemURL;
         public long fileSystemFileSize;
 
         // Only valid when stringType == "text/html".
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr baseURL;
     };
 
     [StructLayout(LayoutKind.Sequential)]
     public struct mbWebDragData
     {
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr itemList;
         public int itemListLength;
         public int modifierKeyState; // State of Shift/Ctrl/Alt/Meta keys.
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr filesystemId;
     }
 
@@ -471,7 +461,6 @@ namespace MBVIP
     public struct mbSlist
     {
         public IntPtr data;
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr next;
     }
 
@@ -547,10 +536,8 @@ namespace MBVIP
     public struct mbPostBodyElement
     {
         public int size;
-        public mbHttBodyElementType type;
-        [MarshalAs(UnmanagedType.LPStruct)]
+        public mbHttpBodyElementType type;
         public IntPtr data;
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr filePath;
         public long fileStart;
         public long fileLength; // -1表示到文件结尾
@@ -560,10 +547,8 @@ namespace MBVIP
     public struct mbPostBodyElements
     {
         public int size;
-        [MarshalAs(UnmanagedType.LPStruct)]
         public IntPtr element;
-        public uint elementSize;
-        [MarshalAs(UnmanagedType.I1)]
+        public int elementSize;
         public char isDirty;
     }
 

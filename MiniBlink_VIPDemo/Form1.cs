@@ -34,7 +34,7 @@ namespace MiniBlink_VIPDemo
             m_webView.onDownload += webView_OnDownload;
             m_webView.onImageBufferToDataURL += webView_OnImageBufferToDataURL;
 
-            m_webView.LoadUrl("http://miniblink.net/");
+            m_webView.LoadUrl("https://cn.bing.com/search?q=http+analyzer&PC=U316&FORM=CHROMN");
         }
 
         private void webView_OnURLChange(object sender, MBVIP_WebView.UrlChangedEventArgs e)
@@ -72,12 +72,19 @@ namespace MiniBlink_VIPDemo
 
         private void webView_OnLoadUrlBegin(object sender, MBVIP_WebView.LoadUrlBeginEventArgs e)
         {
-            if (e.strUrl.ToLower().Contains("test.js"))    // 拦截或替换某些你不喜欢的东西
+            m_webView.HookRequest(e.ptrJob);
+
+            if (e.strUrl.ToLower().Contains("test.js"))    // 拦截某些你不喜欢的东西
             {
                 m_webView.SetMimeType(e.ptrJob, "application/javascript");
                 m_webView.NetSetData(e.ptrJob, "alert(\"js代码测试\")");
 
                 m_webView.CancelRequest(e.ptrJob);    // 取消本次请求
+            }
+
+            if (m_webView.GetRequestMethod(e.ptrJob) == mbRequestType.kMbRequestTypePost)    // 拦截或替换post数据
+            {
+                var dictData = Common.GetHttpPostData(m_webView, e.ptrJob);
             }
         }
 
@@ -85,7 +92,7 @@ namespace MiniBlink_VIPDemo
         {
             string ss = $"{e.LoadingResult} {e.strFailedReason}";
 
-            m_webView.GetSource();    // 获取网页源码，因为是多线程架构，结果在回调里取
+            m_webView.GetSource();    // 获取网页源码，因为是多线程架构，异步的，结果要在回调里取
             m_webView.onGetSource += webView_OnGetHtmlCode;
 
             m_webView.RunJs("return document.URL;");    // 执行js，需要返回值的话需要加return
