@@ -159,8 +159,8 @@ namespace MBVIP
         {
             public PaintBitUpdatedEventArgs(IntPtr webView, IntPtr param, IntPtr buffer, IntPtr rect, int width, int height) : base(webView)
             {
-                byteBuffer = MBVIP_Common.UTF8PtrToByte(buffer);
-                Rect = (mbRect)MBVIP_Common.UTF8PtrToStruct(rect, new mbRect().GetType());
+                byteBuffer = buffer.UTF8PtrToByte();
+                Rect = (mbRect)rect.UTF8PtrToStruct(new mbRect().GetType());
                 iWidth = width;
                 iHeight = height;
             }
@@ -183,7 +183,7 @@ namespace MBVIP
         {
             public GetPdfPageDataEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
             {
-                PdfData = MBVIP_Common.UTF8PtrToByte(data);
+                PdfData = data.UTF8PtrToByte();
             }
 
             public byte[] PdfData { get; }
@@ -195,7 +195,7 @@ namespace MBVIP
             {
                 fRet = MBVIP_API.mbJsToDouble(es, v);
                 IntPtr ptrRet = MBVIP_API.mbJsToString(es, v);
-                strRet = MBVIP_Common.UTF8PtrToStr(ptrRet);
+                strRet = ptrRet.UTF8PtrToStr();
                 bRet = MBVIP_API.mbJsToBoolean(es, v) == 1 ? true : false;
             }
 
@@ -210,10 +210,10 @@ namespace MBVIP
             {
                 fNumRet = MBVIP_API.mbJsToDouble(es, queryId);
                 IntPtr ptrRet = MBVIP_API.mbJsToString(es, queryId);
-                strRet = MBVIP_Common.UTF8PtrToStr(ptrRet);
+                strRet = ptrRet.UTF8PtrToStr();
                 bRet = MBVIP_API.mbJsToBoolean(es, queryId) == 1 ? true : false;
                 iCustomMsg = customMsg;
-                strRequest = MBVIP_Common.UTF8PtrToStr(request);
+                strRequest = request.UTF8PtrToStr();
             }
 
             public double fNumRet { get; }
@@ -227,7 +227,7 @@ namespace MBVIP
         {
             public TitleChangedEventArgs(IntPtr webView, IntPtr param, IntPtr title) : base(webView)
             {
-                strTitle = MBVIP_Common.UTF8PtrToStr(title);
+                strTitle = title.UTF8PtrToStr();
             }
 
             public string strTitle { get; }
@@ -237,7 +237,7 @@ namespace MBVIP
         {
             public MouseOverUrlChangedEventArgs(IntPtr webView, IntPtr param, IntPtr url) : base(webView)
             {
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
             }
 
             public string strUrl { get; }
@@ -247,7 +247,7 @@ namespace MBVIP
         {
             public UrlChangedEventArgs(IntPtr webView, IntPtr param, IntPtr url, int canGoBack, int canGoForward) : base(webView)
             {
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
                 iCanGoBack = canGoBack;
                 iCanGoForward = canGoForward;
             }
@@ -262,7 +262,7 @@ namespace MBVIP
             public UrlChangedEventArgs2(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url) : base(webView)
             {
                 ptrFrameId = frameId;
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
             }
 
             public IntPtr ptrFrameId { get; }
@@ -273,7 +273,7 @@ namespace MBVIP
         {
             public AlertBoxEventArgs(IntPtr webView, IntPtr param, IntPtr msg) : base(webView)
             {
-                strMsg = MBVIP_Common.UTF8PtrToStr(msg);
+                strMsg = msg.UTF8PtrToStr();
             }
 
             public string strMsg { get; }
@@ -283,7 +283,7 @@ namespace MBVIP
         {
             public ConfirmBoxEventArgs(IntPtr webView, IntPtr param, IntPtr msg) : base(webView)
             {
-                strMsg = MBVIP_Common.UTF8PtrToStr(msg);
+                strMsg = msg.UTF8PtrToStr();
                 iRet = msg == IntPtr.Zero ? 0 : 1;
             }
 
@@ -295,8 +295,8 @@ namespace MBVIP
         {
             public PromptBoxEventArgs(IntPtr webView, IntPtr param, IntPtr msg, IntPtr defaultResult) : base(webView)
             {
-                strMsg = MBVIP_Common.UTF8PtrToStr(msg);
-                strResult = MBVIP_Common.UTF8PtrToStr(defaultResult);
+                strMsg = msg.UTF8PtrToStr();
+                strResult = defaultResult.UTF8PtrToStr();
                 ptrRet = msg;
             }
 
@@ -310,7 +310,7 @@ namespace MBVIP
             public NavigationEventArgs(IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url) : base(webView)
             {
                 NavigationType = navigationType;
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
                 iRet = url == IntPtr.Zero ? 0 : 1;
             }
 
@@ -325,7 +325,7 @@ namespace MBVIP
             public CreateViewEventArgs(IntPtr webView, IntPtr param, mbNavigationType navigationType, IntPtr url, IntPtr windowFeatures) : base(webView)
             {
                 NavigationType = navigationType;
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
                 m_windowFeatures = windowFeatures;
                 NewWebViewHandle = webView;
             }
@@ -396,7 +396,7 @@ namespace MBVIP
             public DidCreateScriptContextEventArgs(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int extensionGroup, int worldId) : base(webView)
             {
                 ptrFrameId = frameId;
-                strContext = MBVIP_Common.UTF8PtrToStr(context);
+                strContext = context.UTF8PtrToStr();
                 iExtensionGroup = extensionGroup;
                 iWorldId = worldId;
             }
@@ -422,9 +422,9 @@ namespace MBVIP
             public LoadingFinishEventArgs(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, mbLoadingResult result, IntPtr failedReason) : base(webView)
             {
                 ptrFrameId = frameId;
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
                 LoadingResult = result;
-                strFailedReason = MBVIP_Common.UTF8PtrToStr(failedReason);
+                strFailedReason = failedReason.UTF8PtrToStr();
             }
 
             public IntPtr ptrFrameId { get; }
@@ -437,7 +437,7 @@ namespace MBVIP
         {
             public DownloadEventArgs(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, IntPtr downloadJob) : base(webView)
             {
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
             }
 
             /// <summary>
@@ -452,10 +452,10 @@ namespace MBVIP
             public ConsoleEventArgs(IntPtr webView, IntPtr param, mbConsoleLevel level, IntPtr message, IntPtr sourceName, uint sourceLine, IntPtr stackTrace) : base(webView)
             {
                 Level = level;
-                strMessage = MBVIP_Common.UTF8PtrToStr(message);
-                strSourceName = MBVIP_Common.UTF8PtrToStr(sourceName);
+                strMessage = message.UTF8PtrToStr();
+                strSourceName = sourceName.UTF8PtrToStr();
                 iSourceLine = sourceLine;
-                strStackTrace = MBVIP_Common.UTF8PtrToStr(stackTrace);
+                strStackTrace = stackTrace.UTF8PtrToStr();
             }
 
             public mbConsoleLevel Level { get; }
@@ -469,7 +469,7 @@ namespace MBVIP
         {
             public LoadUrlBeginEventArgs(IntPtr webView, IntPtr param, IntPtr url, IntPtr job) : base(webView)
             {
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
                 ptrJob = job;
             }
 
@@ -485,8 +485,8 @@ namespace MBVIP
         {
             public LoadUrlEndEventArgs(IntPtr webView, IntPtr param, IntPtr url, IntPtr job, IntPtr buf, int len) : base(webView)
             {
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
-                byteData = MBVIP_Common.UTF8PtrToByte(buf);
+                strUrl = url.UTF8PtrToStr();
+                byteData = buf.UTF8PtrToByte();
                 ptrJob = job;
             }
 
@@ -500,7 +500,7 @@ namespace MBVIP
             public WillReleaseScriptContextEventArgs(IntPtr webView, IntPtr param, IntPtr frameId, IntPtr context, int worldId) : base(webView)
             {
                 ptrFrameId = frameId;
-                strContext = MBVIP_Common.UTF8PtrToStr(context);
+                strContext = context.UTF8PtrToStr();
                 iWorldId = worldId;
             }
 
@@ -513,7 +513,7 @@ namespace MBVIP
         {
             public NetResponseEventArgs(IntPtr webView, IntPtr param, IntPtr url, IntPtr job) : base(webView)
             {
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
+                strUrl = url.UTF8PtrToStr();
                 iRet = url == IntPtr.Zero ? 0 : 1; ;
                 ptrJob = job;
             }
@@ -527,8 +527,8 @@ namespace MBVIP
         {
             public NetGetFaviconEventArgs(IntPtr webView, IntPtr param, IntPtr url, IntPtr buf) : base(webView)
             {
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
-                byteBuf = MBVIP_Common.UTF8PtrToByte(buf);
+                strUrl = url.UTF8PtrToStr();
+                byteBuf = buf.UTF8PtrToByte();
             }
 
             public string strUrl { get; }
@@ -552,7 +552,7 @@ namespace MBVIP
             public GetCookieEventArgs(IntPtr webView, IntPtr param, MbAsynRequestState state, IntPtr cookie) : base(webView)
             {
                 State = state;
-                strCookie = State == MbAsynRequestState.kMbAsynRequestStateOk ? MBVIP_Common.UTF8PtrToStr(cookie) : null; ;
+                strCookie = State == MbAsynRequestState.kMbAsynRequestStateOk ? cookie.UTF8PtrToStr() : null; ;
             }
 
             public MbAsynRequestState State { get; }
@@ -563,7 +563,7 @@ namespace MBVIP
         {
             public GetSourceEventArgs(IntPtr webView, IntPtr param, IntPtr mhtml) : base(webView)
             {
-                strHtmlCode = MBVIP_Common.UTF8PtrToStr(mhtml);
+                strHtmlCode = mhtml.UTF8PtrToStr();
             }
 
             public string strHtmlCode { get; }
@@ -573,7 +573,7 @@ namespace MBVIP
         {
             public GetContentAsMarkupEventArgs(IntPtr webView, IntPtr param, IntPtr content, ulong size) : base(webView)
             {
-                strContent = MBVIP_Common.UTF8PtrToStr(content); ;
+                strContent = content.UTF8PtrToStr(); ;
             }
 
             public string strContent { get; }
@@ -583,9 +583,9 @@ namespace MBVIP
         {
             public UrlRequestWillRedirectEventArgs(IntPtr webView, IntPtr param, IntPtr oldRequest, IntPtr request, IntPtr redirectResponse) : base(webView)
             {
-                strOldRequest = MBVIP_Common.UTF8PtrToStr(oldRequest);
-                strRequest = MBVIP_Common.UTF8PtrToStr(request);
-                strRedirectResponse = MBVIP_Common.UTF8PtrToStr(redirectResponse);
+                strOldRequest = oldRequest.UTF8PtrToStr();
+                strRequest = request.UTF8PtrToStr();
+                strRedirectResponse = redirectResponse.UTF8PtrToStr();
             }
 
             public string strOldRequest { get; }
@@ -597,8 +597,8 @@ namespace MBVIP
         {
             public UrlRequestDidReceiveResponseEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr response) : base(webView)
             {
-                strRequest = MBVIP_Common.UTF8PtrToStr(request);
-                strResponse = MBVIP_Common.UTF8PtrToStr(response);
+                strRequest = request.UTF8PtrToStr();
+                strResponse = response.UTF8PtrToStr();
             }
 
             public string strRequest { get; }
@@ -609,8 +609,8 @@ namespace MBVIP
         {
             public UrlRequestDidReceiveDataEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr data, int dataLength) : base(webView)
             {
-                strRequest = MBVIP_Common.UTF8PtrToStr(request);
-                byteData = MBVIP_Common.UTF8PtrToByte(data);
+                strRequest = request.UTF8PtrToStr();
+                byteData = data.UTF8PtrToByte();
             }
 
             public string strRequest { get; }
@@ -621,8 +621,8 @@ namespace MBVIP
         {
             public UrlRequestDidFailEventArgs(IntPtr webView, IntPtr param, IntPtr request, IntPtr error) : base(webView)
             {
-                strRequest = MBVIP_Common.UTF8PtrToStr(request);
-                strError = MBVIP_Common.UTF8PtrToStr(error);
+                strRequest = request.UTF8PtrToStr();
+                strError = error.UTF8PtrToStr();
             }
 
             public string strRequest { get; }
@@ -633,7 +633,7 @@ namespace MBVIP
         {
             public UrlRequestDidFinishLoadingEventArgs(IntPtr webView, IntPtr param, IntPtr request, double finishTime) : base(webView)
             {
-                strRequest = MBVIP_Common.UTF8PtrToStr(request);
+                strRequest = request.UTF8PtrToStr();
                 fFinishTime = finishTime;
             }
 
@@ -645,7 +645,7 @@ namespace MBVIP
         {
             public NetJobDataRecvEventArgs(IntPtr ptr, IntPtr job, IntPtr data, int length)
             {
-                byteData = MBVIP_Common.UTF8PtrToByte(data);
+                byteData = data.UTF8PtrToByte();
                 ptrJob = job;
             }
 
@@ -669,7 +669,7 @@ namespace MBVIP
         {
             public PopupDialogSaveNameEventArgs(IntPtr ptr, IntPtr filePath)
             {
-                strPath = MBVIP_Common.UnicodePtrToStr(filePath);
+                strPath = filePath.UnicodePtrToStr();
             }
 
             public string strPath { get; }
@@ -680,11 +680,11 @@ namespace MBVIP
             public DownloadInBlinkThreadEventArgs(IntPtr webView, IntPtr param, ulong expectedContentLength, IntPtr url, IntPtr mime, IntPtr disposition, IntPtr job, IntPtr dataBind) : base(webView)
             {
                 iLength = expectedContentLength;
-                strUrl = MBVIP_Common.UTF8PtrToStr(url);
-                strMime = MBVIP_Common.UTF8PtrToStr(mime);
-                strDisposition = MBVIP_Common.UTF8PtrToStr(disposition);
+                strUrl = url.UTF8PtrToStr();
+                strMime = mime.UTF8PtrToStr();
+                strDisposition = disposition.UTF8PtrToStr();
                 DownloadRet = expectedContentLength == 0 ? mbDownloadOpt.kMbDownloadOptCancel : mbDownloadOpt.kMbDownloadOptCacheData;
-                byteData = MBVIP_Common.UTF8PtrToByte(dataBind);
+                byteData = dataBind.UTF8PtrToByte();
                 ptrJob = job;
             }
 
@@ -701,7 +701,7 @@ namespace MBVIP
         {
             public PrintPdfDataEventArgs(IntPtr webView, IntPtr param, IntPtr data) : base(webView)
             {
-                byteData = MBVIP_Common.UTF8PtrToByte(data);
+                byteData = data.UTF8PtrToByte();
             }
 
             public byte[] byteData { get; }
@@ -711,7 +711,7 @@ namespace MBVIP
         {
             public PrintBitmapEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
             {
-                byteData = MBVIP_Common.UTF8PtrToByte(data);
+                byteData = data.UTF8PtrToByte();
             }
 
             public byte[] byteData { get; }
@@ -742,7 +742,7 @@ namespace MBVIP
         {
             public DraggableRegionsChangedEventArgs(IntPtr webView, IntPtr param, IntPtr rects, int rectCount) : base(webView)
             {
-                Region = (mbDraggableRegion)MBVIP_Common.UTF8PtrToStruct(rects, new mbDraggableRegion().GetType());
+                Region = (mbDraggableRegion)rects.UTF8PtrToStruct(new mbDraggableRegion().GetType());
                 iRectCount = rectCount;
             }
 
@@ -756,7 +756,7 @@ namespace MBVIP
             {
                 mStep = step;
                 ptrHDC = hDC;
-                Settings = (mbPrintintSettings)MBVIP_Common.UTF8PtrToStruct(settings, new mbPrintintSettings().GetType());
+                Settings = (mbPrintintSettings)settings.UTF8PtrToStruct(new mbPrintintSettings().GetType());
                 iPageCount = pageCount;
             }
 
@@ -770,7 +770,7 @@ namespace MBVIP
         {
             public ImageBufferToDataUrlEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
             {
-                byteData = MBVIP_Common.UTF8PtrToByte(data);
+                byteData = data.UTF8PtrToByte();
             }
 
             public byte[] byteData { get; set; }
@@ -780,7 +780,7 @@ namespace MBVIP
         {
             public ScreenshotEventArgs(IntPtr webView, IntPtr param, IntPtr data, ulong size) : base(webView)
             {
-                byteData = MBVIP_Common.UTF8PtrToByte(data);
+                byteData = data.UTF8PtrToByte();
             }
 
             public byte[] byteData { get; }
@@ -790,7 +790,7 @@ namespace MBVIP
         {
             public CallUiThreadEventArgs(IntPtr webView, IntPtr paramOnInThread) : base(webView)
             {
-                strParamOnInThread = MBVIP_Common.UTF8PtrToStr(paramOnInThread);
+                strParamOnInThread = paramOnInThread.UTF8PtrToStr();
             }
 
             public string strParamOnInThread { get; }
@@ -1023,8 +1023,8 @@ namespace MBVIP
                         }
 
                         uint flags = 0;
-                        int x = MBVIP_Common.LOWORD(lParam);
-                        int y = MBVIP_Common.HIWORD(lParam);
+                        int x = lParam.LOWORD();
+                        int y = lParam.HIWORD();
 
                         if ((wParam.ToInt32() & (int)WinConst.MK_CONTROL) != 0)
                         {
@@ -1064,8 +1064,8 @@ namespace MBVIP
                         POINT pt;
                         uint flags = 0;
 
-                        pt.x = MBVIP_Common.LOWORD(lParam);
-                        pt.y = MBVIP_Common.HIWORD(lParam);
+                        pt.x = lParam.LOWORD();
+                        pt.y = lParam.HIWORD();
 
                         if (pt.x != -1 && pt.y != -1)
                         {
@@ -1109,10 +1109,10 @@ namespace MBVIP
                     {
                         POINT pt;
                         uint flags = 0;
-                        int delta = MBVIP_Common.HIWORD(wParam);
+                        int delta = wParam.HIWORD();
 
-                        pt.x = MBVIP_Common.LOWORD(lParam);
-                        pt.y = MBVIP_Common.HIWORD(lParam);
+                        pt.x = lParam.LOWORD();
+                        pt.y = lParam.HIWORD();
 
                         MBVIP_Common.ScreenToClient(hWnd, ref pt);
 
@@ -2493,7 +2493,7 @@ namespace MBVIP
         /// </summary>
         public string Title
         {
-            get { return MBVIP_Common.UTF8PtrToStr(MBVIP_API.mbGetTitle(m_WebView)); }
+            get { return MBVIP_API.mbGetTitle(m_WebView).UTF8PtrToStr(); }
         }
 
         /// <summary>
@@ -2501,7 +2501,7 @@ namespace MBVIP
         /// </summary>
         public string URL
         {
-            get { return MBVIP_Common.UTF8PtrToStr(MBVIP_API.mbGetUrl(m_WebView)); }
+            get { return MBVIP_API.mbGetUrl(m_WebView).UTF8PtrToStr(); }
         }
 
         /// <summary>
@@ -2573,7 +2573,7 @@ namespace MBVIP
         /// </summary>
         public string UserAgent
         {
-            set { MBVIP_API.mbSetUserAgent(m_WebView, MBVIP_Common.StrToUtf8Ptr(value)); }
+            set { MBVIP_API.mbSetUserAgent(m_WebView, value.StrToUtf8Ptr()); }
         }
 
         /// <summary>
@@ -2589,7 +2589,7 @@ namespace MBVIP
         /// </summary>
         public string CookieFullPath
         {
-            set { MBVIP_API.mbSetCookieJarFullPath(m_WebView, MBVIP_Common.StrToUnicodePtr(value)); }
+            set { MBVIP_API.mbSetCookieJarFullPath(m_WebView, value.StrToUnicodePtr()); }
         }
 
         /// <summary>
@@ -2597,7 +2597,7 @@ namespace MBVIP
         /// </summary>
         public string StorageFullPath
         {
-            set { MBVIP_API.mbSetLocalStorageFullPath(m_WebView, MBVIP_Common.StrToUnicodePtr(value)); }
+            set { MBVIP_API.mbSetLocalStorageFullPath(m_WebView, value.StrToUnicodePtr()); }
         }
 
         /// <summary>
@@ -2646,7 +2646,7 @@ namespace MBVIP
         /// </summary>
         public string DiskCachePath
         {
-            set { MBVIP_API.mbSetDiskCachePath(m_WebView, MBVIP_Common.StrToUnicodePtr(value)); }
+            set { MBVIP_API.mbSetDiskCachePath(m_WebView, value.StrToUnicodePtr()); }
         }
 
         /// <summary>
@@ -2835,7 +2835,7 @@ namespace MBVIP
         /// <param name="strPath"></param>
         public void setMBDllPath(string strPath)
         {
-            IntPtr ptrPath = MBVIP_Common.StrToUtf8Ptr(strPath);
+            IntPtr ptrPath = strPath.StrToUtf8Ptr();
             MBVIP_API.mbSetMbDllPath(ptrPath);
         }
 
@@ -2845,7 +2845,7 @@ namespace MBVIP
         /// <param name="strPath"></param>
         public void setNodeDllPath(string strPath)
         {
-            IntPtr ptrPath = MBVIP_Common.StrToUtf8Ptr(strPath);
+            IntPtr ptrPath = strPath.StrToUtf8Ptr();
             MBVIP_API.mbSetMbMainDllPath(ptrPath);
         }
 
@@ -2863,13 +2863,13 @@ namespace MBVIP
         /// <param name="strUrl"></param>
         public void LoadUrl(string strUrl)
         {
-            MBVIP_API.mbLoadURL(m_WebView, MBVIP_Common.StrToUtf8Ptr(strUrl));
+            MBVIP_API.mbLoadURL(m_WebView, strUrl.StrToUtf8Ptr());
         }
 
         public void mbLoadHtmlWithBaseUrl(string strHtml, string strUrl)
         {
-            IntPtr ptrHtml = MBVIP_Common.StrToUtf8Ptr(strHtml);
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
+            IntPtr ptrHtml = strHtml.StrToUtf8Ptr();
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
 
             MBVIP_API.mbLoadHtmlWithBaseUrl(m_WebView, ptrHtml, ptrUrl);
         }
@@ -2882,7 +2882,7 @@ namespace MBVIP
         /// <param name="iDataLen"></param>
         public void PostData(string strUrl, byte[] data, int iDataLen)
         {
-            MBVIP_API.mbPostURL(m_WebView, MBVIP_Common.StrToUtf8Ptr(strUrl), data, iDataLen);
+            MBVIP_API.mbPostURL(m_WebView, strUrl.StrToUtf8Ptr(), data, iDataLen);
         }
 
         /// <summary>
@@ -2904,8 +2904,8 @@ namespace MBVIP
         /// <param name="fParam"></param>
         public void SetDeviceParameter(string strDevice, string strParam, int iParam = 0, float fParam = 0)
         {
-            IntPtr ptrDevice = MBVIP_Common.StrToUtf8Ptr(strDevice);
-            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
+            IntPtr ptrDevice = strDevice.StrToUtf8Ptr();
+            IntPtr ptrParam = strParam.StrToUtf8Ptr();
 
             MBVIP_API.mbSetDeviceParameter(m_WebView, ptrDevice, ptrParam, iParam, fParam);
         }
@@ -2966,7 +2966,7 @@ namespace MBVIP
         /// <param name="strJs"></param>
         public void RunJs(string strJs)
         {
-            IntPtr ptrJs = MBVIP_Common.StrToUtf8Ptr(strJs);
+            IntPtr ptrJs = strJs.StrToUtf8Ptr();
             IntPtr ptrFrameId = MBVIP_API.mbWebFrameGetMainFrame(m_WebView);
 
             MBVIP_API.mbRunJs(m_WebView, ptrFrameId, ptrJs, 1, m_mbRunJsCallback, IntPtr.Zero, IntPtr.Zero);
@@ -2980,7 +2980,7 @@ namespace MBVIP
         /// <returns></returns>
         public ulong RunJsSync(IntPtr ptrFrameId, string strJs)
         {
-            IntPtr ptrJs = MBVIP_Common.StrToUtf8Ptr(strJs);
+            IntPtr ptrJs = strJs.StrToUtf8Ptr();
 
             return MBVIP_API.mbRunJsSync(m_WebView, ptrFrameId, ptrJs, 1);
         }
@@ -2991,7 +2991,7 @@ namespace MBVIP
         /// <param name="strParam"></param>
         public void mbOnJsQuery(string strParam)
         {
-            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
+            IntPtr ptrParam = strParam.StrToUtf8Ptr();
             MBVIP_API.mbOnJsQuery(m_WebView, m_mbJsQueryCallback, ptrParam);
         }
 
@@ -3003,7 +3003,7 @@ namespace MBVIP
         /// <param name="strResponse"></param>
         public void ResponseQuery(long iQueryId, int iCustomMsg, string strResponse)
         {
-            IntPtr ptrResponse = MBVIP_Common.StrToUtf8Ptr(strResponse);
+            IntPtr ptrResponse = strResponse.StrToUtf8Ptr();
             MBVIP_API.mbResponseQuery(m_WebView, iQueryId, iCustomMsg, ptrResponse);
         }
 
@@ -3103,7 +3103,7 @@ namespace MBVIP
         public mbSlist GetRawHttpHeadInBlinkThread(IntPtr ptrJob)
         {
             IntPtr ptrStruct = MBVIP_API.mbNetGetRawHttpHeadInBlinkThread(ptrJob);
-            return (mbSlist)MBVIP_Common.UTF8PtrToStruct(ptrStruct, new mbSlist().GetType());
+            return (mbSlist)ptrStruct.UTF8PtrToStruct(new mbSlist().GetType());
         }
 
         /// <summary>
@@ -3114,7 +3114,7 @@ namespace MBVIP
         public mbSlist GetRawResponseHeadInBlinkThread(IntPtr ptrJob)
         {
             IntPtr ptrStruct = MBVIP_API.mbNetGetRawResponseHeadInBlinkThread(ptrJob);
-            return (mbSlist)MBVIP_Common.UTF8PtrToStruct(ptrStruct, new mbSlist().GetType());
+            return (mbSlist)ptrStruct.UTF8PtrToStruct(new mbSlist().GetType());
         }
 
         /// <summary>
@@ -3153,7 +3153,7 @@ namespace MBVIP
         /// <param name="iDataLen"></param>
         public void SendWsText(string strChannel, byte[] data, uint iDataLen)
         {
-            MBVIP_API.mbNetSendWsText(MBVIP_Common.StrToUtf8Ptr(strChannel), data, iDataLen);
+            MBVIP_API.mbNetSendWsText(strChannel.StrToUtf8Ptr(), data, iDataLen);
         }
 
         /// <summary>
@@ -3164,7 +3164,7 @@ namespace MBVIP
         /// <param name="iDataLen"></param>
         public void SendWsBlob(string strChannel, byte[] data, uint iDataLen)
         {
-            MBVIP_API.mbNetSendWsBlob(MBVIP_Common.StrToUtf8Ptr(strChannel), data, iDataLen);
+            MBVIP_API.mbNetSendWsBlob(strChannel.StrToUtf8Ptr(), data, iDataLen);
         }
 
         /// <summary>
@@ -3175,7 +3175,7 @@ namespace MBVIP
         public mbPostBodyElements GetPostBody(IntPtr ptrJob)
         {
             IntPtr ptrStruct = MBVIP_API.mbNetGetPostBody(ptrJob);
-            return (mbPostBodyElements)MBVIP_Common.UTF8PtrToStruct(ptrStruct, new mbPostBodyElements().GetType());
+            return (mbPostBodyElements)ptrStruct.UTF8PtrToStruct(new mbPostBodyElements().GetType());
         }
 
         /// <summary>
@@ -3186,7 +3186,7 @@ namespace MBVIP
         public mbPostBodyElements CreatePostBodyElements(uint iLength)
         {
             IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElements(m_WebView, iLength);
-            return (mbPostBodyElements)MBVIP_Common.UTF8PtrToStruct(ptrStruct, new mbPostBodyElements().GetType());
+            return (mbPostBodyElements)ptrStruct.UTF8PtrToStruct(new mbPostBodyElements().GetType());
         }
 
         /// <summary>
@@ -3195,7 +3195,7 @@ namespace MBVIP
         /// <param name="elements"></param>
         public void FreePostBodyElements(mbPostBodyElements elements)
         {
-            IntPtr ptrStruct = MBVIP_Common.StructToUTF8Ptr(elements);
+            IntPtr ptrStruct = elements.StructToUTF8Ptr();
             MBVIP_API.mbNetFreePostBodyElements(ptrStruct);
         }
 
@@ -3208,7 +3208,7 @@ namespace MBVIP
         {
             IntPtr ptrStruct = MBVIP_API.mbNetCreatePostBodyElement(m_WebView);
 
-            return (mbPostBodyElements)MBVIP_Common.UTF8PtrToStruct(ptrStruct, new mbPostBodyElements().GetType());
+            return (mbPostBodyElements)ptrStruct.UTF8PtrToStruct(new mbPostBodyElements().GetType());
         }
 
         /// <summary>
@@ -3217,7 +3217,7 @@ namespace MBVIP
         /// <param name="elements"></param>
         public void FreePostBodyElement(mbPostBodyElements element)
         {
-            IntPtr ptrStruct = MBVIP_Common.StructToUTF8Ptr(element);
+            IntPtr ptrStruct = element.StructToUTF8Ptr();
             MBVIP_API.mbNetFreePostBodyElement(ptrStruct);
         }
 
@@ -3230,9 +3230,9 @@ namespace MBVIP
         /// <returns>返回mbWebUrlRequestPtr类型指针，暂未定义</returns>
         public IntPtr CreateWebUrlRequest(string strUrl, string strMethod, string strMime)
         {
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
-            IntPtr ptrMethod = MBVIP_Common.StrToUtf8Ptr(strMethod);
-            IntPtr ptrMime = MBVIP_Common.StrToUtf8Ptr(strMime);
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
+            IntPtr ptrMethod = strMethod.StrToUtf8Ptr();
+            IntPtr ptrMime = strMime.StrToUtf8Ptr();
 
             return MBVIP_API.mbNetCreateWebUrlRequest(ptrUrl, ptrMethod, ptrMime);
         }
@@ -3245,8 +3245,8 @@ namespace MBVIP
         /// <param name="strValue"></param>
         public void AddHTTPHeaderFieldToUrlRequest(IntPtr ptrRequest, string strName, string strValue)
         {
-            IntPtr ptrName = MBVIP_Common.StrToUtf8Ptr(strName);
-            IntPtr ptrValue = MBVIP_Common.StrToUtf8Ptr(strValue);
+            IntPtr ptrName = strName.StrToUtf8Ptr();
+            IntPtr ptrValue = strValue.StrToUtf8Ptr();
 
             MBVIP_API.mbNetAddHTTPHeaderFieldToUrlRequest(ptrRequest, ptrName, ptrValue);
         }
@@ -3300,7 +3300,7 @@ namespace MBVIP
         public string GetResponseUrl(IntPtr ptrResponse)
         {
             IntPtr ptrUrl = MBVIP_API.mbNetGetResponseUrl(ptrResponse);
-            return MBVIP_Common.UTF8PtrToStr(ptrUrl);
+            return ptrUrl.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3319,7 +3319,7 @@ namespace MBVIP
         /// <param name="strMimeType"></param>
         public void SetMimeType(IntPtr ptrJob, string strMimeType)
         {
-            MBVIP_API.mbNetSetMIMEType(ptrJob, MBVIP_Common.StrToUtf8Ptr(strMimeType));
+            MBVIP_API.mbNetSetMIMEType(ptrJob, strMimeType.StrToUtf8Ptr());
         }
 
         /// <summary>
@@ -3330,7 +3330,7 @@ namespace MBVIP
         public string GetMimeType(IntPtr ptrJob)
         {
             IntPtr ptrRet = MBVIP_API.mbNetGetMIMEType(ptrJob);
-            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+            return ptrRet.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3341,8 +3341,8 @@ namespace MBVIP
         /// <param name="strValue"></param>
         public void SetHttpHeaderField(IntPtr ptrJob, string strKey, string strValue)
         {
-            IntPtr ptrKey = MBVIP_Common.StrToUnicodePtr(strKey);
-            IntPtr ptrValue = MBVIP_Common.StrToUnicodePtr(strValue);
+            IntPtr ptrKey = strKey.StrToUnicodePtr();
+            IntPtr ptrValue = strValue.StrToUnicodePtr();
             MBVIP_API.mbNetSetHTTPHeaderField(ptrJob, ptrKey, ptrValue, 0);
         }
 
@@ -3356,7 +3356,7 @@ namespace MBVIP
         public string GetHttpHeaderField(IntPtr ptrJob, string strKey, int iRequestOrResponse)
         {
             IntPtr ptrValue = MBVIP_API.mbNetGetHTTPHeaderField(ptrJob, strKey, iRequestOrResponse);
-            return MBVIP_Common.UTF8PtrToStr(ptrValue);
+            return ptrValue.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3366,8 +3366,8 @@ namespace MBVIP
         /// <param name="strCookie"></param>
         public void SetCookie(string strUrl, string strCookie)
         {
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
-            IntPtr ptrCookie = MBVIP_Common.StrToUtf8Ptr(strCookie);
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
+            IntPtr ptrCookie = strCookie.StrToUtf8Ptr();
             MBVIP_API.mbSetCookie(m_WebView, ptrUrl, ptrCookie);
         }
 
@@ -3419,10 +3419,10 @@ namespace MBVIP
         /// <returns></returns>
         public string CreateString(string str)
         {
-            IntPtr ptr = MBVIP_Common.StrToUtf8Ptr(str);
+            IntPtr ptr = str.StrToUtf8Ptr();
             IntPtr ptrRet = MBVIP_API.mbCreateString(ptr, (uint)str.Length);
 
-            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+            return ptrRet.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3432,10 +3432,10 @@ namespace MBVIP
         /// <returns></returns>
         public string CreateMemory(string str)
         {
-            IntPtr ptr = MBVIP_Common.StrToUtf8Ptr(str);
+            IntPtr ptr = str.StrToUtf8Ptr();
             IntPtr ptrRet = MBVIP_API.mbCreateStringWithoutNullTermination(ptr, (uint)str.Length);
 
-            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+            return ptrRet.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3444,7 +3444,7 @@ namespace MBVIP
         /// <param name="str"></param>
         public void DeleteString(string str)
         {
-            MBVIP_API.mbDeleteString(MBVIP_Common.StrToUtf8Ptr(str));
+            MBVIP_API.mbDeleteString(str.StrToUtf8Ptr());
         }
 
         /// <summary>
@@ -3454,7 +3454,7 @@ namespace MBVIP
         /// <returns></returns>
         public long GetStringLen(string str)
         {
-            return MBVIP_API.mbGetStringLen(MBVIP_Common.StrToUtf8Ptr(str));
+            return MBVIP_API.mbGetStringLen(str.StrToUtf8Ptr());
         }
 
         /// <summary>
@@ -3464,8 +3464,8 @@ namespace MBVIP
         /// <returns></returns>
         public string GetString(string str)
         {
-            IntPtr ptrRet = MBVIP_API.mbGetString(MBVIP_Common.StrToUtf8Ptr(str));
-            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+            IntPtr ptrRet = MBVIP_API.mbGetString(str.StrToUtf8Ptr());
+            return ptrRet.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3474,7 +3474,7 @@ namespace MBVIP
         /// <param name="strPah"></param>
         public void AddPluginDirectory(string strPah)
         {
-            IntPtr ptrPath = MBVIP_Common.StrToUnicodePtr(strPah);
+            IntPtr ptrPath = strPah.StrToUnicodePtr();
             MBVIP_API.mbAddPluginDirectory(m_WebView, ptrPath);
         }
 
@@ -3494,10 +3494,10 @@ namespace MBVIP
         /// <returns></returns>
         public string Base64Encode(string strUrl)
         {
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
             ptrUrl = MBVIP_API.mbUtilBase64Encode(ptrUrl);
 
-            return MBVIP_Common.UTF8PtrToStr(ptrUrl);
+            return ptrUrl.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3507,10 +3507,10 @@ namespace MBVIP
         /// <returns></returns>
         public string Base64Decode(string strUrl)
         {
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
             ptrUrl = MBVIP_API.mbUtilBase64Decode(ptrUrl);
 
-            return MBVIP_Common.UTF8PtrToStr(ptrUrl);
+            return ptrUrl.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3520,10 +3520,10 @@ namespace MBVIP
         /// <returns></returns>
         public string EncodeURLEscape(string strUrl)
         {
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
             ptrUrl = MBVIP_API.mbUtilEncodeURLEscape(ptrUrl);
 
-            return MBVIP_Common.UTF8PtrToStr(ptrUrl);
+            return ptrUrl.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3533,10 +3533,10 @@ namespace MBVIP
         /// <returns></returns>
         public string DecodeURLEscape(string strUrl)
         {
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
             ptrUrl = MBVIP_API.mbUtilDecodeURLEscape(ptrUrl);
 
-            return MBVIP_Common.UTF8PtrToStr(ptrUrl);
+            return ptrUrl.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3546,10 +3546,10 @@ namespace MBVIP
         /// <returns></returns>
         public mbMemBuf CreateV8Snapshot(string strUrl)
         {
-            IntPtr ptrUrl = MBVIP_Common.StrToUtf8Ptr(strUrl);
+            IntPtr ptrUrl = strUrl.StrToUtf8Ptr();
             IntPtr ptrMem = MBVIP_API.mbUtilCreateV8Snapshot(ptrUrl);
 
-            return (mbMemBuf)MBVIP_Common.UTF8PtrToStruct(ptrMem, new mbMemBuf().GetType());
+            return (mbMemBuf)ptrMem.UTF8PtrToStruct(new mbMemBuf().GetType());
         }
 
         /// <summary>
@@ -3559,10 +3559,10 @@ namespace MBVIP
         /// <returns></returns>
         public mbMemBuf CreateMemBuf(byte[] data)
         {
-            IntPtr ptrBuf = MBVIP_Common.ByteToUtf8Ptr(data);
+            IntPtr ptrBuf = data.ByteToUtf8Ptr();
             IntPtr ptrMem = MBVIP_API.mbCreateMemBuf(m_WebView, ptrBuf, (uint)data.Length);
 
-            return (mbMemBuf)MBVIP_Common.UTF8PtrToStruct(ptrMem, new mbMemBuf().GetType());
+            return (mbMemBuf)ptrMem.UTF8PtrToStruct(new mbMemBuf().GetType());
         }
 
         /// <summary>
@@ -3580,7 +3580,7 @@ namespace MBVIP
         /// <param name="strParam"></param>
         public void CanForward(string strParam)
         {
-            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
+            IntPtr ptrParam = strParam.StrToUtf8Ptr();
             MBVIP_API.mbCanGoForward(m_WebView, m_mbCanGoBackForwardCallback, ptrParam);
         }
 
@@ -3590,7 +3590,7 @@ namespace MBVIP
         /// <param name="strParam"></param>
         public void CanBack(string strParam)
         {
-            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
+            IntPtr ptrParam = strParam.StrToUtf8Ptr();
             MBVIP_API.mbCanGoBack(m_WebView, m_mbCanGoBackForwardCallback, ptrParam);
         }
 
@@ -3600,7 +3600,7 @@ namespace MBVIP
         /// <param name="strParam"></param>
         public void GetCookie(string strParam)
         {
-            IntPtr ptrParam = MBVIP_Common.StrToUtf8Ptr(strParam);
+            IntPtr ptrParam = strParam.StrToUtf8Ptr();
             MBVIP_API.mbGetCookie(m_WebView, m_mbGetCookieCallback, ptrParam);
         }
 
@@ -3611,7 +3611,7 @@ namespace MBVIP
         public string GetCookieOnBlinkThread()
         {
             IntPtr ptrRet = MBVIP_API.mbGetCookieOnBlinkThread(m_WebView);
-            return MBVIP_Common.UTF8PtrToStr(ptrRet);
+            return ptrRet.UTF8PtrToStr();
         }
 
         /// <summary>
@@ -3818,9 +3818,9 @@ namespace MBVIP
         /// <param name="strFile"></param>
         public void PluginListBuilderAddPlugin(IntPtr ptrBuilder, string strName, string strDesc, string strFile)
         {
-            IntPtr ptrName = MBVIP_Common.StrToUtf8Ptr(strName);
-            IntPtr PtrDesc = MBVIP_Common.StrToUtf8Ptr(strDesc);
-            IntPtr PtrFile = MBVIP_Common.StrToUtf8Ptr(strFile);
+            IntPtr ptrName = strName.StrToUtf8Ptr();
+            IntPtr PtrDesc = strDesc.StrToUtf8Ptr();
+            IntPtr PtrFile = strFile.StrToUtf8Ptr();
 
             MBVIP_API.mbPluginListBuilderAddPlugin(ptrBuilder, ptrName, PtrDesc, PtrFile);
         }
@@ -3833,8 +3833,8 @@ namespace MBVIP
         /// <param name="strDesc"></param>
         public void PluginListBuilderAddMediaTypeToLastPlugin(IntPtr ptrBuilder, string strName, string strDesc)
         {
-            IntPtr ptrName = MBVIP_Common.StrToUtf8Ptr(strName);
-            IntPtr PtrDesc = MBVIP_Common.StrToUtf8Ptr(strDesc);
+            IntPtr ptrName = strName.StrToUtf8Ptr();
+            IntPtr PtrDesc = strDesc.StrToUtf8Ptr();
 
             MBVIP_API.mbPluginListBuilderAddMediaTypeToLastPlugin(ptrBuilder, ptrName, PtrDesc);
         }
@@ -3846,7 +3846,7 @@ namespace MBVIP
         /// <param name="strFile"></param>
         public void PluginListBuilderAddFileExtensionToLastMediaType(IntPtr ptrBuilder, string strFile)
         {
-            IntPtr PtrFile = MBVIP_Common.StrToUtf8Ptr(strFile);
+            IntPtr PtrFile = strFile.StrToUtf8Ptr();
 
             MBVIP_API.mbPluginListBuilderAddFileExtensionToLastMediaType(ptrBuilder, PtrFile);
         }
@@ -3896,7 +3896,7 @@ namespace MBVIP
         public mbDownloadOpt DownloadByPath(string strPath, uint iContentLength, string strUrl, string strMime,
             string strDisposition, IntPtr ptrJob, mbNetJobDataBind dataBind, mbDownloadBind callbackBind)
         {
-            IntPtr ptrPath = MBVIP_Common.StrToUnicodePtr(strPath);
+            IntPtr ptrPath = strPath.StrToUnicodePtr();
             return MBVIP_API.mbDownloadByPath(m_WebView, IntPtr.Zero, ptrPath, iContentLength, strUrl, strMime,
                 strDisposition, ptrJob, ref dataBind, ref callbackBind);
         }
@@ -3957,7 +3957,7 @@ namespace MBVIP
         /// <returns></returns>
         public bool UtilIsRegistered(string strDefaultPath)
         {
-            IntPtr ptrDefaultPath = MBVIP_Common.StrToUnicodePtr(strDefaultPath);
+            IntPtr ptrDefaultPath = strDefaultPath.StrToUnicodePtr();
             int iRet = MBVIP_API.mbUtilIsRegistered(ptrDefaultPath);
 
             return iRet == 1 ? true : false;

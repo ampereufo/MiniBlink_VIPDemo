@@ -136,7 +136,7 @@ namespace MBVIP
     }
 
 
-    internal class MBVIP_Common
+    internal static class MBVIP_Common
     {
         [DllImport("user32.dll", EntryPoint = "GetWindowLongW")]
         internal static extern int GetWindowLong(IntPtr hwnd, int nIndex);
@@ -238,17 +238,17 @@ namespace MBVIP
         internal static extern int lstrlen(IntPtr lpString);
 
 
-        internal static int LOWORD(IntPtr dword)
+        internal static int LOWORD(this IntPtr dword)
         {
             return (int)dword & 65535;
         }
 
-        internal static int HIWORD(IntPtr dword)
+        internal static int HIWORD(this IntPtr dword)
         {
             return (int)dword >> 16;
         }
 
-        internal static string UTF8PtrToStr(IntPtr utf8)
+        internal static string UTF8PtrToStr(this IntPtr utf8)
         {
             if (utf8 == IntPtr.Zero)
             {
@@ -262,7 +262,7 @@ namespace MBVIP
             return Encoding.UTF8.GetString(bytes);
         }
 
-        internal static IntPtr StrToUtf8Ptr(string str)
+        internal static IntPtr StrToUtf8Ptr(this string str)
         {
             IntPtr ptr = IntPtr.Zero;
 
@@ -278,7 +278,7 @@ namespace MBVIP
         }
 
 
-        internal static string UnicodePtrToStr(IntPtr unicode)
+        internal static string UnicodePtrToStr(this IntPtr unicode)
         {
             if (unicode == IntPtr.Zero)
             {
@@ -292,7 +292,7 @@ namespace MBVIP
             return Encoding.Unicode.GetString(bytes);
         }
 
-        internal static IntPtr StrToUnicodePtr(string str)
+        internal static IntPtr StrToUnicodePtr(this string str)
         {
             IntPtr ptr = IntPtr.Zero;
 
@@ -307,7 +307,7 @@ namespace MBVIP
             return ptr;
         }
 
-        internal static byte[] StructToBytes(object structObj)
+        internal static byte[] StructToBytes(this object structObj)
         {
             int iSize = Marshal.SizeOf(structObj);
             byte[] bytes = new byte[iSize];
@@ -319,7 +319,7 @@ namespace MBVIP
             return bytes;
         }
 
-        internal static object BytesToStuct(byte[] bytes, Type type)
+        internal static object BytesToStuct(this byte[] bytes, Type type)
         {
             object objRet = null;
 
@@ -335,7 +335,7 @@ namespace MBVIP
             return objRet;
         }
 
-        internal static IntPtr StructToUTF8Ptr(object structObj)
+        internal static IntPtr StructToUTF8Ptr(this object structObj)
         {
             int iSize = Marshal.SizeOf(structObj);
             byte[] bytes = new byte[iSize];
@@ -346,12 +346,12 @@ namespace MBVIP
             return structPtr;
         }
 
-        internal static object UTF8PtrToStruct(IntPtr structPtr, Type type)
+        internal static object UTF8PtrToStruct(this IntPtr structPtr, Type type)
         {
             return Marshal.PtrToStructure(structPtr, type);
         }
 
-        internal static byte[] UTF8PtrToByte(IntPtr utf8)
+        internal static byte[] UTF8PtrToByte(this IntPtr utf8)
         {
             if (utf8 == IntPtr.Zero)
             {
@@ -365,7 +365,7 @@ namespace MBVIP
             return bytes;
         }
 
-        internal static IntPtr ByteToUtf8Ptr(byte[] data)
+        internal static IntPtr ByteToUtf8Ptr(this byte[] data)
         {
             IntPtr ptr = IntPtr.Zero;
 
