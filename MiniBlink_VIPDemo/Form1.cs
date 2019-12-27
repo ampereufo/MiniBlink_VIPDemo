@@ -85,7 +85,7 @@ namespace MiniBlink_VIPDemo
             {
                 m_webView.SetMimeType(e.ptrJob, "application/javascript");
                 m_webView.NetSetData(e.ptrJob, "alert(\"js代码测试\")");
-                m_webView.ContinueJob(e.ptrJob);    // 其实不用这句也能执行js，但是其他类型的Mime就需要了
+                m_webView.ContinueJob(e.ptrJob);    // 其实不用这句也能执行js，但是其他类型的Mime可能就需要了
             }
 
             if (m_webView.GetRequestMethod(e.ptrJob) == mbRequestType.kMbRequestTypePost)
