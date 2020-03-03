@@ -2265,20 +2265,6 @@ namespace MBVIP
                 m_mbLoadingFinishHandler?.Invoke(this, new LoadingFinishEventArgs(webView, param, frameId, url, result, failedReason));
             });
 
-            m_mbDownloadCallback = new mbDownloadCallback((IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, IntPtr downloadJob) =>
-            {
-                int iRet = 1;
-                if (m_mbDownloadHandler != null)
-                {
-                    DownloadEventArgs e = new DownloadEventArgs(webView, param, frameId, url, downloadJob);
-                    m_mbDownloadHandler(this, e);
-
-                    iRet = e.bCancel ? 0 : 1;
-                }
-
-                return iRet;
-            });
-
             m_mbConsoleCallback = new mbConsoleCallback((IntPtr webView, IntPtr param, mbConsoleLevel level, IntPtr message, IntPtr sourceName, uint sourceLine, IntPtr stackTrace) =>
             {
                 m_mbConsoleHandler?.Invoke(this, new ConsoleEventArgs(webView, param, level, message, sourceName, sourceLine, stackTrace));
@@ -2370,6 +2356,20 @@ namespace MBVIP
             m_mbUrlRequestDidFinishLoadingCallback = new mbOnUrlRequestDidFinishLoadingCallback((IntPtr webView, IntPtr param, IntPtr request, double finishTime) =>
             {
                 m_mbUrlRequestDidFinishLoadingHandler?.Invoke(this, new UrlRequestDidFinishLoadingEventArgs(webView, param, request, finishTime));
+            });
+
+            m_mbDownloadCallback = new mbDownloadCallback((IntPtr webView, IntPtr param, IntPtr frameId, IntPtr url, IntPtr downloadJob) =>
+            {
+                int iRet = 1;
+                if (m_mbDownloadHandler != null)
+                {
+                    DownloadEventArgs e = new DownloadEventArgs(webView, param, frameId, url, downloadJob);
+                    m_mbDownloadHandler(this, e);
+
+                    iRet = e.bCancel ? 0 : 1;
+                }
+
+                return iRet;
             });
 
             m_mbNetJobDataRecvCallback = new mbNetJobDataRecvCallback((IntPtr ptr, IntPtr job, IntPtr data, int length) =>

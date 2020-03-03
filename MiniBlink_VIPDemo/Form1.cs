@@ -51,7 +51,32 @@ namespace MiniBlink_VIPDemo
 
         private void webView_OnDownload(object sender, MBVIP_WebView.DownloadEventArgs e)
         {
+            m_webView.onNetJobDataRecv += webView_onNetJobDataRecv;
+            m_webView.onNetJobDataFinish += webView_onNetJobDataFinish;
+            m_webView.onPopupDialogSaveName += webView_onPopupDialogSaveName;
+            
+        }
 
+        private void webView_onNetJobDataRecv(object sender, MBVIP_WebView.NetJobDataRecvEventArgs e)
+        {
+
+        }
+
+        private void webView_onPopupDialogSaveName(object sender, MBVIP_WebView.PopupDialogSaveNameEventArgs e)
+        {
+            string strPath = e.strPath;
+        }
+
+        private void webView_onNetJobDataFinish(object sender, MBVIP_WebView.NetJobDataFinishEventArgs e)
+        {
+            if (e.Result == mbLoadingResult.MB_LOADING_SUCCEEDED)
+            {
+                Console.WriteLine("下载完成");
+            }
+            else
+            {
+                Console.WriteLine("下载失败或取消");
+            }
         }
 
         private void webView_OnNetResponse(object sender, MBVIP_WebView.NetResponseEventArgs e)
