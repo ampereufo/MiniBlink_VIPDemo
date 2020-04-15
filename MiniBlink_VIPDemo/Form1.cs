@@ -113,7 +113,7 @@ namespace MiniBlink_VIPDemo
                 m_webView.ContinueJob(e.ptrJob);    // 其实不用这句也能执行js，但是其他类型的Mime就需要了
             }
 
-            if (m_webView.GetRequestMethod(e.ptrJob) == mbRequestType.kMbRequestTypePost)
+            /*if (m_webView.GetRequestMethod(e.ptrJob) == mbRequestType.kMbRequestTypePost)
             {
                 var dictData = Common.GetHttpPostData(m_webView, e.ptrJob);    // 只有post数据才能获取到，否则会报错，获取后可以根据需要修改
                 m_webView.CancelRequest(e.ptrJob);    // 取消本次请求后，重新发一个请求，请求的数据可以是基于刚刚获取的数据修改的，也可以完全新建
@@ -126,7 +126,7 @@ namespace MiniBlink_VIPDemo
 
                 byte[] byteData = eles.StructToBytes();
                 m_webView.PostData(e.strUrl, byteData, byteData.Length);
-            }
+            }*/
         }
 
         private void webView_onLoadUrlEnd(object sender, MBVIP_WebView.LoadUrlEndEventArgs e)
