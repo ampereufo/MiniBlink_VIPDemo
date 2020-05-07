@@ -235,7 +235,10 @@ namespace MBVIP
         internal static extern int InvalidateRect(IntPtr hwnd, ref RECT lpRect, bool bErase);
 
         [DllImport("kernel32.dll", EntryPoint = "lstrlenA")]
-        internal static extern int lstrlen(IntPtr lpString);
+        internal static extern int lstrlenA(IntPtr lpString);
+
+        [DllImport("kernel32.dll", EntryPoint = "lstrlenW")]
+        internal static extern int lstrlenW(IntPtr lpString);
 
 
         internal static int LOWORD(this IntPtr dword)
@@ -255,7 +258,7 @@ namespace MBVIP
                 return string.Empty;
             }
 
-            int iLen = lstrlen(utf8);
+            int iLen = lstrlenA(utf8);
             byte[] bytes = new byte[iLen];
             Marshal.Copy(utf8, bytes, 0, iLen);
 
@@ -271,7 +274,7 @@ namespace MBVIP
                 byte[] bytes = Encoding.UTF8.GetBytes(str);
                 ptr = Marshal.AllocHGlobal(bytes.Length + 1);
                 Marshal.Copy(bytes, 0, ptr, bytes.Length);
-                Marshal.WriteByte(ptr, bytes.Length, (byte)'\0');
+                Marshal.WriteByte(ptr, bytes.Length, 0);
             }
 
             return ptr;
@@ -285,11 +288,11 @@ namespace MBVIP
                 return string.Empty;
             }
 
-            int iLen = lstrlen(unicode);
-            byte[] bytes = new byte[iLen];
-            Marshal.Copy(unicode, bytes, 0, iLen);
+            int iLen = lstrlenW(unicode);
+            char[] ch = new char[iLen];
+            Marshal.Copy(unicode, ch, 0, iLen);
 
-            return Encoding.Unicode.GetString(bytes);
+            return new string(ch);
         }
 
         internal static IntPtr StrToUnicodePtr(this string str)
@@ -301,7 +304,7 @@ namespace MBVIP
                 byte[] bytes = Encoding.Unicode.GetBytes(str);
                 ptr = Marshal.AllocHGlobal(bytes.Length + 1);
                 Marshal.Copy(bytes, 0, ptr, bytes.Length);
-                Marshal.WriteByte(ptr, bytes.Length, (byte)'\0');
+                Marshal.WriteByte(ptr, bytes.Length, 0);
             }
 
             return ptr;
@@ -358,7 +361,7 @@ namespace MBVIP
                 return new byte[0];
             }
 
-            int iLen = lstrlen(utf8);
+            int iLen = lstrlenA(utf8);
             byte[] bytes = new byte[iLen];
             Marshal.Copy(utf8, bytes, 0, iLen);
 
@@ -373,7 +376,7 @@ namespace MBVIP
             {
                 ptr = Marshal.AllocHGlobal(data.Length + 1);
                 Marshal.Copy(data, 0, ptr, data.Length);
-                Marshal.WriteByte(ptr, data.Length, (byte)'\0');
+                Marshal.WriteByte(ptr, data.Length, 0);
             }
 
             return ptr;
