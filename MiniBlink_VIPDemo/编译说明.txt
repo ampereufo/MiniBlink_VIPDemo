@@ -10,4 +10,6 @@
 
 4、合作联系QQ：17136608，违法黑产勿扰，我还年轻！
 
-5、开源项目，遵守Apache License 2.0协议，使用者需要在项目发布文件中显式申明出处 http://miniblink.net/ 和 https://github.com/ampereufo/MiniBlink_VIPDemo
+5、ContrastInterface是用来对比mb.h头文件是否又偷偷加了新的接口
+
+6、开源项目，遵守Apache License 2.0协议，使用者需要在项目发布文件中显式申明出处 http://miniblink.net/ 和 https://github.com/ampereufo/MiniBlink_VIPDemo
