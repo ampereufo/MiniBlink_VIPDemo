@@ -271,7 +271,7 @@ namespace MBVIP
                 byte[] bytes = Encoding.UTF8.GetBytes(str);
                 ptr = Marshal.AllocHGlobal(bytes.Length + 1);
                 Marshal.Copy(bytes, 0, ptr, bytes.Length);
-                Marshal.WriteByte(ptr, bytes.Length, 0);
+                Marshal.WriteByte(ptr, bytes.Length, (byte)'\0');
             }
 
             return ptr;
@@ -301,7 +301,7 @@ namespace MBVIP
                 byte[] bytes = Encoding.Unicode.GetBytes(str);
                 ptr = Marshal.AllocHGlobal(bytes.Length + 1);
                 Marshal.Copy(bytes, 0, ptr, bytes.Length);
-                Marshal.WriteByte(ptr, bytes.Length, 0);
+                Marshal.WriteByte(ptr, bytes.Length, (byte)'\0');
             }
 
             return ptr;
@@ -373,7 +373,7 @@ namespace MBVIP
             {
                 ptr = Marshal.AllocHGlobal(data.Length + 1);
                 Marshal.Copy(data, 0, ptr, data.Length);
-                Marshal.WriteByte(ptr, data.Length, 0);
+                Marshal.WriteByte(ptr, data.Length, (byte)'\0');
             }
 
             return ptr;
